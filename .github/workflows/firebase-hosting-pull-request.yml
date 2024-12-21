@@ -15,6 +15,13 @@ jobs:
       - run: npm ci && npm run build
         env:
           VITE_MAP_API_KEY: ${{ secrets.VITE_MAP_API_KEY }}
+          VITE_FIREBASE_APP_API_KEY: ${{ secrets.VITE_FIREBASE_APP_API_KEY }}
+          VITE_FIREBASE_APP_AUTH_DOMAIN: ${{ secrets.VITE_FIREBASE_APP_AUTH_DOMAIN }}
+          VITE_FIREBASE_APP_PROJECT_ID: ${{ secrets.VITE_FIREBASE_APP_PROJECT_ID }}
+          VITE_FIREBASE_APP_STORAGE_BUCKET: ${{ secrets.VITE_FIREBASE_APP_STORAGE_BUCKET }}
+          VITE_FIREBASE_APP_MESSANGING_SENDER_ID: ${{ secrets.VITE_FIREBASE_APP_MESSANGING_SENDER_ID }}
+          VITE_FIREBASE_APP_ID: ${{ secrets.VITE_FIREBASE_APP_ID }}
+          VITE_FIREBASE_APP_MEASURMENT_ID: ${{ secrets.VITE_FIREBASE_APP_MEASURMENT_ID }}
 
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
