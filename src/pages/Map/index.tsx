@@ -1,6 +1,9 @@
-import mapboxgl from "mapbox-gl";
 import { useEffect, useRef } from "react";
+import mapboxgl from "mapbox-gl";
+
 import "mapbox-gl/dist/mapbox-gl.css";
+
+import Logo from "../../components/Logo";
 
 mapboxgl.accessToken = import.meta.env.VITE_MAP_API_KEY;
 
@@ -22,7 +25,12 @@ const Map = () => {
     return () => {};
   }, []);
 
-  return <div ref={mapContainerRef} className="map-container" />;
+  return (
+    <>
+      <Logo />
+      <div ref={mapContainerRef} className="map-container" />
+    </>
+  );
 };
 
 export default Map;
