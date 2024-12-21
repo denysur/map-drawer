@@ -18,3 +18,4 @@ jobs:
           repoToken: ${{ secrets.GITHUB_TOKEN }}
           firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_MAP_DRAWER_BA1D1 }}
           projectId: map-drawer-ba1d1
+          expires: 1d
