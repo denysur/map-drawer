@@ -1,12 +1,32 @@
+import { ValidationError } from "../types";
+
 /**
- * This function checks that the value is email like.
+ * This function validates email and password from login form.
  *
  * @param email
+ * @param password
  * @returns
  */
-export const validateEmail = (email: string) =>
-  !!String(email)
-    .toLowerCase()
-    .match(
-      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-    );
+export const validateLoginForm = (
+  email: FormDataEntryValue | null,
+  password: FormDataEntryValue | null
+): ValidationError | null => {
+  if (!email && !password) {
+    return {
+      validationError: "Пошта та пароль - обовʼязкові.",
+      invalidFields: ["email", "password"],
+    };
+  } else if (!password) {
+    return {
+      validationError: "Пароль обовʼязковий.",
+      invalidFields: ["password"],
+    };
+  } else if (!email) {
+    return {
+      validationError: "Пошта обовʼязкова.",
+      invalidFields: ["email"],
+    };
+  }
+
+  return null;
+};
