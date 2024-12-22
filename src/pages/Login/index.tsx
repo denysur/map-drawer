@@ -7,6 +7,7 @@ import Logo from "../../components/Logo";
 
 import { useTitle } from "../../hooks/useTitle";
 import { validateLoginForm } from "../../utils/form";
+import { useAuthorization } from "../../hooks/useAuthorization";
 
 import { ValidationError } from "../../types";
 
@@ -16,17 +17,18 @@ const Login = () => {
 
   useTitle("Times of Ukraine Map - Login");
 
+  const { login } = useAuthorization();
+
   const onSubmitHandler = useCallback((formData: FormData) => {
     const email = formData.get("email");
     const password = formData.get("password");
 
-    const validationErrors = validateLoginForm(email, password);
+    const formValidationErrorState = validateLoginForm(email, password);
 
-    setValidationError(validationErrors);
+    setValidationError(formValidationErrorState);
 
-    if (!validationErrors) {
-      console.log("email", formData.get("email"));
-      console.log("password", formData.get("password"));
+    if (!formValidationErrorState && email && password) {
+      login(email.toString(), password.toString());
     }
   }, []);
 
