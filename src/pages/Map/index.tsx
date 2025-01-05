@@ -1,33 +1,10 @@
-import { useEffect, useRef } from "react";
-import mapboxgl from "mapbox-gl";
-
-import "mapbox-gl/dist/mapbox-gl.css";
-
 import Layout from "../../components/Layout";
+import Map from "../../components/Map";
 
 import { useAuthorization } from "../../hooks/useAuthorization";
 
-mapboxgl.accessToken = import.meta.env.VITE_MAP_API_KEY;
-
-const Map = () => {
-  const mapContainerRef = useRef(null);
-
+const MapPage = () => {
   const { logout } = useAuthorization();
-
-  useEffect(() => {
-    if (mapContainerRef.current) {
-      const map = new mapboxgl.Map({
-        container: mapContainerRef.current,
-        style: "mapbox://styles/durla/cm4o2p5e0005901qvhs6x4bcd",
-        attributionControl: false,
-        language: "uk-UA",
-      });
-
-      return () => map.remove();
-    }
-
-    return () => {};
-  }, []);
 
   return (
     <Layout>
@@ -40,9 +17,9 @@ const Map = () => {
       >
         Logout
       </button>
-      <div ref={mapContainerRef} className="map-container" />
+      <Map />
     </Layout>
   );
 };
 
-export default Map;
+export default MapPage;

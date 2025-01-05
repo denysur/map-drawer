@@ -11,7 +11,7 @@ import { useAuthorization } from "../../hooks/useAuthorization";
 import { ValidationError } from "../../types";
 import LoginContent from "../../components/Login/LoginContent";
 
-const Login = () => {
+const LoginPage = () => {
   const [validationError, setValidationError] =
     useState<ValidationError | null>(null);
 
@@ -48,4 +48,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default LoginPage;
