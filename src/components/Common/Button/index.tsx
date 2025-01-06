@@ -8,15 +8,19 @@ export enum ButtonColorEnum {
   error = "error",
 }
 
+export type ButtonColors = keyof typeof ButtonColorEnum;
+
 export enum ButtonSizeEnum {
   small = "small",
   medium = "medium",
   large = "large",
 }
 
+export type ButtonSizes = keyof typeof ButtonSizeEnum;
+
 export type ButtonProps = {
-  color?: keyof typeof ButtonColorEnum;
-  size?: keyof typeof ButtonSizeEnum;
+  color?: ButtonColors;
+  size?: ButtonSizes;
   className?: string;
   children: ReactNode;
 } & ButtonHTMLAttributes<HTMLButtonElement>;
