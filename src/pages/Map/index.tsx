@@ -1,6 +1,7 @@
 import Layout from "../../components/Layout";
 import Map from "../../components/Map";
 import Button from "../../components/Common/Button";
+import Toolbar from "../../components/Toolbar";
 
 import { useAuthorization } from "../../hooks/useAuthorization";
 
@@ -19,6 +20,7 @@ const MapPage = () => {
         Вийти
       </Button>
       <Map />
+      <Toolbar />
     </Layout>
   );
 };
