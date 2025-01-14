@@ -7,7 +7,7 @@ import { useMarkers } from "../../hooks/state/useMarkers";
 import "mapbox-gl/dist/mapbox-gl.css";
 
 const Map = () => {
-  const [{ isAddNewMarkerMode }, { addMarker }] = useMarkers();
+  const [{ isAddNewMarkerMode, markers }, { addMarker }] = useMarkers();
 
   return (
     <MapboxMap
@@ -26,10 +26,11 @@ const Map = () => {
             longitude: e.lngLat.lng,
           });
         }
-        console.log(e);
       }}
     >
-      <Marker longitude={31.753199308325947} latitude={48.829021655585166} />
+      {markers.map((marker) => (
+        <Marker key={marker.id} marker={marker} />
+      ))}
     </MapboxMap>
   );
 };

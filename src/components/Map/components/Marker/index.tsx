@@ -1,12 +1,21 @@
-import { Marker as MapMarker, MarkerProps } from "react-map-gl";
+import { FC } from "react";
+import { Marker as MapMarker } from "react-map-gl";
 
 import { MapMarker as MapMarkerIcon } from "../../../Icons";
-import { FC } from "react";
-import { Marker as MapboxMarker } from "mapbox-gl";
 
-const Marker: FC<MarkerProps & React.RefAttributes<MapboxMarker>> = (props) => {
+import { Marker as MarkerType } from "../../../../types";
+
+const Marker: FC<{ marker: MarkerType }> = (props) => {
+  const { marker } = props;
+  const { latitude, longitude } = marker;
+
   return (
-    <MapMarker {...props} anchor="bottom" draggable>
+    <MapMarker
+      latitude={latitude}
+      longitude={longitude}
+      anchor="bottom"
+      draggable
+    >
       <MapMarkerIcon className="w-8 text-red-700" />
     </MapMarker>
   );

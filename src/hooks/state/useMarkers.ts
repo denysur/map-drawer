@@ -24,12 +24,6 @@ export const useMarkers = () => {
   const markers = useSelector((state: RootState) => state.marker.markers);
   const isAddNewMarkerMode = activeTool === "marker" && !selectedMarker;
 
-  console.log(
-    "selectedMarker,isAddNewMarkerMode",
-    selectedMarker,
-    isAddNewMarkerMode
-  );
-
   const dispatch = useDispatch();
 
   const setSelectedMarkerId = useCallback((id: Marker["id"]) => {
