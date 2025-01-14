@@ -1,29 +1,27 @@
-import { useEffect, useRef } from "react";
-import mapboxgl from "mapbox-gl";
+import { default as MapboxMap } from "react-map-gl";
+
+import Marker from "./components/Marker";
 
 import "mapbox-gl/dist/mapbox-gl.css";
 
-mapboxgl.accessToken = import.meta.env.VITE_MAP_API_KEY;
-
 const Map = () => {
-  const mapContainerRef = useRef(null);
-
-  useEffect(() => {
-    if (mapContainerRef.current) {
-      const map = new mapboxgl.Map({
-        container: mapContainerRef.current,
-        style: "mapbox://styles/durla/cm4o2p5e0005901qvhs6x4bcd",
-        attributionControl: false,
-        language: "uk-UA",
-      });
-
-      return () => map.remove();
-    }
-
-    return () => {};
-  }, []);
-
-  return <div ref={mapContainerRef} className="map-container" />;
+  return (
+    <MapboxMap
+      mapboxAccessToken={import.meta.env.VITE_MAP_API_KEY}
+      initialViewState={{
+        latitude: 48.829021655585166,
+        longitude: 31.753199308325947,
+        zoom: 5,
+      }}
+      mapStyle="https://api.maptiler.com/maps/bcca4c4a-53a2-4f35-a54f-1d8288722cb1/style.json?key=5adXclVMBOvAgEYziUJG"
+      attributionControl={false}
+      onClick={(e) => {
+        console.log(e);
+      }}
+    >
+      <Marker longitude={31.753199308325947} latitude={48.829021655585166} />
+    </MapboxMap>
+  );
 };
 
 export default Map;
