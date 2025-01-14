@@ -1,17 +1,17 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useCallback, useMemo } from "react";
 
-import { selectTool, unselectTool } from "../../app/slices/appSlice";
+import { selectTool, unselectTool } from "../../app/slices/toolSlice";
 import { RootState } from "../../app/store";
 
-import { ToolsNames } from "../../types";
+import { ToolNames } from "../../types";
 
 export const useActiveTool = () => {
-  const activeTool = useSelector((state: RootState) => state.app.activeTool);
+  const activeTool = useSelector((state: RootState) => state.tool.activeTool);
   const dispatch = useDispatch();
 
   const setActiveTool = useCallback(
-    (toolName: ToolsNames | null) => {
+    (toolName: ToolNames | null) => {
       if (toolName === null) {
         dispatch(unselectTool());
       } else {

@@ -1,7 +1,7 @@
-export type ToolsNames = "marker" | "polyline" | "polygon";
+export type ToolNames = "marker" | "polyline" | "polygon";
 
-export type AppState = {
-  activeTool: ToolsNames | null;
+export type ToolState = {
+  activeTool: ToolNames | null;
 };
 
 export type ValidationError = {
