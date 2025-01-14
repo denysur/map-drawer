@@ -2,9 +2,13 @@ import { default as MapboxMap } from "react-map-gl";
 
 import Marker from "./components/Marker";
 
+import { useMarkers } from "../../hooks/state/useMarkers";
+
 import "mapbox-gl/dist/mapbox-gl.css";
 
 const Map = () => {
+  const [{ isAddNewMarkerMode }, { addMarker }] = useMarkers();
+
   return (
     <MapboxMap
       mapboxAccessToken={import.meta.env.VITE_MAP_API_KEY}
@@ -16,6 +20,12 @@ const Map = () => {
       mapStyle="https://api.maptiler.com/maps/bcca4c4a-53a2-4f35-a54f-1d8288722cb1/style.json?key=5adXclVMBOvAgEYziUJG"
       attributionControl={false}
       onClick={(e) => {
+        if (isAddNewMarkerMode) {
+          addMarker({
+            latitude: e.lngLat.lat,
+            longitude: e.lngLat.lng,
+          });
+        }
         console.log(e);
       }}
     >

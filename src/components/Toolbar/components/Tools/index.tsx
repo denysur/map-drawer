@@ -5,16 +5,24 @@ import { useActiveTool } from "../../../../hooks/state/useActiveTool";
 
 import { MapMarker } from "../../../Icons";
 import { useCallback } from "react";
+import { useMarkers } from "../../../../hooks/state/useMarkers";
 
-const Instruments = () => {
+const Tools = () => {
   const [activeTool, setActiveTool] = useActiveTool();
+  const [{ selectedMarker, isAddNewMarkerMode }] = useMarkers();
 
   const onCloseToolHandler = useCallback(() => {
     setActiveTool(null);
   }, []);
 
   if (activeTool === "marker") {
-    return <MarkerSettings onClose={onCloseToolHandler} />;
+    return (
+      <MarkerSettings
+        isAddNewMarkerMode={isAddNewMarkerMode}
+        selectedMarker={selectedMarker}
+        onClose={onCloseToolHandler}
+      />
+    );
   }
 
   return (
@@ -28,4 +36,4 @@ const Instruments = () => {
   );
 };
 
-export default Instruments;
+export default Tools;

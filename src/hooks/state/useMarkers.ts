@@ -7,11 +7,14 @@ import {
   removeMarker as removeMarkerAction,
 } from "../../app/slices/markerSlice";
 import { generateId } from "../../utils/common";
+import { useActiveTool } from "./useActiveTool";
 import { RootState } from "../../app/store";
 
 import { Marker } from "../../types";
 
 export const useMarkers = () => {
+  const [activeTool] = useActiveTool();
+
   const selectedMarkerId = useSelector(
     (state: RootState) => state.marker.selectedMarkerId
   );
@@ -19,6 +22,13 @@ export const useMarkers = () => {
     state.marker.markers.find(({ id }) => id === selectedMarkerId)
   );
   const markers = useSelector((state: RootState) => state.marker.markers);
+  const isAddNewMarkerMode = activeTool === "marker" && !selectedMarker;
+
+  console.log(
+    "selectedMarker,isAddNewMarkerMode",
+    selectedMarker,
+    isAddNewMarkerMode
+  );
 
   const dispatch = useDispatch();
 
@@ -30,21 +40,27 @@ export const useMarkers = () => {
     dispatch(removeMarkerAction(id));
   }, []);
 
-  const addMarker = useCallback((marker: Omit<Marker, "id">) => {
-    dispatch(
-      addMarkerAction({
-        ...marker,
-        id: generateId(),
-      })
-    );
-  }, []);
+  const addMarker = useCallback(
+    (marker: Omit<Marker, "id" | "color" | "scale" | "icon">) => {
+      dispatch(
+        addMarkerAction({
+          ...marker,
+          color: null,
+          icon: null,
+          scale: 1,
+          id: generateId(),
+        })
+      );
+    },
+    []
+  );
 
   return useMemo(
     () =>
       [
-        { selectedMarker, markers },
+        { selectedMarkerId, selectedMarker, markers, isAddNewMarkerMode },
         { setSelectedMarkerId, removeMarker, addMarker },
       ] as const,
-    [selectedMarker, markers]
+    [selectedMarkerId, selectedMarker, markers, isAddNewMarkerMode]
   );
 };

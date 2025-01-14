@@ -1,9 +1,9 @@
 import ToolbarContainer from "./components/ToolbarContainer";
-import Instruments from "./components/Instruments";
+import Tools from "./components/Tools";
 
 const Toolbar = () => (
   <ToolbarContainer>
-    <Instruments />
+    <Tools />
   </ToolbarContainer>
 );
 
