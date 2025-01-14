@@ -19,7 +19,10 @@ export const markerSlice = createSlice({
       state.selectedMarkerId = null;
       state.markers = state.markers.filter(({ id }) => id !== action.payload);
     },
-    setSelectedMarkerId: (state, action: PayloadAction<Marker["id"]>) => {
+    setSelectedMarkerId: (
+      state,
+      action: PayloadAction<Marker["id"] | null>
+    ) => {
       state.selectedMarkerId = action.payload;
     },
   },

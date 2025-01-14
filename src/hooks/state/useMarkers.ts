@@ -8,8 +8,8 @@ import {
 } from "../../app/slices/markerSlice";
 import { generateId } from "../../utils/common";
 import { useActiveTool } from "./useActiveTool";
-import { RootState } from "../../app/store";
 
+import { RootState } from "../../app/store";
 import { Marker } from "../../types";
 
 export const useMarkers = () => {
@@ -28,6 +28,10 @@ export const useMarkers = () => {
 
   const setSelectedMarkerId = useCallback((id: Marker["id"]) => {
     dispatch(setSelectedMarkerIdAction(id));
+  }, []);
+
+  const unselectMarker = useCallback(() => {
+    dispatch(setSelectedMarkerIdAction(null));
   }, []);
 
   const removeMarker = useCallback((id: Marker["id"]) => {
@@ -53,7 +57,7 @@ export const useMarkers = () => {
     () =>
       [
         { selectedMarkerId, selectedMarker, markers, isAddNewMarkerMode },
-        { setSelectedMarkerId, removeMarker, addMarker },
+        { setSelectedMarkerId, unselectMarker, removeMarker, addMarker },
       ] as const,
     [selectedMarkerId, selectedMarker, markers, isAddNewMarkerMode]
   );

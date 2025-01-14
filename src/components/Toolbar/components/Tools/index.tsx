@@ -1,18 +1,21 @@
+import { useCallback } from "react";
+
 import IconButton from "../../../Common/IconButton";
 import MarkerSettings from "../../components/MarkerSettings";
 
 import { useActiveTool } from "../../../../hooks/state/useActiveTool";
+import { useMarkers } from "../../../../hooks/state/useMarkers";
 
 import { MapMarker } from "../../../Icons";
-import { useCallback } from "react";
-import { useMarkers } from "../../../../hooks/state/useMarkers";
 
 const Tools = () => {
   const [activeTool, setActiveTool] = useActiveTool();
-  const [{ selectedMarker, isAddNewMarkerMode }] = useMarkers();
+  const [{ selectedMarker, isAddNewMarkerMode }, { unselectMarker }] =
+    useMarkers();
 
   const onCloseToolHandler = useCallback(() => {
     setActiveTool(null);
+    unselectMarker();
   }, []);
 
   if (activeTool === "marker") {
