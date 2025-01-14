@@ -1,10 +1,12 @@
 import { configureStore } from "@reduxjs/toolkit";
 
 import toolReducer from "./slices/toolSlice";
+import markerReducer from "./slices/markerSlice";
 
 export const store = configureStore({
   reducer: {
     tool: toolReducer,
+    marker: markerReducer,
   },
 });
 
