@@ -1,5 +1,3 @@
-import { useCallback } from "react";
-
 import IconButton from "../../../Common/IconButton";
 import MarkerSettings from "../../components/MarkerSettings";
 
@@ -13,17 +11,15 @@ const Tools = () => {
   const [{ selectedMarker, isAddNewMarkerMode }, { unselectMarker }] =
     useMarkers();
 
-  const onCloseToolHandler = useCallback(() => {
-    setActiveTool(null);
-    unselectMarker();
-  }, []);
+  const onMarkerToolOpenHandler = () => setActiveTool("marker");
+  const onMarkerToolCloseHandler = () => unselectMarker();
 
   if (activeTool === "marker") {
     return (
       <MarkerSettings
         isAddNewMarkerMode={isAddNewMarkerMode}
         selectedMarker={selectedMarker}
-        onClose={onCloseToolHandler}
+        onClose={onMarkerToolCloseHandler}
       />
     );
   }
@@ -32,9 +28,7 @@ const Tools = () => {
     <IconButton
       color="primaryLight"
       iconComponent={MapMarker}
-      onClick={() => {
-        setActiveTool("marker");
-      }}
+      onClick={onMarkerToolOpenHandler}
     />
   );
 };

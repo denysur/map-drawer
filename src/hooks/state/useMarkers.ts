@@ -13,7 +13,7 @@ import { RootState } from "../../app/store";
 import { Marker } from "../../types";
 
 export const useMarkers = () => {
-  const [activeTool] = useActiveTool();
+  const [activeTool, setActiveTool] = useActiveTool();
 
   const selectedMarkerId = useSelector(
     (state: RootState) => state.marker.selectedMarkerId
@@ -28,10 +28,14 @@ export const useMarkers = () => {
 
   const setSelectedMarkerId = useCallback((id: Marker["id"]) => {
     dispatch(setSelectedMarkerIdAction(id));
+
+    setActiveTool("marker");
   }, []);
 
   const unselectMarker = useCallback(() => {
     dispatch(setSelectedMarkerIdAction(null));
+
+    setActiveTool(null);
   }, []);
 
   const removeMarker = useCallback((id: Marker["id"]) => {
