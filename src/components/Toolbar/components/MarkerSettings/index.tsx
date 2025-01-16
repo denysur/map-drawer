@@ -15,6 +15,7 @@ type MarkerSettingsProps = {
   onClose: () => void;
   onMarkerSizeChange: (data: { id: string; scale: number }) => void;
   onMarkerColorChange: (data: { id: string; color: string }) => void;
+  onMarkerDelete: (id: string) => void;
 };
 
 const MarkerSettings: FC<MarkerSettingsProps> = ({
@@ -23,6 +24,7 @@ const MarkerSettings: FC<MarkerSettingsProps> = ({
   onClose,
   onMarkerSizeChange,
   onMarkerColorChange,
+  onMarkerDelete,
 }) => {
   const [isColorPickerVisible, setIsColorPickerVisible] = useState(false);
 
@@ -48,6 +50,12 @@ const MarkerSettings: FC<MarkerSettingsProps> = ({
         id: selectedMarker.id,
         color: newColor,
       });
+    }
+  };
+
+  const onMarkerDeleteHandler = () => {
+    if (selectedMarker) {
+      onMarkerDelete(selectedMarker.id);
     }
   };
 
@@ -98,6 +106,11 @@ const MarkerSettings: FC<MarkerSettingsProps> = ({
             className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"
           />
         </div>
+      </div>
+      <div className="flex w-full gap-2">
+        <Button size="small" color="error" onClick={onMarkerDeleteHandler}>
+          Видалити маркер
+        </Button>
       </div>
     </div>
   );
