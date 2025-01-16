@@ -37,7 +37,11 @@ const Marker: FC<MarkerProps> = memo((props) => {
       onClick={onMarkerClickHandler}
       onDragEnd={onPositionChangedHandler}
     >
-      <MapMarkerIcon className="text-red-700" />
+      <MapMarkerIcon
+        width={24 * marker.scale}
+        height={24 * marker.scale}
+        className="text-red-700"
+      />
     </MapMarker>
   );
 });

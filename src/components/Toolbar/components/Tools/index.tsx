@@ -8,11 +8,17 @@ import { MapMarker } from "../../../Icons";
 
 const Tools = () => {
   const [activeTool, setActiveTool] = useActiveTool();
-  const [{ selectedMarker, isAddNewMarkerMode }, { unselectMarker }] =
-    useMarkers();
+  const [
+    { selectedMarker, isAddNewMarkerMode },
+    { unselectMarker, updateMarkerSize },
+  ] = useMarkers();
 
   const onMarkerToolOpenHandler = () => setActiveTool("marker");
   const onMarkerToolCloseHandler = () => unselectMarker();
+
+  const onMarkerSizeChangeHandler = (data: { id: string; scale: number }) => {
+    updateMarkerSize(data);
+  };
 
   if (activeTool === "marker") {
     return (
@@ -20,6 +26,7 @@ const Tools = () => {
         isAddNewMarkerMode={isAddNewMarkerMode}
         selectedMarker={selectedMarker}
         onClose={onMarkerToolCloseHandler}
+        onMarkerSizeChange={onMarkerSizeChangeHandler}
       />
     );
   }
