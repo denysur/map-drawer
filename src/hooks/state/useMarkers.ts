@@ -2,10 +2,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { useCallback, useMemo } from "react";
 
 import {
-  setSelectedMarkerId as setSelectedMarkerIdAction,
+  setSelectedMarkerId,
   addMarker as addMarkerAction,
   removeMarker as removeMarkerAction,
   setMarkerPosition,
+  setMarkerSize,
+  setMarkerColor,
 } from "../../app/slices/markerSlice";
 import { generateId } from "../../utils/common";
 import { useActiveTool } from "./useActiveTool";
@@ -27,20 +29,22 @@ export const useMarkers = () => {
 
   const dispatch = useDispatch();
 
-  const setSelectedMarkerId = useCallback((id: Marker["id"]) => {
-    dispatch(setSelectedMarkerIdAction(id));
+  const selectMarker = useCallback((id: Marker["id"]) => {
+    dispatch(setSelectedMarkerId(id));
 
     setActiveTool("marker");
   }, []);
 
   const unselectMarker = useCallback(() => {
-    dispatch(setSelectedMarkerIdAction(null));
+    dispatch(setSelectedMarkerId(null));
 
     setActiveTool(null);
   }, []);
 
   const removeMarker = useCallback((id: Marker["id"]) => {
     dispatch(removeMarkerAction(id));
+
+    setActiveTool(null);
   }, []);
 
   const addMarker = useCallback(
@@ -54,6 +58,8 @@ export const useMarkers = () => {
           id: generateId(),
         })
       );
+
+      setActiveTool("marker");
     },
     []
   );
@@ -65,16 +71,32 @@ export const useMarkers = () => {
     []
   );
 
+  const updateMarkerSize = useCallback(
+    (data: { id: string; scale: number }) => {
+      dispatch(setMarkerSize(data));
+    },
+    []
+  );
+
+  const updateMarkerColor = useCallback(
+    (data: { id: string; color: string }) => {
+      dispatch(setMarkerColor(data));
+    },
+    []
+  );
+
   return useMemo(
     () =>
       [
         { selectedMarkerId, selectedMarker, markers, isAddNewMarkerMode },
         {
-          setSelectedMarkerId,
+          selectMarker,
           unselectMarker,
           removeMarker,
           addMarker,
           updateMarkerPosition,
+          updateMarkerSize,
+          updateMarkerColor,
         },
       ] as const,
     [selectedMarkerId, selectedMarker, markers, isAddNewMarkerMode]

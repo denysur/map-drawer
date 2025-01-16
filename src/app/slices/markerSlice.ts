@@ -39,6 +39,32 @@ export const markerSlice = createSlice({
           : marker
       );
     },
+    setMarkerColor: (
+      state,
+      action: PayloadAction<{ id: string; color: string }>
+    ) => {
+      state.markers = state.markers.map((marker) =>
+        marker.id === action.payload.id
+          ? {
+              ...marker,
+              color: action.payload.color,
+            }
+          : marker
+      );
+    },
+    setMarkerSize: (
+      state,
+      action: PayloadAction<{ id: string; scale: number }>
+    ) => {
+      state.markers = state.markers.map((marker) =>
+        marker.id === action.payload.id
+          ? {
+              ...marker,
+              scale: action.payload.scale,
+            }
+          : marker
+      );
+    },
   },
 });
 
@@ -47,6 +73,8 @@ export const {
   removeMarker,
   setSelectedMarkerId,
   setMarkerPosition,
+  setMarkerColor,
+  setMarkerSize,
 } = markerSlice.actions;
 
 export default markerSlice.reducer;
