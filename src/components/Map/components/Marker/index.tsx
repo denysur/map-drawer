@@ -24,7 +24,7 @@ const Marker: FC<MarkerProps> = memo((props) => {
       draggable
       onClick={onMarkerClickHandler}
     >
-      <MapMarkerIcon className="w-8 text-red-700" />
+      <MapMarkerIcon className="text-red-700" />
     </MapMarker>
   );
 });

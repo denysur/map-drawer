@@ -1,5 +1,7 @@
 import { FC } from "react";
 
+import Close from "../../../Icons/Close";
+
 import { Marker } from "../../../../types";
 
 type MarkerSettingsProps = {
@@ -18,7 +20,9 @@ const MarkerSettings: FC<MarkerSettingsProps> = ({
 
   return (
     <div>
-      <div onClick={onClose}>закрити</div>
+      <div className="flex w-full justify-end">
+        <Close onClick={onClose} className="cursor-pointer" />
+      </div>
       <div>розмір</div>
     </div>
   );
