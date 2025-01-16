@@ -1,4 +1,6 @@
-import { FC, ChangeEvent } from "react";
+import { FC, ChangeEvent, useState } from "react";
+import { HexColorPicker } from "react-colorful";
+import { useClickAway } from "@uidotdev/usehooks";
 
 import Button from "../../../Common/Button";
 import Close from "../../../Icons/Close";
@@ -12,6 +14,7 @@ type MarkerSettingsProps = {
   selectedMarker?: Marker;
   onClose: () => void;
   onMarkerSizeChange: (data: { id: string; scale: number }) => void;
+  onMarkerColorChange: (data: { id: string; color: string }) => void;
 };
 
 const MarkerSettings: FC<MarkerSettingsProps> = ({
@@ -19,10 +22,16 @@ const MarkerSettings: FC<MarkerSettingsProps> = ({
   selectedMarker,
   onClose,
   onMarkerSizeChange,
+  onMarkerColorChange,
 }) => {
-  if (isAddNewMarkerMode) {
-    return <span>Натисніть будь де на мапу, щоб додати маркер</span>;
-  }
+  const [isColorPickerVisible, setIsColorPickerVisible] = useState(false);
+
+  const openColorPicker = () => setIsColorPickerVisible(true);
+  const closeColorPicker = () => setIsColorPickerVisible(false);
+
+  const ref = useClickAway<HTMLDivElement>(() => {
+    closeColorPicker();
+  });
 
   const onMarkerSizeChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
     if (selectedMarker) {
@@ -32,6 +41,19 @@ const MarkerSettings: FC<MarkerSettingsProps> = ({
       });
     }
   };
+
+  const onMarkerColorChangeHandler = (newColor: string) => {
+    if (selectedMarker) {
+      onMarkerColorChange({
+        id: selectedMarker.id,
+        color: newColor,
+      });
+    }
+  };
+
+  if (isAddNewMarkerMode) {
+    return <span>Натисніть будь де на мапу, щоб додати маркер</span>;
+  }
 
   return (
     <div className="flex flex-col gap-4">
@@ -44,12 +66,24 @@ const MarkerSettings: FC<MarkerSettingsProps> = ({
       </div>
       <div className="flex w-full gap-2">
         <div>Колір:</div>
-        <div
-          className="w-6 h-6 rounded cursor-pointer"
-          style={{
-            backgroundColor: selectedMarker?.color || DEFAULT_MARKER_COLOR,
-          }}
-        />
+        <div ref={ref} className="relative">
+          <div
+            className="w-6 h-6 rounded cursor-pointer"
+            style={{
+              backgroundColor: selectedMarker?.color || DEFAULT_MARKER_COLOR,
+            }}
+            onClick={openColorPicker}
+            onBlur={closeColorPicker}
+          ></div>
+          {isColorPickerVisible && (
+            <div className="absolute bottom-8 left-8">
+              <HexColorPicker
+                color={selectedMarker?.color || DEFAULT_MARKER_COLOR}
+                onChange={onMarkerColorChangeHandler}
+              />
+            </div>
+          )}
+        </div>
       </div>
       <div className="flex w-full gap-2">
         <div>Розмір:</div>

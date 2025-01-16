@@ -10,14 +10,18 @@ const Tools = () => {
   const [activeTool, setActiveTool] = useActiveTool();
   const [
     { selectedMarker, isAddNewMarkerMode },
-    { unselectMarker, updateMarkerSize },
+    { unselectMarker, updateMarkerSize, updateMarkerColor },
   ] = useMarkers();
 
   const onMarkerToolOpenHandler = () => setActiveTool("marker");
   const onMarkerToolCloseHandler = () => unselectMarker();
 
-  const onMarkerSizeChangeHandler = (data: { id: string; scale: number }) => {
+  const onMarkerSizeChange = (data: { id: string; scale: number }) => {
     updateMarkerSize(data);
+  };
+
+  const onMarkerColorChange = (data: { id: string; color: string }) => {
+    updateMarkerColor(data);
   };
 
   if (activeTool === "marker") {
@@ -26,7 +30,8 @@ const Tools = () => {
         isAddNewMarkerMode={isAddNewMarkerMode}
         selectedMarker={selectedMarker}
         onClose={onMarkerToolCloseHandler}
-        onMarkerSizeChange={onMarkerSizeChangeHandler}
+        onMarkerSizeChange={onMarkerSizeChange}
+        onMarkerColorChange={onMarkerColorChange}
       />
     );
   }
