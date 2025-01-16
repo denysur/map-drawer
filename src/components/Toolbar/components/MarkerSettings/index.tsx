@@ -3,6 +3,8 @@ import { FC, ChangeEvent } from "react";
 import Button from "../../../Common/Button";
 import Close from "../../../Icons/Close";
 
+import { DEFAULT_MARKER_COLOR } from "../../../../constants";
+
 import { Marker } from "../../../../types";
 
 type MarkerSettingsProps = {
@@ -42,7 +44,12 @@ const MarkerSettings: FC<MarkerSettingsProps> = ({
       </div>
       <div className="flex w-full gap-2">
         <div>Колір:</div>
-        <div className="w-6 h-6 bg-red-600 rounded cursor-pointer" />
+        <div
+          className="w-6 h-6 rounded cursor-pointer"
+          style={{
+            backgroundColor: selectedMarker?.color || DEFAULT_MARKER_COLOR,
+          }}
+        />
       </div>
       <div className="flex w-full gap-2">
         <div>Розмір:</div>

@@ -12,6 +12,8 @@ import {
 import { generateId } from "../../utils/common";
 import { useActiveTool } from "./useActiveTool";
 
+import { DEFAULT_MARKER_COLOR, DEFAULT_MARKER_SCALE } from "../../constants";
+
 import { RootState } from "../../app/store";
 import { Marker } from "../../types";
 
@@ -52,9 +54,9 @@ export const useMarkers = () => {
       dispatch(
         addMarkerAction({
           ...marker,
-          color: null,
+          color: DEFAULT_MARKER_COLOR,
+          scale: DEFAULT_MARKER_SCALE,
           icon: null,
-          scale: 1,
           id: generateId(),
         })
       );

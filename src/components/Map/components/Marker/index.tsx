@@ -3,6 +3,8 @@ import { Marker as MapMarker, MarkerDragEvent } from "react-map-gl";
 
 import { MapMarker as MapMarkerIcon } from "../../../Icons";
 
+import { DEFAULT_MARKER_COLOR } from "../../../../constants";
+
 import { Marker as MarkerType } from "../../../../types";
 
 type MarkerProps = {
@@ -40,7 +42,7 @@ const Marker: FC<MarkerProps> = memo((props) => {
       <MapMarkerIcon
         width={24 * marker.scale}
         height={24 * marker.scale}
-        className="text-red-700"
+        fill={marker.color || DEFAULT_MARKER_COLOR}
       />
     </MapMarker>
   );
