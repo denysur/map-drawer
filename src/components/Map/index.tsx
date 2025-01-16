@@ -13,11 +13,11 @@ import "mapbox-gl/dist/mapbox-gl.css";
 const Map = () => {
   const [
     { isAddNewMarkerMode, markers },
-    { addMarker, setSelectedMarkerId, updateMarkerPosition },
+    { addMarker, selectMarker, updateMarkerPosition },
   ] = useMarkers();
 
   const onMarkerClickHandler = useCallback(({ id }: MarkerType) => {
-    setSelectedMarkerId(id);
+    selectMarker(id);
   }, []);
 
   const onMarkerPositionChanged = useCallback(
