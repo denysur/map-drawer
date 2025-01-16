@@ -5,6 +5,7 @@ import {
   setSelectedMarkerId as setSelectedMarkerIdAction,
   addMarker as addMarkerAction,
   removeMarker as removeMarkerAction,
+  setMarkerPosition,
 } from "../../app/slices/markerSlice";
 import { generateId } from "../../utils/common";
 import { useActiveTool } from "./useActiveTool";
@@ -57,11 +58,24 @@ export const useMarkers = () => {
     []
   );
 
+  const updateMarkerPosition = useCallback(
+    (data: { id: string; latitude: number; longitude: number }) => {
+      dispatch(setMarkerPosition(data));
+    },
+    []
+  );
+
   return useMemo(
     () =>
       [
         { selectedMarkerId, selectedMarker, markers, isAddNewMarkerMode },
-        { setSelectedMarkerId, unselectMarker, removeMarker, addMarker },
+        {
+          setSelectedMarkerId,
+          unselectMarker,
+          removeMarker,
+          addMarker,
+          updateMarkerPosition,
+        },
       ] as const,
     [selectedMarkerId, selectedMarker, markers, isAddNewMarkerMode]
   );

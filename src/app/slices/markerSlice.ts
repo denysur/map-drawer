@@ -25,10 +25,28 @@ export const markerSlice = createSlice({
     ) => {
       state.selectedMarkerId = action.payload;
     },
+    setMarkerPosition: (
+      state,
+      action: PayloadAction<{ latitude: number; longitude: number; id: string }>
+    ) => {
+      state.markers = state.markers.map((marker) =>
+        marker.id === action.payload.id
+          ? {
+              ...marker,
+              latitude: action.payload.latitude,
+              longitude: action.payload.longitude,
+            }
+          : marker
+      );
+    },
   },
 });
 
-export const { addMarker, removeMarker, setSelectedMarkerId } =
-  markerSlice.actions;
+export const {
+  addMarker,
+  removeMarker,
+  setSelectedMarkerId,
+  setMarkerPosition,
+} = markerSlice.actions;
 
 export default markerSlice.reducer;

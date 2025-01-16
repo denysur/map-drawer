@@ -11,12 +11,21 @@ import { Marker as MarkerType } from "../../types";
 import "mapbox-gl/dist/mapbox-gl.css";
 
 const Map = () => {
-  const [{ isAddNewMarkerMode, markers }, { addMarker, setSelectedMarkerId }] =
-    useMarkers();
+  const [
+    { isAddNewMarkerMode, markers },
+    { addMarker, setSelectedMarkerId, updateMarkerPosition },
+  ] = useMarkers();
 
   const onMarkerClickHandler = useCallback(({ id }: MarkerType) => {
     setSelectedMarkerId(id);
   }, []);
+
+  const onMarkerPositionChanged = useCallback(
+    (data: { id: string; latitude: number; longitude: number }) => {
+      updateMarkerPosition(data);
+    },
+    []
+  );
 
   const onMapClickHandler = useCallback(
     (e: MapMouseEvent) => {
@@ -48,6 +57,7 @@ const Map = () => {
           key={marker.id}
           marker={marker}
           onClick={onMarkerClickHandler}
+          onPositionChanged={onMarkerPositionChanged}
         />
       ))}
     </MapboxMap>
