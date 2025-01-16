@@ -1,17 +1,17 @@
 import { useCallback, useState } from "react";
 
+import Layout from "../../components/Layout";
 import Form from "../../components/Login/Form";
-import Layout from "../../components/Login/Layout";
 import Title from "../../components/Login/Title";
-import Logo from "../../components/Logo";
 
 import { useTitle } from "../../hooks/useTitle";
 import { validateLoginForm } from "../../utils/form";
 import { useAuthorization } from "../../hooks/useAuthorization";
 
 import { ValidationError } from "../../types";
+import LoginContent from "../../components/Login/LoginContent";
 
-const Login = () => {
+const LoginPage = () => {
   const [validationError, setValidationError] =
     useState<ValidationError | null>(null);
 
@@ -35,16 +35,17 @@ const Login = () => {
   return (
     <>
       <Layout>
-        <Logo />
-        <Title />
-        <Form
-          errorMessage={validationError?.validationError}
-          invalidFields={validationError?.invalidFields || []}
-          onSubmit={onSubmitHandler}
-        />
+        <LoginContent>
+          <Title />
+          <Form
+            errorMessage={validationError?.validationError}
+            invalidFields={validationError?.invalidFields || []}
+            onSubmit={onSubmitHandler}
+          />
+        </LoginContent>
       </Layout>
     </>
   );
 };
 
-export default Login;
+export default LoginPage;
