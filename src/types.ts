@@ -1,4 +1,4 @@
-export type ToolNames = "marker" | "polyline" | "polygon";
+export type ToolNames = "marker" | "freehand-draw";
 
 export type Marker = {
   id: string;
@@ -16,6 +16,11 @@ export type ToolState = {
 export type MarkerState = {
   markers: Marker[];
   selectedMarkerId: Marker["id"] | null;
+};
+
+export type DrawState = {
+  draws: [];
+  selectedDrawId: string | null;
 };
 
 export type ValidationError = {

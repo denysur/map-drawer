@@ -2,10 +2,12 @@ import { FC, ChangeEvent, useState } from "react";
 import { HexColorPicker } from "react-colorful";
 import { useClickAway } from "@uidotdev/usehooks";
 
-import { Edit, Close } from "../../../Icons";
 import Button from "../../../Common/Button";
 import Modal from "../../../Common/Modal";
 import IconsModal from "../../../IconsModal";
+import { Edit, Close } from "../../../Icons";
+
+import { getTextColor } from "../../../../utils/common";
 
 import {
   DEFAULT_MARKER_COLOR,
@@ -15,7 +17,6 @@ import {
 } from "../../../../constants";
 
 import { Marker, MarkerIcon } from "../../../../types";
-import { getTextColor } from "../../../../utils/common";
 
 type MarkerSettingsProps = {
   isAddNewMarkerMode: boolean;
@@ -92,7 +93,14 @@ const MarkerSettings: FC<MarkerSettingsProps> = ({
   };
 
   if (isAddNewMarkerMode) {
-    return <span>Натисніть будь де на мапу, щоб додати маркер</span>;
+    return (
+      <div className="flex gap-2 justify-between">
+        <span className="text-center">
+          Натисніть будь де на мапу, щоб додати маркер
+        </span>
+        <Close onClick={onClose} className="cursor-pointer" />
+      </div>
+    );
   }
 
   return (
