@@ -3,7 +3,7 @@ import { useMarkerImages } from "../../hooks/useMarkerImages";
 import MarkerItem from "./components/MarkerItem";
 import MapMarker from "../Icons/MapMarker";
 import clsx from "clsx";
-import Loader, { LoaderSizeEnum } from "../Common/Loader";
+import Loader from "../Common/Loader";
 
 const IconsModalView: React.FC = () => {
   const { images, isLoading, fetchAll } = useMarkerImages();
