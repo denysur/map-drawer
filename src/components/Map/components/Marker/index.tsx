@@ -1,4 +1,4 @@
-import { FC, memo } from "react";
+import { FC, memo, useEffect } from "react";
 import { Marker as MapMarker, MarkerDragEvent } from "react-map-gl";
 
 import { MapMarker as MapMarkerIcon } from "../../../Icons";
@@ -19,7 +19,11 @@ type MarkerProps = {
 
 const Marker: FC<MarkerProps> = memo((props) => {
   const { marker, onClick = () => {}, onPositionChanged = () => {} } = props;
-  const { latitude, longitude } = marker;
+  const { latitude, longitude, icon } = marker;
+
+  useEffect(() => {
+    console.log(icon);
+  }, [icon]);
 
   const onMarkerClickHandler = () => onClick(marker);
   const onPositionChangedHandler = (e: MarkerDragEvent) => {
@@ -39,11 +43,22 @@ const Marker: FC<MarkerProps> = memo((props) => {
       onClick={onMarkerClickHandler}
       onDragEnd={onPositionChangedHandler}
     >
-      <MapMarkerIcon
-        width={24 * marker.scale}
-        height={24 * marker.scale}
-        fill={marker.color || DEFAULT_MARKER_COLOR}
-      />
+      {icon ? (
+        <img
+          src={icon.url}
+          style={{
+            width: 24 * marker.scale,
+            height: 24 * marker.scale,
+          }}
+          className="object-contain object-center-bottom"
+        />
+      ) : (
+        <MapMarkerIcon
+          width={24 * marker.scale}
+          height={24 * marker.scale}
+          fill={marker.color || DEFAULT_MARKER_COLOR}
+        />
+      )}
     </MapMarker>
   );
 });
