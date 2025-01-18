@@ -1,18 +1,23 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-import { DrawState } from "../../types";
+import { Draw, DrawState } from "../../types";
 
 const initialState: DrawState = {
-  draws: [],
+  drawings: [],
   selectedDrawId: null,
 };
 
 export const drawSlice = createSlice({
   name: "drawSlice",
   initialState,
-  reducers: {},
+  reducers: {
+    addDrawing: (state, action: PayloadAction<Draw>) => {
+      state.selectedDrawId = action.payload.id;
+      state.drawings = [...state.drawings, action.payload];
+    },
+  },
 });
 
-export const {} = drawSlice.actions;
+export const { addDrawing } = drawSlice.actions;
 
 export default drawSlice.reducer;

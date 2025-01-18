@@ -9,6 +9,23 @@ export type Marker = {
   icon: MarkerIcon | null;
 };
 
+export type Geometry =
+  | {
+      name: "circle";
+      center: number[];
+      radius: number;
+    }
+  | {
+      name: "vector" | "rectangle"; // and others
+      vertices: number[][];
+    };
+
+export type Draw = Geometry & {
+  id: string;
+  color: string | null;
+  scale: number;
+};
+
 export type ToolState = {
   activeTool: ToolNames | null;
 };
@@ -19,7 +36,7 @@ export type MarkerState = {
 };
 
 export type DrawState = {
-  draws: [];
+  drawings: Draw[];
   selectedDrawId: string | null;
 };
 

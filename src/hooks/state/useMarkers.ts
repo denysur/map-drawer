@@ -28,7 +28,11 @@ export const useMarkers = () => {
     state.marker.markers.find(({ id }) => id === selectedMarkerId)
   );
   const markers = useSelector((state: RootState) => state.marker.markers);
-  const isAddNewMarkerMode = activeTool === "marker" && !selectedMarker;
+
+  const isAddNewMarkerMode = useMemo(
+    () => activeTool === "marker" && !selectedMarker,
+    [activeTool, selectedMarker]
+  );
 
   const dispatch = useDispatch();
 
