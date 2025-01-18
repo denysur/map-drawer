@@ -1,6 +1,7 @@
 import React from "react";
-import { MarkerIcon } from "../../../types";
 import clsx from "clsx";
+
+import { MarkerIcon } from "../../../types";
 
 export type MarkerItemProps = {
   icon: MarkerIcon;

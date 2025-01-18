@@ -1,7 +1,9 @@
 import { useMemo, useState, useTransition } from "react";
-import { FIREBASE_MARKER_IMAGES_PATH } from "../constants";
-import { storage } from "../utils/firebase";
 import { getDownloadURL, listAll, ref } from "firebase/storage";
+
+import { storage } from "../utils/firebase";
+
+import { FIREBASE_MARKER_IMAGES_PATH } from "../constants";
 import { MarkerIcon } from "../types";
 
 export const useMarkerImages = () => {

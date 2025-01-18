@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { useMarkerImages } from "../../hooks/useMarkerImages";
+import clsx from "clsx";
+
 import MarkerItem from "./components/MarkerItem";
 import MapMarker from "../Icons/MapMarker";
-import clsx from "clsx";
 import Loader from "../Common/Loader";
+
+import { useMarkerImages } from "../../hooks/useMarkerImages";
 
 const IconsModalView: React.FC = () => {
   const { images, isLoading, fetchAll } = useMarkerImages();
