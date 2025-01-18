@@ -35,7 +35,7 @@ const Button: FC<ButtonProps> = ({
   <button
     className={clsx(
       className,
-      "font-medium rounded-lg focus:outline-none ease duration-200 disabled:opacity-65",
+      "flex justify-center items-center gap-2 font-medium rounded-lg focus:outline-none ease duration-200 disabled:opacity-65",
       color === ButtonColorEnum.secondary
         ? "text-white bg-green-700 [&:not(:disabled)]:hover:bg-green-800 dark:bg-green-600 [&:not(:disabled)]:dark:hover:bg-green-700 dark:focus:ring-green-800"
         : color === ButtonColorEnum.error
