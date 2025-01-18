@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import ReactDOM from "react-dom";
 
 import { Close } from "../../Icons";
@@ -10,25 +10,40 @@ export type ModalProps = {
 };
 
 const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
+  const [isVisible, setIsVisible] = useState(isOpen);
+
+  useEffect(() => {
+    if (isOpen) {
+      setIsVisible(true);
+    }
+  }, [isOpen]);
+
   useEffect(() => {
     const handleEscape = (event: KeyboardEvent) => {
-      if (event.key === "Escape") onClose();
+      if (event.key === "Escape") handleClose();
     };
 
     document.addEventListener("keydown", handleEscape);
     return () => {
       document.removeEventListener("keydown", handleEscape);
     };
-  }, [onClose]);
+  }, []);
 
-  if (!isOpen) {
+  const handleClose = () => {
+    setIsVisible(false);
+    setTimeout(onClose, 300);
+  };
+
+  if (!isOpen && !isVisible) {
     return null;
   }
 
   return ReactDOM.createPortal(
     <div
-      className="animate-fadeIn z-20 fixed inset-0 p-4 h-dvh bg-black bg-opacity-60 flex items-center justify-center"
-      onClick={onClose}
+      className={`z-20 fixed inset-0 p-4 h-dvh bg-black bg-opacity-60 flex items-center justify-center ${
+        isVisible ? "animate-fadeIn" : "animate-fadeOut"
+      }`}
+      onClick={handleClose}
     >
       <div
         className="overflow-hidden flex flex-col bg-white max-h-full w-full max-w-[768px] rounded-xl shadow-lg relative"
@@ -36,7 +51,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
       >
         <button
           className="absolute p-2 top-1 right-1 rounded-lg ease duration-200 text-gray-600 hover:bg-black/[.1] hover:text-gray-900"
-          onClick={onClose}
+          onClick={handleClose}
         >
           <Close />
         </button>
