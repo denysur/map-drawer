@@ -29,11 +29,11 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
 
   return ReactDOM.createPortal(
     <div
-      className="animate-fadeIn fixed inset-0 p-4 bg-black bg-opacity-60 flex items-center justify-center"
+      className="animate-fadeIn z-20 fixed inset-0 p-4 h-dvh bg-black bg-opacity-60 flex items-center justify-center"
       onClick={onClose}
     >
       <div
-        className="bg-white w-full max-w-[768px] rounded-xl shadow-lg p-6 relative"
+        className="overflow-hidden flex flex-col bg-white max-h-full w-full max-w-[768px] rounded-xl shadow-lg relative"
         onClick={(e) => e.stopPropagation()}
       >
         <button
@@ -42,7 +42,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
         >
           <Close />
         </button>
-        {children}
+        <div className="overflow-auto h-full p-4">{children}</div>
       </div>
     </div>,
     document.body
