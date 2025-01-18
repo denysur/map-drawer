@@ -1,6 +1,6 @@
-import { FC } from "react";
+import { FC, SVGProps } from "react";
 
-const Close: FC<React.SVGProps<SVGSVGElement>> = (props) => (
+const Close: FC<SVGProps<SVGSVGElement>> = (props) => (
   <svg
     focusable="false"
     aria-hidden="true"

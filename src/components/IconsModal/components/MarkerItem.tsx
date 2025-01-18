@@ -1,4 +1,4 @@
-import React from "react";
+import { FC } from "react";
 import clsx from "clsx";
 
 import { MarkerIcon } from "../../../types";
@@ -9,7 +9,7 @@ export type MarkerItemProps = {
   selected: boolean;
 };
 
-const MarkerItem: React.FC<MarkerItemProps> = ({ icon, onClick, selected }) => {
+const MarkerItem: FC<MarkerItemProps> = ({ icon, onClick, selected }) => {
   return (
     <div
       className={clsx(

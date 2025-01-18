@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { FC, useEffect, useState, ReactNode } from "react";
 import ReactDOM from "react-dom";
 
 import { Close } from "../../Icons";
@@ -6,10 +6,10 @@ import { Close } from "../../Icons";
 export type ModalProps = {
   isOpen: boolean;
   onClose: () => void;
-  children?: React.ReactNode;
+  children?: ReactNode;
 };
 
-const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
+const Modal: FC<ModalProps> = ({ isOpen, onClose, children }) => {
   const [isVisible, setIsVisible] = useState(isOpen);
 
   useEffect(() => {

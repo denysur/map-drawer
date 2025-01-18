@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useTransition } from "react";
+import { FC, useEffect, useState, useTransition } from "react";
 
 import MarkerItem from "./components/MarkerItem";
 import Loader from "../Common/Loader";
@@ -10,7 +10,7 @@ type IconsModalProps = {
   onSelect?: (name: string) => void;
 };
 
-const IconsModal: React.FC<IconsModalProps> = ({ onSelect }) => {
+const IconsModal: FC<IconsModalProps> = ({ onSelect }) => {
   const { images, fetchAll, deleteImage, uploadImage } = useMarkerImages();
 
   const [isLoading, startTransition] = useTransition();
@@ -33,7 +33,7 @@ const IconsModal: React.FC<IconsModalProps> = ({ onSelect }) => {
     );
 
   return (
-    <div>
+    <div onClick={() => setSelected(null)}>
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 items-center gap-2 align-center justify-around">
         {images?.map((icon, index) => (
           <MarkerItem

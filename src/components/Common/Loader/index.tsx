@@ -1,4 +1,5 @@
 import clsx from "clsx";
+import { FC } from "react";
 
 export enum LoaderSizeEnum {
   small = "small",
@@ -13,7 +14,7 @@ export type LoaderProps = {
   size?: LoaderSizes;
 };
 
-const Loader: React.FC<LoaderProps> = ({ className, size = 6 }) => {
+const Loader: FC<LoaderProps> = ({ className, size = 6 }) => {
   return (
     <svg
       className={clsx(
