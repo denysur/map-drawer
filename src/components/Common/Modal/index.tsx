@@ -1,5 +1,5 @@
 import { FC, useEffect, useState, ReactNode } from "react";
-import ReactDOM from "react-dom";
+import { createPortal } from "react-dom";
 
 import { Close } from "../../Icons";
 
@@ -38,7 +38,7 @@ const Modal: FC<ModalProps> = ({ isOpen, onClose, children }) => {
     return null;
   }
 
-  return ReactDOM.createPortal(
+  return createPortal(
     <div
       className={`z-20 fixed inset-0 p-4 h-dvh bg-black bg-opacity-60 flex items-center justify-center ${
         isVisible ? "animate-fadeIn" : "animate-fadeOut"
