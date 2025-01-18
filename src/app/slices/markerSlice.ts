@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-import { Marker, MarkerState } from "../../types";
+import { Marker, MarkerIcon, MarkerState } from "../../types";
 
 const initialState: MarkerState = {
   markers: [],
@@ -52,6 +52,19 @@ export const markerSlice = createSlice({
           : marker
       );
     },
+    setMarkerIcon: (
+      state,
+      action: PayloadAction<{ id: string; icon: MarkerIcon | null }>
+    ) => {
+      state.markers = state.markers.map((marker) =>
+        marker.id === action.payload.id
+          ? {
+              ...marker,
+              icon: action.payload.icon,
+            }
+          : marker
+      );
+    },
     setMarkerSize: (
       state,
       action: PayloadAction<{ id: string; scale: number }>
@@ -75,6 +88,7 @@ export const {
   setMarkerPosition,
   setMarkerColor,
   setMarkerSize,
+  setMarkerIcon,
 } = markerSlice.actions;
 
 export default markerSlice.reducer;

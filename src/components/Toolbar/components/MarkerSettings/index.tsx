@@ -1,13 +1,15 @@
-import { FC, ChangeEvent, useState } from "react";
+import { FC, ChangeEvent, useState, useEffect } from "react";
 import { HexColorPicker } from "react-colorful";
 import { useClickAway } from "@uidotdev/usehooks";
 
 import Button from "../../../Common/Button";
 import Close from "../../../Icons/Close";
+import Modal from "../../../Common/Modal";
+import IconsModal from "../../../IconsModal";
 
 import { DEFAULT_MARKER_COLOR } from "../../../../constants";
 
-import { Marker } from "../../../../types";
+import { Marker, MarkerIcon } from "../../../../types";
 
 type MarkerSettingsProps = {
   isAddNewMarkerMode: boolean;
@@ -15,6 +17,7 @@ type MarkerSettingsProps = {
   onClose: () => void;
   onMarkerSizeChange: (data: { id: string; scale: number }) => void;
   onMarkerColorChange: (data: { id: string; color: string }) => void;
+  onMarkerIconChange: (data: { id: string; icon: MarkerIcon | null }) => void;
   onMarkerDelete: (id: string) => void;
 };
 
@@ -24,12 +27,27 @@ const MarkerSettings: FC<MarkerSettingsProps> = ({
   onClose,
   onMarkerSizeChange,
   onMarkerColorChange,
+  onMarkerIconChange,
   onMarkerDelete,
 }) => {
   const [isColorPickerVisible, setIsColorPickerVisible] = useState(false);
+  const [isIconsModalOpen, setIsIconsModalOpen] = useState(false);
 
   const openColorPicker = () => setIsColorPickerVisible(true);
   const closeColorPicker = () => setIsColorPickerVisible(false);
+
+  const openIconsModal = () => setIsIconsModalOpen(true);
+  const closeIconsModal = () => setIsIconsModalOpen(false);
+
+  const onMarkerIconChangeHandler = (icon: MarkerIcon | null) => {
+    if (selectedMarker) {
+      onMarkerIconChange({
+        id: selectedMarker.id,
+        icon,
+      });
+    }
+    setIsIconsModalOpen(false);
+  };
 
   const ref = useClickAway<HTMLDivElement>(() => {
     closeColorPicker();
@@ -59,6 +77,10 @@ const MarkerSettings: FC<MarkerSettingsProps> = ({
     }
   };
 
+  useEffect(() => {
+    console.log("selectedMarker", selectedMarker);
+  }, [selectedMarker]);
+
   if (isAddNewMarkerMode) {
     return <span>Натисніть будь де на мапу, щоб додати маркер</span>;
   }
@@ -70,7 +92,17 @@ const MarkerSettings: FC<MarkerSettingsProps> = ({
       </div>
       <div className="flex w-full gap-2 justify-between">
         <div>Іконка: (За замовчуванням)</div>
-        <Button size="small">Змінити</Button>
+        <Button onClick={openIconsModal} size="small">
+          Змінити
+        </Button>
+        <Modal isOpen={isIconsModalOpen} onClose={closeIconsModal}>
+          <div className="flex flex-col gap-4">
+            <div className="flex justify-between items-center">
+              <h2 className="text-2xl font-bold">Виберіть іконку маркеру</h2>
+            </div>
+            <IconsModal onSelect={onMarkerIconChangeHandler} />
+          </div>
+        </Modal>
       </div>
       <div className="flex w-full gap-2">
         <div>Колір:</div>

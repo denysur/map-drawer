@@ -11,10 +11,10 @@ import { useAuthorization } from "../../hooks/useAuthorization";
 
 const MapPage = () => {
   const { logout } = useAuthorization();
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const closeModal = () => {
-    setIsModalOpen(false);
-  };
+  const [isIconsModalOpen, setIsIconsModalOpen] = useState(false);
+
+  const openIconsModal = () => setIsIconsModalOpen(true);
+  const closeIconsModal = () => setIsIconsModalOpen(false);
 
   return (
     <Layout>
@@ -28,16 +28,10 @@ const MapPage = () => {
         Вийти
       </Button>
 
-      <Button
-        onClick={() => {
-          // open modal with icons
-          setIsModalOpen(true);
-        }}
-        className="fixed z-10 left-10 top-20"
-      >
+      <Button onClick={openIconsModal} className="fixed z-10 left-10 top-20">
         Іконки
       </Button>
-      <Modal isOpen={isModalOpen} onClose={closeModal}>
+      <Modal isOpen={isIconsModalOpen} onClose={closeIconsModal}>
         <div className="flex flex-col gap-4">
           <div className="flex justify-between items-center">
             <h2 className="text-2xl font-bold">Іконки маркеру</h2>

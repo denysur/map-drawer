@@ -6,7 +6,7 @@ export type Marker = {
   scale: number;
   longitude: number;
   latitude: number;
-  icon: string | null;
+  icon: MarkerIcon | null;
 };
 
 export type ToolState = {
