@@ -41,7 +41,7 @@ const Modal: FC<ModalProps> = ({ isOpen, onClose, children }) => {
   return createPortal(
     <div
       className={`z-20 fixed inset-0 p-4 h-dvh bg-black bg-opacity-60 flex items-center justify-center ${
-        !isOpen || !isVisible ? "animate-fadeOut" : "animate-fadeIn"
+        !isVisible ? "animate-fadeOut" : "animate-fadeIn"
       }`}
       onClick={handleClose}
     >
@@ -50,7 +50,7 @@ const Modal: FC<ModalProps> = ({ isOpen, onClose, children }) => {
         onClick={(e) => e.stopPropagation()}
       >
         <button
-          className="absolute p-2 top-1 right-1 rounded-lg ease duration-200 text-zinc-600 hover:bg-black/[.1] hover:text-zinc-900 dark:hover:bg-white/[.05] dark:hover:text-white"
+          className="absolute p-2 top-1 right-1 rounded-lg ease duration-200 text-zinc-500 hover:bg-black/[.1] hover:text-black dark:hover:bg-white/[.05] dark:hover:text-white"
           onClick={handleClose}
         >
           <Close />

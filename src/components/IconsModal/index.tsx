@@ -64,7 +64,7 @@ const IconsModal: FC<IconsModalProps> = ({ onSelect }) => {
   return (
     <div className="flex flex-col gap-4">
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 items-center gap-2 align-center justify-around">
-        {images?.map((icon, index) => (
+        {images?.map((icon) => (
           <MarkerItem
             key={`marker-${icon.name}`}
             icon={icon}

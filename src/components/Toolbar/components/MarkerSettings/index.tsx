@@ -1,10 +1,10 @@
-import { FC, ChangeEvent, useState, useEffect } from "react";
+import { FC, ChangeEvent, useState } from "react";
 import { HexColorPicker } from "react-colorful";
 import { useClickAway } from "@uidotdev/usehooks";
 
 import Button from "../../../Common/Button";
-import Close from "../../../Icons/Close";
 import Modal from "../../../Common/Modal";
+import { Edit, Close } from "../../../Icons";
 import IconsModal from "../../../IconsModal";
 
 import { DEFAULT_MARKER_COLOR } from "../../../../constants";
@@ -48,6 +48,14 @@ const MarkerSettings: FC<MarkerSettingsProps> = ({
     }
     setIsIconsModalOpen(false);
   };
+  const onMarkerIconRemoveHandler = () => {
+    if (selectedMarker) {
+      onMarkerIconChange({
+        id: selectedMarker.id,
+        icon: null,
+      });
+    }
+  };
 
   const ref = useClickAway<HTMLDivElement>(() => {
     closeColorPicker();
@@ -77,24 +85,45 @@ const MarkerSettings: FC<MarkerSettingsProps> = ({
     }
   };
 
-  useEffect(() => {
-    console.log("selectedMarker", selectedMarker);
-  }, [selectedMarker]);
-
   if (isAddNewMarkerMode) {
     return <span>Натисніть будь де на мапу, щоб додати маркер</span>;
   }
 
   return (
-    <div className="flex flex-col gap-4">
-      <div className="flex w-full justify-end">
-        <Close onClick={onClose} className="cursor-pointer" />
+    <div className="flex flex-col max-w-96 gap-4">
+      <div
+        onClick={onClose}
+        className="absolute p-2 top-1 right-1 justify-self-end rounded-lg ease duration-200 text-zinc-500 hover:bg-black/[.1] hover:text-black dark:hover:bg-white/[.05] dark:hover:text-white cursor-pointer"
+      >
+        <Close className="" />
       </div>
-      <div className="flex w-full gap-2 justify-between">
-        <div>Іконка: (За замовчуванням)</div>
-        <Button onClick={openIconsModal} size="small">
-          Змінити
-        </Button>
+      <div>
+        <h2 className="font-bold">Налаштування маркера</h2>
+      </div>
+      <div className="flex w-full gap-4 justify-between items-center">
+        <div>
+          <span className="select-none">Іконка: </span>
+          <span className="max-w-36 truncate">
+            {selectedMarker?.icon
+              ? selectedMarker.icon.name
+              : "(за замовчуванням)"}
+          </span>
+        </div>
+        <div className="flex gap-2">
+          {selectedMarker?.icon && (
+            <Button
+              color="error"
+              className="!p-2"
+              onClick={onMarkerIconRemoveHandler}
+              size="small"
+            >
+              <Close className="h-5 w-5" />
+            </Button>
+          )}
+          <Button className="!p-2" onClick={openIconsModal} size="small">
+            <Edit className="h-5 w-5" />
+          </Button>
+        </div>
         <Modal isOpen={isIconsModalOpen} onClose={closeIconsModal}>
           <div className="flex flex-col gap-4">
             <div className="flex justify-between items-center">
@@ -104,11 +133,11 @@ const MarkerSettings: FC<MarkerSettingsProps> = ({
           </div>
         </Modal>
       </div>
-      <div className="flex w-full gap-2">
-        <div>Колір:</div>
+      <div className="flex w-full gap-2 justify-between items-center">
+        <span className="select-none">Колір: </span>
         <div ref={ref} className="relative">
           <div
-            className="w-6 h-6 rounded cursor-pointer"
+            className="w-9 h-9 rounded-lg cursor-pointer"
             style={{
               backgroundColor: selectedMarker?.color || DEFAULT_MARKER_COLOR,
             }}
@@ -125,9 +154,9 @@ const MarkerSettings: FC<MarkerSettingsProps> = ({
           )}
         </div>
       </div>
-      <div className="flex w-full gap-2">
-        <div>Розмір:</div>
-        <div>
+      <div className="flex w-full gap-2 flex-col justify-between">
+        <span className="select-none">Розмір: </span>
+        <div className="w-full">
           <input
             type="range"
             value={selectedMarker?.scale || 1}
@@ -140,7 +169,11 @@ const MarkerSettings: FC<MarkerSettingsProps> = ({
         </div>
       </div>
       <div className="flex w-full gap-2">
-        <Button size="small" color="error" onClick={onMarkerDeleteHandler}>
+        <Button
+          color="error"
+          className="w-full"
+          onClick={onMarkerDeleteHandler}
+        >
           Видалити маркер
         </Button>
       </div>

@@ -20,7 +20,7 @@ const MarkerItem: FC<MarkerItemProps> = ({ icon, onClick, selected }) => {
       )}
       onClick={() => onClick && onClick(icon)}
     >
-      <figure className="flex flex-col items-center">
+      <figure className="flex flex-col items-center truncate">
         <img
           className="w-24 h-24 object-contain"
           src={icon.url}
