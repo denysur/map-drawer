@@ -35,14 +35,14 @@ const Button: FC<ButtonProps> = ({
   <button
     className={clsx(
       className,
-      "font-medium rounded-lg focus:outline-none",
+      "font-medium rounded-lg focus:outline-none ease duration-200 disabled:opacity-65",
       color === ButtonColorEnum.secondary
-        ? "text-white bg-green-700 hover:bg-green-800 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
+        ? "text-white bg-green-700 [&:not(:disabled)]:hover:bg-green-800 dark:bg-green-600 [&:not(:disabled)]:dark:hover:bg-green-700 dark:focus:ring-green-800"
         : color === ButtonColorEnum.error
-          ? "text-white bg-red-700 hover:bg-red-800 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800"
+          ? "text-white bg-red-700 [&:not(:disabled)]:hover:bg-red-800 dark:bg-red-600 [&:not(:disabled)]:dark:hover:bg-red-700 dark:focus:ring-red-800"
           : color === ButtonColorEnum.primaryLight
-            ? "text-blue-700 bg-blue-100 hover:bg-blue-200 dark:bg-blue-300 dark:hover:bg-blue-400 dark:focus:ring-blue-400"
-            : "text-white bg-blue-700 hover:bg-blue-800 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800",
+            ? "text-blue-700 bg-blue-100 [&:not(:disabled)]:hover:bg-blue-200 dark:bg-blue-300 [&:not(:disabled)]:dark:hover:bg-blue-400 dark:focus:ring-blue-400"
+            : "text-white bg-blue-700 [&:not(:disabled)]:hover:bg-blue-800 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800",
       size === ButtonSizeEnum.small
         ? "text-xs px-3 py-1.5"
         : size === ButtonSizeEnum.large
