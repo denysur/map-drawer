@@ -1,10 +1,10 @@
 import { FC, useEffect, useState, useTransition } from "react";
 
-import MarkerItem from "./components/MarkerItem";
 import Loader from "../Common/Loader";
 import Button from "../Common/Button";
 import Upload from "../Icons/Upload";
 import Delete from "../Icons/Delete";
+import MarkerItem from "./components/MarkerItem";
 
 import { useMarkerImages } from "../../hooks/useMarkerImages";
 
@@ -66,7 +66,7 @@ const IconsModal: FC<IconsModalProps> = ({ onSelect }) => {
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 items-center gap-2 align-center justify-around">
         {images?.map((icon, index) => (
           <MarkerItem
-            key={index}
+            key={`marker-${icon.name}`}
             icon={icon}
             selected={!!selected && selected.name == icon.name}
             onClick={onMarkerIconClickHandler}

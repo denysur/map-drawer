@@ -22,17 +22,6 @@ const Modal: FC<ModalProps> = ({ isOpen, onClose, children }) => {
     }
   }, [isOpen]);
 
-  useEffect(() => {
-    const handleEscape = (event: KeyboardEvent) => {
-      if (event.key === "Escape") handleClose();
-    };
-
-    document.addEventListener("keydown", handleEscape);
-    return () => {
-      document.removeEventListener("keydown", handleEscape);
-    };
-  }, []);
-
   const handleClose = () => {
     if (!isVisible) return;
     setIsVisible(false);

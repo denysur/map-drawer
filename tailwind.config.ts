@@ -25,6 +25,9 @@ export default {
         fadeIn: "fade-in .3s ease 0s 1",
         fadeOut: "fade-out .3s ease 0s 1",
       },
+      objectPosition: {
+        "center-bottom": "center bottom",
+      },
     },
   },
   plugins: [],

@@ -1,7 +1,7 @@
 import { FC } from "react";
 import clsx from "clsx";
 
-import { MarkerIcon } from "../../../types";
+import { MarkerIcon } from "../../../../types";
 
 export type MarkerItemProps = {
   icon: MarkerIcon;
@@ -20,8 +20,12 @@ const MarkerItem: FC<MarkerItemProps> = ({ icon, onClick, selected }) => {
       )}
       onClick={() => onClick && onClick(icon)}
     >
-      <figure>
-        <img className="w-24 h-24" src={icon.url} alt={`marker-${icon.name}`} />
+      <figure className="flex flex-col items-center">
+        <img
+          className="w-24 h-24 object-contain"
+          src={icon.url}
+          alt={`marker-${icon.name}`}
+        />
         <figcaption className="text-center text-sm">{icon.name}</figcaption>
       </figure>
     </div>
