@@ -1,21 +1,31 @@
-import React, { useEffect, useState } from "react";
-import clsx from "clsx";
+import React, { useEffect, useState, useTransition } from "react";
 
 import MarkerItem from "./components/MarkerItem";
-import MapMarker from "../Icons/MapMarker";
 import Loader from "../Common/Loader";
 
 import { useMarkerImages } from "../../hooks/useMarkerImages";
+import Button from "../Common/Button";
 
-const IconsModalView: React.FC = () => {
-  const { images, isLoading, fetchAll } = useMarkerImages();
+type IconsModalProps = {
+  onSelect?: (name: string) => void;
+};
+
+const IconsModal: React.FC<IconsModalProps> = ({ onSelect }) => {
+  const { images, fetchAll, deleteImage, uploadImage } = useMarkerImages();
+
+  const [isLoading, startTransition] = useTransition();
+
   const [selected, setSelected] = useState<string | null>(null);
+  const [isInitialLoading, setIsInitialLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    fetchAll();
+    startTransition(async () => {
+      await fetchAll();
+      setIsInitialLoading(false);
+    });
   }, []);
 
-  if (isLoading)
+  if (isInitialLoading)
     return (
       <div className="p-4 flex justify-center align-center text-blue-700">
         <Loader size={"large"} />
@@ -25,21 +35,6 @@ const IconsModalView: React.FC = () => {
   return (
     <div>
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 items-center gap-2 align-center justify-around">
-        <div
-          className={clsx(
-            "p-4 w-full mx-auto rounded-lg flex justify-center ease duration-200",
-            selected && "hover:bg-black/[.05] cursor-pointer",
-            !selected && "bg-black/[.15]"
-          )}
-          onClick={() => selected && setSelected(null)}
-        >
-          <figure>
-            <div className="p-2">
-              <MapMarker className="w-20 h-20 text-blue-700" />
-            </div>
-            <figcaption className="text-center text-sm">Звичайний</figcaption>
-          </figure>
-        </div>
         {images?.map((icon, index) => (
           <MarkerItem
             key={index}
@@ -49,8 +44,39 @@ const IconsModalView: React.FC = () => {
           />
         ))}
       </div>
+      <div>
+        <Button
+          onClick={() => {
+            const fileInput = document.createElement("input");
+            fileInput.type = "file";
+            fileInput.accept = "image/*";
+            fileInput.onchange = async (event) => {
+              const file = (event.target as HTMLInputElement).files?.[0];
+              if (file) {
+                startTransition(async () => {
+                  await uploadImage(file);
+                });
+              }
+            };
+            fileInput.click();
+          }}
+          disabled={isLoading}
+        >
+          UPL
+        </Button>
+        <Button
+          disabled={isLoading || !selected}
+          color="error"
+          onClick={() => {
+            selected && deleteImage(selected);
+          }}
+        >
+          REM
+        </Button>
+        {onSelect && <Button>Select</Button>}
+      </div>
     </div>
   );
 };
 
-export default IconsModalView;
+export default IconsModal;

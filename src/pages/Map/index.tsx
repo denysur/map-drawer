@@ -5,7 +5,7 @@ import Map from "../../components/Map";
 import Button from "../../components/Common/Button";
 import Toolbar from "../../components/Toolbar";
 import Modal from "../../components/Common/Modal";
-import IconsModalView from "../../components/IconsModal";
+import IconsModal from "../../components/IconsModal";
 
 import { useAuthorization } from "../../hooks/useAuthorization";
 
@@ -42,7 +42,7 @@ const MapPage = () => {
           <div className="flex justify-between items-center">
             <h2 className="text-2xl font-bold">Іконки маркеру</h2>
           </div>
-          <IconsModalView />
+          <IconsModal />
         </div>
       </Modal>
 
