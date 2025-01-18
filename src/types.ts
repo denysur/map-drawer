@@ -22,3 +22,7 @@ export type ValidationError = {
   validationError: string;
   invalidFields: string[];
 };
+export type MarkerIcon = {
+  name: string;
+  url: string;
+};
