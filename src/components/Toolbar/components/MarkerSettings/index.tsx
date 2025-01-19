@@ -7,7 +7,12 @@ import Button from "../../../Common/Button";
 import Modal from "../../../Common/Modal";
 import IconsModal from "../../../IconsModal";
 
-import { DEFAULT_MARKER_COLOR } from "../../../../constants";
+import {
+  DEFAULT_MARKER_COLOR,
+  DEFAULT_MARKER_SCALE,
+  MAXIMUM_MARKER_SCALE,
+  MINIMUM_MARKER_SCALE,
+} from "../../../../constants";
 
 import { Marker, MarkerIcon } from "../../../../types";
 
@@ -101,9 +106,9 @@ const MarkerSettings: FC<MarkerSettingsProps> = ({
         <h2 className="font-bold">Налаштування маркера</h2>
       </div>
       <div className="flex w-full gap-4 justify-between items-center">
-        <div>
+        <div className="truncate">
           <span className="select-none">Іконка: </span>
-          <span className="max-w-36 truncate">
+          <span>
             {selectedMarker?.icon
               ? selectedMarker.icon.name
               : "(за замовчуванням)"}
@@ -162,10 +167,10 @@ const MarkerSettings: FC<MarkerSettingsProps> = ({
         <div className="w-full">
           <input
             type="range"
-            value={selectedMarker?.scale || 1}
+            value={selectedMarker?.scale || DEFAULT_MARKER_SCALE}
             onChange={onMarkerSizeChangeHandler}
-            min="0.1"
-            max="3"
+            min={MINIMUM_MARKER_SCALE}
+            max={MAXIMUM_MARKER_SCALE}
             step="0.1"
             className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"
           />
