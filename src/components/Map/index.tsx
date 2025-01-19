@@ -3,6 +3,7 @@ import { default as MapboxMap } from "react-map-gl";
 import { MapMouseEvent } from "mapbox-gl";
 
 import Marker from "./components/Marker";
+import Logo from "../Logo";
 
 import { useMarkers } from "../../hooks/state/useMarkers";
 
@@ -40,27 +41,30 @@ const Map = () => {
   );
 
   return (
-    <MapboxMap
-      mapboxAccessToken={import.meta.env.VITE_MAP_API_KEY}
-      initialViewState={{
-        latitude: 48.829021655585166,
-        longitude: 31.753199308325947,
-        zoom: 5,
-      }}
-      cursor={isAddNewMarkerMode ? "pointer" : "grab"}
-      mapStyle="https://api.maptiler.com/maps/bcca4c4a-53a2-4f35-a54f-1d8288722cb1/style.json?key=5adXclVMBOvAgEYziUJG"
-      attributionControl={false}
-      onClick={onMapClickHandler}
-    >
-      {markers.map((marker) => (
-        <Marker
-          key={marker.id}
-          marker={marker}
-          onClick={onMarkerClickHandler}
-          onPositionChanged={onMarkerPositionChanged}
-        />
-      ))}
-    </MapboxMap>
+    <div className="mapboxgl-wrapper w-full h-full">
+      <Logo />
+      <MapboxMap
+        mapboxAccessToken={import.meta.env.VITE_MAP_API_KEY}
+        initialViewState={{
+          latitude: 48.829021655585166,
+          longitude: 31.753199308325947,
+          zoom: 5,
+        }}
+        cursor={isAddNewMarkerMode ? "pointer" : "grab"}
+        mapStyle="https://api.maptiler.com/maps/bcca4c4a-53a2-4f35-a54f-1d8288722cb1/style.json?key=5adXclVMBOvAgEYziUJG"
+        attributionControl={false}
+        onClick={onMapClickHandler}
+      >
+        {markers.map((marker) => (
+          <Marker
+            key={marker.id}
+            marker={marker}
+            onClick={onMarkerClickHandler}
+            onPositionChanged={onMarkerPositionChanged}
+          />
+        ))}
+      </MapboxMap>
+    </div>
   );
 };
 
