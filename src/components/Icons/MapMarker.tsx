@@ -1,12 +1,12 @@
-import { FC } from "react";
+import { FC, SVGProps } from "react";
 
-const MapMarker: FC<React.SVGProps<SVGSVGElement>> = (props) => (
+const MapMarker: FC<SVGProps<SVGSVGElement>> = (props) => (
   <svg
     focusable="false"
     aria-hidden="true"
     width={24}
     height={24}
-    viewBox="0 0 24 24"
+    viewBox="4 2 16 20"
     fill="currentColor"
     {...props}
   >

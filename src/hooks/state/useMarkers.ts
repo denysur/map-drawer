@@ -8,6 +8,7 @@ import {
   setMarkerPosition,
   setMarkerSize,
   setMarkerColor,
+  setMarkerIcon,
 } from "../../app/slices/markerSlice";
 import { generateId } from "../../utils/common";
 import { useActiveTool } from "./useActiveTool";
@@ -15,7 +16,7 @@ import { useActiveTool } from "./useActiveTool";
 import { DEFAULT_MARKER_COLOR, DEFAULT_MARKER_SCALE } from "../../constants";
 
 import { RootState } from "../../app/store";
-import { Marker } from "../../types";
+import { Marker, MarkerIcon } from "../../types";
 
 export const useMarkers = () => {
   const [activeTool, setActiveTool] = useActiveTool();
@@ -86,6 +87,12 @@ export const useMarkers = () => {
     },
     []
   );
+  const updateMarkerIcon = useCallback(
+    (data: { id: string; icon: MarkerIcon | null }) => {
+      dispatch(setMarkerIcon(data));
+    },
+    []
+  );
 
   return useMemo(
     () =>
@@ -99,6 +106,7 @@ export const useMarkers = () => {
           updateMarkerPosition,
           updateMarkerSize,
           updateMarkerColor,
+          updateMarkerIcon,
         },
       ] as const,
     [selectedMarkerId, selectedMarker, markers, isAddNewMarkerMode]

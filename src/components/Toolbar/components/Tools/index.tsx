@@ -1,16 +1,23 @@
 import IconButton from "../../../Common/IconButton";
 import MarkerSettings from "../../components/MarkerSettings";
+import { MapMarker } from "../../../Icons";
 
 import { useActiveTool } from "../../../../hooks/state/useActiveTool";
 import { useMarkers } from "../../../../hooks/state/useMarkers";
 
-import { MapMarker } from "../../../Icons";
+import { MarkerIcon } from "../../../../types";
 
 const Tools = () => {
   const [activeTool, setActiveTool] = useActiveTool();
   const [
     { selectedMarker, isAddNewMarkerMode },
-    { unselectMarker, updateMarkerSize, updateMarkerColor, removeMarker },
+    {
+      unselectMarker,
+      updateMarkerSize,
+      updateMarkerColor,
+      updateMarkerIcon,
+      removeMarker,
+    },
   ] = useMarkers();
 
   const onMarkerToolOpenHandler = () => setActiveTool("marker");
@@ -22,6 +29,13 @@ const Tools = () => {
 
   const onMarkerColorChange = (data: { id: string; color: string }) => {
     updateMarkerColor(data);
+  };
+
+  const onMarkerIconChange = (data: {
+    id: string;
+    icon: MarkerIcon | null;
+  }) => {
+    updateMarkerIcon(data);
   };
 
   const onMarkerDelete = (id: string) => {
@@ -37,6 +51,7 @@ const Tools = () => {
         onMarkerSizeChange={onMarkerSizeChange}
         onMarkerColorChange={onMarkerColorChange}
         onMarkerDelete={onMarkerDelete}
+        onMarkerIconChange={onMarkerIconChange}
       />
     );
   }

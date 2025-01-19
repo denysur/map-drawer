@@ -6,7 +6,7 @@ export type Marker = {
   scale: number;
   longitude: number;
   latitude: number;
-  icon: string | null;
+  icon: MarkerIcon | null;
 };
 
 export type ToolState = {
@@ -21,4 +21,8 @@ export type MarkerState = {
 export type ValidationError = {
   validationError: string;
   invalidFields: string[];
+};
+export type MarkerIcon = {
+  name: string;
+  url: string;
 };

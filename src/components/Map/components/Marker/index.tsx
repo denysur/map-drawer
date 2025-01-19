@@ -3,7 +3,10 @@ import { Marker as MapMarker, MarkerDragEvent } from "react-map-gl";
 
 import { MapMarker as MapMarkerIcon } from "../../../Icons";
 
-import { DEFAULT_MARKER_COLOR } from "../../../../constants";
+import {
+  DEFAULT_MARKER_COLOR,
+  DEFAULT_MARKER_SIZE,
+} from "../../../../constants";
 
 import { Marker as MarkerType } from "../../../../types";
 
@@ -19,7 +22,7 @@ type MarkerProps = {
 
 const Marker: FC<MarkerProps> = memo((props) => {
   const { marker, onClick = () => {}, onPositionChanged = () => {} } = props;
-  const { latitude, longitude } = marker;
+  const { latitude, longitude, icon } = marker;
 
   const onMarkerClickHandler = () => onClick(marker);
   const onPositionChangedHandler = (e: MarkerDragEvent) => {
@@ -39,11 +42,22 @@ const Marker: FC<MarkerProps> = memo((props) => {
       onClick={onMarkerClickHandler}
       onDragEnd={onPositionChangedHandler}
     >
-      <MapMarkerIcon
-        width={24 * marker.scale}
-        height={24 * marker.scale}
-        fill={marker.color || DEFAULT_MARKER_COLOR}
-      />
+      {icon ? (
+        <img
+          src={icon.url}
+          style={{
+            width: DEFAULT_MARKER_SIZE * marker.scale,
+            height: DEFAULT_MARKER_SIZE * marker.scale,
+          }}
+          className="object-contain object-center-bottom"
+        />
+      ) : (
+        <MapMarkerIcon
+          width={24 * marker.scale}
+          height={24 * marker.scale}
+          fill={marker.color || DEFAULT_MARKER_COLOR}
+        />
+      )}
     </MapMarker>
   );
 });
