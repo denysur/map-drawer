@@ -2,9 +2,9 @@ import { FC, ChangeEvent, useState } from "react";
 import { HexColorPicker } from "react-colorful";
 import { useClickAway } from "@uidotdev/usehooks";
 
+import { Edit, Close } from "../../../Icons";
 import Button from "../../../Common/Button";
 import Modal from "../../../Common/Modal";
-import { Edit, Close } from "../../../Icons";
 import IconsModal from "../../../IconsModal";
 
 import { DEFAULT_MARKER_COLOR } from "../../../../constants";
@@ -124,11 +124,12 @@ const MarkerSettings: FC<MarkerSettingsProps> = ({
             <Edit className="h-5 w-5" />
           </Button>
         </div>
-        <Modal isOpen={isIconsModalOpen} onClose={closeIconsModal}>
+        <Modal
+          isOpen={isIconsModalOpen}
+          title="Виберіть іконку маркеру"
+          onClose={closeIconsModal}
+        >
           <div className="flex flex-col gap-4">
-            <div className="flex justify-between items-center">
-              <h2 className="text-2xl font-bold">Виберіть іконку маркеру</h2>
-            </div>
             <IconsModal onSelect={onMarkerIconChangeHandler} />
           </div>
         </Modal>

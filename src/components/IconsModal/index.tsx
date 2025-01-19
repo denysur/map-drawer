@@ -62,8 +62,32 @@ const IconsModal: FC<IconsModalProps> = ({ onSelect }) => {
     );
 
   return (
-    <div className="flex flex-col gap-4">
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 items-center gap-2 align-center justify-around">
+    <div className="flex flex-col gap-4 px-4">
+      <div className="grid grid-cols-2 min-[384px]:grid-cols-3 min-[512px]:grid-cols-4 sm:grid-cols-5 md:grid-cols-6 items-center gap-2 align-center justify-around">
+        {images?.map((icon) => (
+          <MarkerItem
+            key={`marker-${icon.name}`}
+            icon={icon}
+            selected={!!selected && selected.name == icon.name}
+            onClick={onMarkerIconClickHandler}
+          />
+        ))}
+        {images?.map((icon) => (
+          <MarkerItem
+            key={`marker-${icon.name}`}
+            icon={icon}
+            selected={!!selected && selected.name == icon.name}
+            onClick={onMarkerIconClickHandler}
+          />
+        ))}
+        {images?.map((icon) => (
+          <MarkerItem
+            key={`marker-${icon.name}`}
+            icon={icon}
+            selected={!!selected && selected.name == icon.name}
+            onClick={onMarkerIconClickHandler}
+          />
+        ))}
         {images?.map((icon) => (
           <MarkerItem
             key={`marker-${icon.name}`}
@@ -73,7 +97,7 @@ const IconsModal: FC<IconsModalProps> = ({ onSelect }) => {
           />
         ))}
       </div>
-      <div className="flex align-center gap-2">
+      <div className="py-4 flex align-center gap-2 bg-gradient-to-t from-white dark:from-zinc-900 from-25% to-transparent bottom-0 sticky">
         {!onSelect ? (
           <>
             <Button

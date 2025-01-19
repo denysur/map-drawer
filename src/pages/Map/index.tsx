@@ -31,11 +31,12 @@ const MapPage = () => {
       <Button onClick={openIconsModal} className="fixed z-10 left-10 top-20">
         Іконки
       </Button>
-      <Modal isOpen={isIconsModalOpen} onClose={closeIconsModal}>
+      <Modal
+        isOpen={isIconsModalOpen}
+        title="Іконки маркеру"
+        onClose={closeIconsModal}
+      >
         <div className="flex flex-col gap-4">
-          <div className="flex justify-between items-center">
-            <h2 className="text-2xl font-bold">Іконки маркеру</h2>
-          </div>
           <IconsModal />
         </div>
       </Modal>
