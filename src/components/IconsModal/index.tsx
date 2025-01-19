@@ -72,40 +72,8 @@ const IconsModal: FC<IconsModalProps> = ({ onSelect }) => {
             onClick={onMarkerIconClickHandler}
           />
         ))}
-        {images?.map((icon) => (
-          <MarkerItem
-            key={`marker-${icon.name}`}
-            icon={icon}
-            selected={!!selected && selected.name == icon.name}
-            onClick={onMarkerIconClickHandler}
-          />
-        ))}
-        {images?.map((icon) => (
-          <MarkerItem
-            key={`marker-${icon.name}`}
-            icon={icon}
-            selected={!!selected && selected.name == icon.name}
-            onClick={onMarkerIconClickHandler}
-          />
-        ))}
-        {images?.map((icon) => (
-          <MarkerItem
-            key={`marker-${icon.name}`}
-            icon={icon}
-            selected={!!selected && selected.name == icon.name}
-            onClick={onMarkerIconClickHandler}
-          />
-        ))}
-        {images?.map((icon) => (
-          <MarkerItem
-            key={`marker-${icon.name}`}
-            icon={icon}
-            selected={!!selected && selected.name == icon.name}
-            onClick={onMarkerIconClickHandler}
-          />
-        ))}
       </div>
-      <div className="p-4 flex justify-end gap-2">
+      <div className="p-4 pt-2 flex justify-end gap-2">
         {!onSelect ? (
           <>
             <Button
