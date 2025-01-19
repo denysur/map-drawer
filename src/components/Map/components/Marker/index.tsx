@@ -1,4 +1,4 @@
-import { FC, memo, useEffect } from "react";
+import { FC, memo } from "react";
 import { Marker as MapMarker, MarkerDragEvent } from "react-map-gl";
 
 import { MapMarker as MapMarkerIcon } from "../../../Icons";
@@ -20,10 +20,6 @@ type MarkerProps = {
 const Marker: FC<MarkerProps> = memo((props) => {
   const { marker, onClick = () => {}, onPositionChanged = () => {} } = props;
   const { latitude, longitude, icon } = marker;
-
-  useEffect(() => {
-    console.log(icon);
-  }, [icon]);
 
   const onMarkerClickHandler = () => onClick(marker);
   const onPositionChangedHandler = (e: MarkerDragEvent) => {

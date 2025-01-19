@@ -10,6 +10,7 @@ export type MarkerItemProps = {
 };
 
 const MarkerItem: FC<MarkerItemProps> = ({ icon, onClick, selected }) => {
+  const onMarkerClickHandler = () => onClick && onClick(icon);
   return (
     <div
       className={clsx(
@@ -18,7 +19,7 @@ const MarkerItem: FC<MarkerItemProps> = ({ icon, onClick, selected }) => {
           "hover:bg-black/[.05] dark:hover:bg-white/[.05] cursor-pointer",
         selected && "bg-black/[.10] dark:bg-white/[.10]"
       )}
-      onClick={() => onClick && onClick(icon)}
+      onClick={onMarkerClickHandler}
     >
       <figure className="flex flex-col items-center truncate">
         <img
