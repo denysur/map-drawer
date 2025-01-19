@@ -72,30 +72,6 @@ const IconsModal: FC<IconsModalProps> = ({ onSelect }) => {
             onClick={onMarkerIconClickHandler}
           />
         ))}
-        {images?.map((icon) => (
-          <MarkerItem
-            key={`marker-${icon.name}`}
-            icon={icon}
-            selected={!!selected && selected.name == icon.name}
-            onClick={onMarkerIconClickHandler}
-          />
-        ))}
-        {images?.map((icon) => (
-          <MarkerItem
-            key={`marker-${icon.name}`}
-            icon={icon}
-            selected={!!selected && selected.name == icon.name}
-            onClick={onMarkerIconClickHandler}
-          />
-        ))}
-        {images?.map((icon) => (
-          <MarkerItem
-            key={`marker-${icon.name}`}
-            icon={icon}
-            selected={!!selected && selected.name == icon.name}
-            onClick={onMarkerIconClickHandler}
-          />
-        ))}
       </div>
       <div className="py-4 flex align-center gap-2 bg-gradient-to-t from-white dark:from-zinc-900 from-25% to-transparent bottom-0 sticky">
         {!onSelect ? (
