@@ -9,6 +9,7 @@ import {
 } from "../../../../constants";
 
 import { Marker as MarkerType } from "../../../../types";
+import SafeImage from "../../../Common/SafeImage";
 
 type MarkerProps = {
   marker: MarkerType;
@@ -43,7 +44,7 @@ const Marker: FC<MarkerProps> = memo((props) => {
       onDragEnd={onPositionChangedHandler}
     >
       {icon ? (
-        <img
+        <SafeImage
           src={icon.url}
           style={{
             width: DEFAULT_MARKER_SIZE * marker.scale,

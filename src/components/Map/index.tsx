@@ -54,6 +54,7 @@ const Map = () => {
         mapStyle="https://api.maptiler.com/maps/bcca4c4a-53a2-4f35-a54f-1d8288722cb1/style.json?key=5adXclVMBOvAgEYziUJG"
         attributionControl={false}
         onClick={onMapClickHandler}
+        preserveDrawingBuffer={true}
       >
         {markers.map((marker) => (
           <Marker
