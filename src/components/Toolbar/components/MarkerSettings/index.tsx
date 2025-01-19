@@ -134,27 +134,29 @@ const MarkerSettings: FC<MarkerSettingsProps> = ({
           </div>
         </Modal>
       </div>
-      <div className="flex w-full gap-2 justify-between items-center">
-        <span className="select-none">Колір: </span>
-        <div ref={ref} className="relative">
-          <div
-            className="w-9 h-9 rounded-lg cursor-pointer"
-            style={{
-              backgroundColor: selectedMarker?.color || DEFAULT_MARKER_COLOR,
-            }}
-            onClick={openColorPicker}
-            onBlur={closeColorPicker}
-          ></div>
-          {isColorPickerVisible && (
-            <div className="absolute bottom-8 left-8">
-              <HexColorPicker
-                color={selectedMarker?.color || DEFAULT_MARKER_COLOR}
-                onChange={onMarkerColorChangeHandler}
-              />
-            </div>
-          )}
+      {!selectedMarker?.icon && (
+        <div className="flex w-full gap-2 justify-between items-center">
+          <span className="select-none">Колір: </span>
+          <div ref={ref} className="relative">
+            <div
+              className="w-9 h-9 rounded-lg cursor-pointer"
+              style={{
+                backgroundColor: selectedMarker?.color || DEFAULT_MARKER_COLOR,
+              }}
+              onClick={openColorPicker}
+              onBlur={closeColorPicker}
+            ></div>
+            {isColorPickerVisible && (
+              <div className="absolute bottom-8 left-8">
+                <HexColorPicker
+                  color={selectedMarker?.color || DEFAULT_MARKER_COLOR}
+                  onChange={onMarkerColorChangeHandler}
+                />
+              </div>
+            )}
+          </div>
         </div>
-      </div>
+      )}
       <div className="flex w-full gap-2 flex-col justify-between">
         <span className="select-none">Розмір: </span>
         <div className="w-full">
