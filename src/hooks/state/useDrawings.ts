@@ -35,7 +35,7 @@ export const useDrawings = () => {
   const addDrawing = useCallback((draw: Geometry) => {
     dispatch(
       addDrawingAction({
-        ...draw,
+        geometry: draw,
         color: DEFAULT_MARKER_COLOR,
         scale: DEFAULT_MARKER_SCALE,
         id: generateId(),

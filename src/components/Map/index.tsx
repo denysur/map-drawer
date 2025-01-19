@@ -5,12 +5,13 @@ import { MapMouseEvent } from "mapbox-gl";
 import Logo from "../Logo";
 import Marker from "./components/Marker";
 import FreehandDrawingResult from "./components/FreehandDrawingResult";
+import Geometry from "./components/Geometry";
 
 import { useMarkers } from "../../hooks/state/useMarkers";
 import { useDrawings } from "../../hooks/state/useDrawings";
 import { useMapDrawing } from "../../hooks/map/useMapDrawing";
 
-import { Marker as MarkerType, Geometry } from "../../types";
+import { Marker as MarkerType, Geometry as GeometryType } from "../../types";
 
 import "mapbox-gl/dist/mapbox-gl.css";
 
@@ -20,10 +21,10 @@ const Map = () => {
     { isAddNewMarkerMode, markers },
     { addMarker, selectMarker, updateMarkerPosition },
   ] = useMarkers();
-  const [{ isDrawingMode }, { addDrawing }] = useDrawings();
+  const [{ isDrawingMode, drawings }, { addDrawing }] = useDrawings();
 
   const onGeometryCreate = useCallback(
-    (geometry: Geometry) => addDrawing(geometry),
+    (geometry: GeometryType) => addDrawing(geometry),
     []
   );
 
@@ -88,6 +89,9 @@ const Map = () => {
             onClick={onMarkerClickHandler}
             onPositionChanged={onMarkerPositionChanged}
           />
+        ))}
+        {drawings.map((draw) => (
+          <Geometry key={draw.id} draw={draw} />
         ))}
 
         <FreehandDrawingResult drawingCoordinates={drawingCoordinates} />

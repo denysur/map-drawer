@@ -16,14 +16,15 @@ export type Geometry =
       radius: number;
     }
   | {
-      name: "vector" | "rectangle"; // and others
+      name: "vector" | "open polygon" | "rectangle"; // and others
       vertices: number[][];
     };
 
-export type Draw = Geometry & {
+export type Draw = {
   id: string;
   color: string | null;
   scale: number;
+  geometry: Geometry;
 };
 
 export type ToolState = {
