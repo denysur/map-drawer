@@ -1,20 +1,15 @@
 import { useCallback, useState } from "react";
-import {
-  Layer,
-  default as MapboxMap,
-  Source,
-  ViewStateChangeEvent,
-} from "react-map-gl";
+import { default as MapboxMap, ViewStateChangeEvent } from "react-map-gl";
 import { MapMouseEvent } from "mapbox-gl";
 
-import Marker from "./components/Marker";
 import Logo from "../Logo";
+import Marker from "./components/Marker";
+import FreehandDrawingResult from "./components/FreehandDrawingResult";
 
 import { useMarkers } from "../../hooks/state/useMarkers";
 import { useDrawings } from "../../hooks/state/useDrawings";
 import { useMapDrawing } from "../../hooks/map/useMapDrawing";
 
-import { DEFAULT_MARKER_COLOR } from "../../constants";
 import { Marker as MarkerType, Geometry } from "../../types";
 
 import "mapbox-gl/dist/mapbox-gl.css";
@@ -95,28 +90,7 @@ const Map = () => {
           />
         ))}
 
-        {drawingCoordinates.length > 1 && (
-          <Source
-            id="freehand"
-            type="geojson"
-            data={{
-              type: "Feature",
-              geometry: {
-                type: "LineString",
-                coordinates: drawingCoordinates,
-              },
-            }}
-          >
-            <Layer
-              id="line"
-              type="line"
-              paint={{
-                "line-color": DEFAULT_MARKER_COLOR,
-                "line-width": 3,
-              }}
-            />
-          </Source>
-        )}
+        <FreehandDrawingResult drawingCoordinates={drawingCoordinates} />
       </MapboxMap>
     </div>
   );
