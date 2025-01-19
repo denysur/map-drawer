@@ -1,9 +1,8 @@
 import { FC, useEffect, useState, useTransition } from "react";
 
+import { Upload, Delete } from "../Icons";
 import Loader from "../Common/Loader";
 import Button from "../Common/Button";
-import Upload from "../Icons/Upload";
-import Delete from "../Icons/Delete";
 import MarkerItem from "./components/MarkerItem";
 
 import { useMarkerImages } from "../../hooks/useMarkerImages";
