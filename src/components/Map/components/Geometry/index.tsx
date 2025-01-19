@@ -9,7 +9,7 @@ type GeometryProps = {
 };
 
 const Geometry: FC<GeometryProps> = ({ draw }) => {
-  const { geometry, id } = draw;
+  const { geometry, id, color } = draw;
   const { name } = geometry;
 
   if (name === "circle") {
@@ -29,7 +29,7 @@ const Geometry: FC<GeometryProps> = ({ draw }) => {
           id="line"
           type="circle"
           paint={{
-            "circle-color": DEFAULT_MARKER_COLOR,
+            "circle-color": color || DEFAULT_MARKER_COLOR,
             "circle-radius": geometry.radius,
           }}
         />
@@ -54,7 +54,7 @@ const Geometry: FC<GeometryProps> = ({ draw }) => {
           id="line"
           type="line"
           paint={{
-            "line-color": DEFAULT_MARKER_COLOR,
+            "line-color": color || DEFAULT_MARKER_COLOR,
             "line-width": 3,
           }}
         />
@@ -78,7 +78,7 @@ const Geometry: FC<GeometryProps> = ({ draw }) => {
         id="line"
         type="line"
         paint={{
-          "line-color": DEFAULT_MARKER_COLOR,
+          "line-color": color || DEFAULT_MARKER_COLOR,
           "line-width": 3,
         }}
       />

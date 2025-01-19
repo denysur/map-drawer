@@ -1,7 +1,12 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useCallback, useMemo } from "react";
 
-import { addDrawing as addDrawingAction } from "../../app/slices/drawSlice";
+import {
+  addDraw as addDrawAction,
+  removeDraw as removeDrawAction,
+  setDrawColor,
+  setDrawSize,
+} from "../../app/slices/drawSlice";
 import { useActiveTool } from "./useActiveTool";
 import { generateId } from "../../utils/common";
 
@@ -32,9 +37,9 @@ export const useDrawings = () => {
 
   const dispatch = useDispatch();
 
-  const addDrawing = useCallback((draw: Geometry) => {
+  const addDraw = useCallback((draw: Geometry) => {
     dispatch(
-      addDrawingAction({
+      addDrawAction({
         geometry: draw,
         color: DEFAULT_MARKER_COLOR,
         scale: DEFAULT_MARKER_SCALE,
@@ -43,6 +48,20 @@ export const useDrawings = () => {
     );
 
     setActiveTool("freehand-draw");
+  }, []);
+
+  const removeDraw = useCallback((id: string) => {
+    dispatch(removeDrawAction(id));
+
+    setActiveTool(null);
+  }, []);
+
+  const updateDrawSize = useCallback((data: { id: string; scale: number }) => {
+    dispatch(setDrawSize(data));
+  }, []);
+
+  const updateDrawColor = useCallback((data: { id: string; color: string }) => {
+    dispatch(setDrawColor(data));
   }, []);
 
   return useMemo(
@@ -55,7 +74,7 @@ export const useDrawings = () => {
           isAddNewDrawingMode,
           isDrawingMode,
         },
-        { addDrawing },
+        { addDraw, removeDraw, updateDrawSize, updateDrawColor },
       ] as const,
     [selectedDraw, selectedDrawId, drawings, isAddNewDrawingMode, isDrawingMode]
   );

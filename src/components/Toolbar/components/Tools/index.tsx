@@ -24,7 +24,10 @@ const Tools = () => {
       removeMarker,
     },
   ] = useMarkers();
-  const [{ selectedDraw, isAddNewDrawingMode }] = useDrawings();
+  const [
+    { selectedDraw, isAddNewDrawingMode },
+    { removeDraw, updateDrawSize, updateDrawColor },
+  ] = useDrawings();
 
   const onMarkerToolOpenHandler = () => setActiveTool("marker");
   const onFreehandDrawToolOpenHandler = () => setActiveTool("freehand-draw");
@@ -65,6 +68,17 @@ const Tools = () => {
     removeMarker(id);
   };
 
+  const onDrawDelete = (id: string) => {
+    removeDraw(id);
+  };
+  const onDrawSizeChange = (data: { id: string; scale: number }) => {
+    updateDrawSize(data);
+  };
+
+  const onDrawColorChange = (data: { id: string; color: string }) => {
+    updateDrawColor(data);
+  };
+
   if (activeTool === "marker") {
     return (
       <MarkerSettings
@@ -85,6 +99,9 @@ const Tools = () => {
         isAddNewDrawingMode={isAddNewDrawingMode}
         selectedDraw={selectedDraw}
         onClose={onMarkerToolCloseHandler}
+        onDrawDelete={onDrawDelete}
+        onDrawSizeChange={onDrawSizeChange}
+        onDrawColorChange={onDrawColorChange}
       />
     );
   }

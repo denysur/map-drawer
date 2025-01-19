@@ -21,10 +21,10 @@ const Map = () => {
     { isAddNewMarkerMode, markers },
     { addMarker, selectMarker, updateMarkerPosition },
   ] = useMarkers();
-  const [{ isDrawingMode, drawings }, { addDrawing }] = useDrawings();
+  const [{ isDrawingMode, drawings }, { addDraw }] = useDrawings();
 
   const onGeometryCreate = useCallback(
-    (geometry: GeometryType) => addDrawing(geometry),
+    (geometry: GeometryType) => addDraw(geometry),
     []
   );
 
