@@ -29,8 +29,10 @@ const Geometry: FC<GeometryProps> = ({ draw }) => {
           id={id}
           type="circle"
           paint={{
-            "circle-color": color || DEFAULT_MARKER_COLOR,
+            "circle-color": "transparent",
             "circle-radius": geometry.radius,
+            "circle-stroke-width": 2,
+            "circle-stroke-color": color || DEFAULT_MARKER_COLOR,
           }}
         />
       </Source>
@@ -70,7 +72,7 @@ const Geometry: FC<GeometryProps> = ({ draw }) => {
         type: "Feature",
         geometry: {
           type: "Polygon",
-          coordinates: [...geometry.vertices, geometry.vertices[0]],
+          coordinates: [[...geometry.vertices, geometry.vertices[0]]],
         },
       }}
     >
