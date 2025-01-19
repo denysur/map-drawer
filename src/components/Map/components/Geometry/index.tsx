@@ -26,7 +26,7 @@ const Geometry: FC<GeometryProps> = ({ draw }) => {
         }}
       >
         <Layer
-          id="line"
+          id={id}
           type="circle"
           paint={{
             "circle-color": color || DEFAULT_MARKER_COLOR,
@@ -51,7 +51,7 @@ const Geometry: FC<GeometryProps> = ({ draw }) => {
         }}
       >
         <Layer
-          id="line"
+          id={id}
           type="line"
           paint={{
             "line-color": color || DEFAULT_MARKER_COLOR,
@@ -75,7 +75,7 @@ const Geometry: FC<GeometryProps> = ({ draw }) => {
       }}
     >
       <Layer
-        id="line"
+        id={id}
         type="line"
         paint={{
           "line-color": color || DEFAULT_MARKER_COLOR,

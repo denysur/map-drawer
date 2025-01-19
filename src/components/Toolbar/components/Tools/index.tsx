@@ -26,12 +26,13 @@ const Tools = () => {
   ] = useMarkers();
   const [
     { selectedDraw, isAddNewDrawingMode },
-    { removeDraw, updateDrawSize, updateDrawColor },
+    { removeDraw, updateDrawSize, updateDrawColor, unselectDrawing },
   ] = useDrawings();
 
   const onMarkerToolOpenHandler = () => setActiveTool("marker");
-  const onFreehandDrawToolOpenHandler = () => setActiveTool("freehand-draw");
   const onMarkerToolCloseHandler = () => unselectMarker();
+  const onFreehandDrawToolOpenHandler = () => setActiveTool("freehand-draw");
+  const onFreehandDrawToolCloseHandler = () => unselectDrawing();
 
   const onScreenshotToolOpenHandler = async () => {
     const domRef = document.querySelector(".mapboxgl-wrapper") as HTMLElement;
@@ -98,7 +99,7 @@ const Tools = () => {
       <DrawingSettings
         isAddNewDrawingMode={isAddNewDrawingMode}
         selectedDraw={selectedDraw}
-        onClose={onMarkerToolCloseHandler}
+        onClose={onFreehandDrawToolCloseHandler}
         onDrawDelete={onDrawDelete}
         onDrawSizeChange={onDrawSizeChange}
         onDrawColorChange={onDrawColorChange}

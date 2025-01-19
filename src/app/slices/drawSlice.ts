@@ -19,6 +19,9 @@ export const drawSlice = createSlice({
       state.selectedDrawId = null;
       state.drawings = state.drawings.filter(({ id }) => id !== action.payload);
     },
+    setSelectedDrawId: (state, action: PayloadAction<Draw["id"] | null>) => {
+      state.selectedDrawId = action.payload;
+    },
     setDrawColor: (
       state,
       action: PayloadAction<{ id: string; color: string }>
@@ -48,7 +51,12 @@ export const drawSlice = createSlice({
   },
 });
 
-export const { addDraw, removeDraw, setDrawColor, setDrawSize } =
-  drawSlice.actions;
+export const {
+  addDraw,
+  removeDraw,
+  setDrawColor,
+  setDrawSize,
+  setSelectedDrawId,
+} = drawSlice.actions;
 
 export default drawSlice.reducer;

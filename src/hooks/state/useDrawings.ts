@@ -6,6 +6,7 @@ import {
   removeDraw as removeDrawAction,
   setDrawColor,
   setDrawSize,
+  setSelectedDrawId,
 } from "../../app/slices/drawSlice";
 import { useActiveTool } from "./useActiveTool";
 import { generateId } from "../../utils/common";
@@ -36,6 +37,12 @@ export const useDrawings = () => {
   );
 
   const dispatch = useDispatch();
+
+  const unselectDrawing = useCallback(() => {
+    dispatch(setSelectedDrawId(null));
+
+    setActiveTool(null);
+  }, []);
 
   const addDraw = useCallback((draw: Geometry) => {
     dispatch(
@@ -74,7 +81,13 @@ export const useDrawings = () => {
           isAddNewDrawingMode,
           isDrawingMode,
         },
-        { addDraw, removeDraw, updateDrawSize, updateDrawColor },
+        {
+          addDraw,
+          removeDraw,
+          updateDrawSize,
+          updateDrawColor,
+          unselectDrawing,
+        },
       ] as const,
     [selectedDraw, selectedDrawId, drawings, isAddNewDrawingMode, isDrawingMode]
   );
