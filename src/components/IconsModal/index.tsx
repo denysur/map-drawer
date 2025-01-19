@@ -62,8 +62,40 @@ const IconsModal: FC<IconsModalProps> = ({ onSelect }) => {
     );
 
   return (
-    <div className="flex flex-col gap-4 px-4">
-      <div className="grid grid-cols-2 min-[384px]:grid-cols-3 min-[512px]:grid-cols-4 sm:grid-cols-5 md:grid-cols-6 items-center gap-2 align-center justify-around">
+    <div className="flex flex-col overflow-hidden">
+      <div className="px-4 grid grid-cols-2 min-[384px]:grid-cols-3 min-[512px]:grid-cols-4 sm:grid-cols-5 md:grid-cols-6 items-center gap-2 align-center justify-around overflow-auto">
+        {images?.map((icon) => (
+          <MarkerItem
+            key={`marker-${icon.name}`}
+            icon={icon}
+            selected={!!selected && selected.name == icon.name}
+            onClick={onMarkerIconClickHandler}
+          />
+        ))}
+        {images?.map((icon) => (
+          <MarkerItem
+            key={`marker-${icon.name}`}
+            icon={icon}
+            selected={!!selected && selected.name == icon.name}
+            onClick={onMarkerIconClickHandler}
+          />
+        ))}
+        {images?.map((icon) => (
+          <MarkerItem
+            key={`marker-${icon.name}`}
+            icon={icon}
+            selected={!!selected && selected.name == icon.name}
+            onClick={onMarkerIconClickHandler}
+          />
+        ))}
+        {images?.map((icon) => (
+          <MarkerItem
+            key={`marker-${icon.name}`}
+            icon={icon}
+            selected={!!selected && selected.name == icon.name}
+            onClick={onMarkerIconClickHandler}
+          />
+        ))}
         {images?.map((icon) => (
           <MarkerItem
             key={`marker-${icon.name}`}
@@ -73,24 +105,24 @@ const IconsModal: FC<IconsModalProps> = ({ onSelect }) => {
           />
         ))}
       </div>
-      <div className="py-4 flex align-center gap-2 bg-gradient-to-t from-white dark:from-zinc-900 from-25% to-transparent bottom-0 sticky">
+      <div className="p-4 flex justify-end gap-2">
         {!onSelect ? (
           <>
             <Button
-              className="w-full"
+              className="!p-2"
               disabled={isLoading || !selected}
               color="error"
               onClick={onImageDeleteHandler}
             >
               <Delete />{" "}
-              <span className="max-[420px]:hidden">Видалити файл</span>
+              <span className="max-[355px]:hidden">Видалити файл</span>
             </Button>
             <Button
               onClick={onImageUploadHandler}
-              className="w-full"
+              className="!p-2"
               disabled={isLoading}
             >
-              <Upload /> <span className="max-[420px]:hidden">Завантажити</span>
+              <Upload /> <span className="max-[355px]:hidden">Завантажити</span>
             </Button>
           </>
         ) : (
@@ -110,7 +142,11 @@ const IconsModal: FC<IconsModalProps> = ({ onSelect }) => {
             >
               <Upload />
             </Button>
-            <Button onClick={onSelectClickHandler} className="w-full">
+            <Button
+              disabled={isLoading || !selected}
+              onClick={onSelectClickHandler}
+              className=""
+            >
               Вибрати
             </Button>
           </>

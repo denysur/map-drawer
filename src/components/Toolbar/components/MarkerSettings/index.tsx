@@ -15,6 +15,7 @@ import {
 } from "../../../../constants";
 
 import { Marker, MarkerIcon } from "../../../../types";
+import { getTextColor } from "../../../../utils/common";
 
 type MarkerSettingsProps = {
   isAddNewMarkerMode: boolean;
@@ -134,23 +135,26 @@ const MarkerSettings: FC<MarkerSettingsProps> = ({
           title="Виберіть іконку маркеру"
           onClose={closeIconsModal}
         >
-          <div className="flex flex-col gap-4">
-            <IconsModal onSelect={onMarkerIconChangeHandler} />
-          </div>
+          <IconsModal onSelect={onMarkerIconChangeHandler} />
         </Modal>
       </div>
       {!selectedMarker?.icon && (
         <div className="flex w-full gap-2 justify-between items-center">
-          <span className="select-none">Колір: </span>
+          <span className="select-none">Змінити колір: </span>
           <div ref={ref} className="relative">
             <div
-              className="w-9 h-9 rounded-lg cursor-pointer"
+              className="p-2 w-24 text-center rounded-lg cursor-pointer font-bold"
               style={{
                 backgroundColor: selectedMarker?.color || DEFAULT_MARKER_COLOR,
+                color: getTextColor(
+                  selectedMarker?.color || DEFAULT_MARKER_COLOR
+                ),
               }}
               onClick={openColorPicker}
               onBlur={closeColorPicker}
-            ></div>
+            >
+              {selectedMarker?.color}
+            </div>
             {isColorPickerVisible && (
               <div className="absolute bottom-8 left-8">
                 <HexColorPicker

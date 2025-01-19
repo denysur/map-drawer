@@ -51,19 +51,17 @@ const Modal: FC<ModalProps> = ({ isOpen, onClose, title, children }) => {
       ></div>
       <div className="overflow-hidden z-10 dark:bg-zinc-900 dark:text-white flex flex-col bg-white max-h-full w-full max-w-[768px] rounded-xl shadow-lg relative">
         <button
-          className={`absolute z-10 p-2 rounded-lg ease duration-200 text-zinc-500 hover:bg-black/[.1] hover:text-black dark:hover:bg-white/[.05] dark:hover:text-white ${title ? "top-3 right-3" : "top-1 right-1"}`}
+          className={`absolute z-10 p-2 rounded-lg ease duration-200 text-zinc-500 hover:bg-black/[.1] hover:text-black dark:hover:bg-white/[.05] dark:hover:text-white ${title ? "top-[10px] right-[10px]" : "top-1 right-1"}`}
           onClick={handleClose}
         >
           <Close />
         </button>
-        <div className="h-full flex flex-col overflow-auto">
-          {title && (
-            <div className="bg-gradient-to-b from-white dark:from-zinc-900 from-25% to-transparent top-0 sticky flex justify-between items-center px-4 pt-3 pb-5">
-              <h2 className="text-2xl font-bold">{title}</h2>
-            </div>
-          )}
-          <div className={`h-full`}>{children}</div>
-        </div>
+        {title && (
+          <div className="flex justify-between items-center px-4 py-3">
+            <h2 className="text-2xl font-bold">{title}</h2>
+          </div>
+        )}
+        {children}
       </div>
     </div>,
     document.body

@@ -36,9 +36,7 @@ const MapPage = () => {
         title="Іконки маркеру"
         onClose={closeIconsModal}
       >
-        <div className="flex flex-col gap-4">
-          <IconsModal />
-        </div>
+        <IconsModal />
       </Modal>
 
       <Map />
