@@ -9,6 +9,7 @@ import {
   setMarkerSize,
   setMarkerColor,
   setMarkerIcon,
+  setMarkerRotation,
 } from "../../app/slices/markerSlice";
 import { generateId } from "../../utils/common";
 import { useActiveTool } from "./useActiveTool";
@@ -84,6 +85,12 @@ export const useMarkers = () => {
     },
     []
   );
+  const updateMarkerRotation = useCallback(
+    (data: { id: string; rotation: number }) => {
+      dispatch(setMarkerRotation(data));
+    },
+    []
+  );
 
   const updateMarkerColor = useCallback(
     (data: { id: string; color: string }) => {
@@ -109,6 +116,7 @@ export const useMarkers = () => {
           addMarker,
           updateMarkerPosition,
           updateMarkerSize,
+          updateMarkerRotation,
           updateMarkerColor,
           updateMarkerIcon,
         },

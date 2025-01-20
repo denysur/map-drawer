@@ -20,6 +20,7 @@ const Tools = () => {
       updateMarkerSize,
       updateMarkerColor,
       updateMarkerIcon,
+      updateMarkerRotation,
       removeMarker,
     },
   ] = useMarkers();
@@ -51,6 +52,10 @@ const Tools = () => {
 
   const onMarkerSizeChange = (data: { id: string; scale: number }) => {
     updateMarkerSize(data);
+  };
+
+  const onMarkerRotationChange = (data: { id: string; rotation: number }) => {
+    updateMarkerRotation(data);
   };
 
   const onMarkerColorChange = (data: { id: string; color: string }) => {
@@ -86,6 +91,7 @@ const Tools = () => {
         selectedMarker={selectedMarker}
         onClose={onMarkerToolCloseHandler}
         onMarkerSizeChange={onMarkerSizeChange}
+        onMarkerRotationChange={onMarkerRotationChange}
         onMarkerColorChange={onMarkerColorChange}
         onMarkerDelete={onMarkerDelete}
         onMarkerIconChange={onMarkerIconChange}

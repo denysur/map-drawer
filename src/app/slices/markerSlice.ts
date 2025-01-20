@@ -78,6 +78,19 @@ export const markerSlice = createSlice({
           : marker
       );
     },
+    setMarkerRotation: (
+      state,
+      action: PayloadAction<{ id: string; rotation: number }>
+    ) => {
+      state.markers = state.markers.map((marker) =>
+        marker.id === action.payload.id
+          ? {
+              ...marker,
+              rotation: action.payload.rotation,
+            }
+          : marker
+      );
+    },
   },
 });
 
@@ -89,6 +102,7 @@ export const {
   setMarkerColor,
   setMarkerSize,
   setMarkerIcon,
+  setMarkerRotation,
 } = markerSlice.actions;
 
 export default markerSlice.reducer;

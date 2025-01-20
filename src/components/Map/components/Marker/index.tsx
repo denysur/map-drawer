@@ -47,6 +47,7 @@ const Marker: FC<MarkerProps> = memo((props) => {
           className="flex items-end justify-center"
           style={{
             height: DEFAULT_MARKER_SIZE * marker.scale,
+            transform: `rotate(${marker.rotation}deg)`,
           }}
         >
           <img
