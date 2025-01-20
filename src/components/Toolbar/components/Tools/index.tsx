@@ -1,6 +1,8 @@
+import html2canvas from "html2canvas";
+
+import { Camera, MapMarker } from "../../../Icons";
 import IconButton from "../../../Common/IconButton";
 import MarkerSettings from "../../components/MarkerSettings";
-import { MapMarker } from "../../../Icons";
 
 import { useActiveTool } from "../../../../hooks/state/useActiveTool";
 import { useMarkers } from "../../../../hooks/state/useMarkers";
@@ -22,6 +24,22 @@ const Tools = () => {
 
   const onMarkerToolOpenHandler = () => setActiveTool("marker");
   const onMarkerToolCloseHandler = () => unselectMarker();
+
+  const onScreenshotToolOpenHandler = async () => {
+    const domRef = document.querySelector(".mapboxgl-wrapper") as HTMLElement;
+    if (domRef) {
+      const canvas = await html2canvas(domRef, {
+        allowTaint: false,
+        useCORS: true,
+      });
+      const dataUrl = canvas.toDataURL("image/png");
+
+      const link = document.createElement("a");
+      link.href = dataUrl;
+      link.download = "screenshot.png";
+      link.click();
+    }
+  };
 
   const onMarkerSizeChange = (data: { id: string; scale: number }) => {
     updateMarkerSize(data);
@@ -57,11 +75,18 @@ const Tools = () => {
   }
 
   return (
-    <IconButton
-      color="primaryLight"
-      iconComponent={MapMarker}
-      onClick={onMarkerToolOpenHandler}
-    />
+    <>
+      <IconButton
+        color="primaryLight"
+        iconComponent={MapMarker}
+        onClick={onMarkerToolOpenHandler}
+      />
+      <IconButton
+        color="primaryLight"
+        iconComponent={Camera}
+        onClick={onScreenshotToolOpenHandler}
+      />
+    </>
   );
 };
 
