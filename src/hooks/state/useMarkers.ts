@@ -56,12 +56,13 @@ export const useMarkers = () => {
   }, []);
 
   const addMarker = useCallback(
-    (marker: Omit<Marker, "id" | "color" | "scale" | "icon">) => {
+    (marker: Omit<Marker, "rotation" | "id" | "color" | "scale" | "icon">) => {
       dispatch(
         addMarkerAction({
           ...marker,
           color: DEFAULT_MARKER_COLOR,
           scale: DEFAULT_MARKER_SCALE,
+          rotation: 0,
           icon: null,
           id: generateId(),
         })
