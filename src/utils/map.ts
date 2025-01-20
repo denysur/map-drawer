@@ -2,6 +2,7 @@
 import shapeit from "@amaplex-software/shapeit";
 
 import { Geometry } from "../types";
+
 /**
  * Calculates the geometric center (centroid) of a shape given its coordinates.
  *
@@ -97,6 +98,20 @@ export const shapeDetector = (coordinates: number[][], scaleFactor: number) => {
   }
 
   const { vertices } = geometry;
+
+  if (geometryName === "vector") {
+    vertices.shift(); // remove first point
+    vertices.pop(); // remove last point
+
+    return {
+      ...geometry,
+      vertices: [
+        coordinates[0],
+        ...vertices,
+        coordinates[coordinates.length - 1],
+      ],
+    };
+  }
 
   return {
     ...geometry,
