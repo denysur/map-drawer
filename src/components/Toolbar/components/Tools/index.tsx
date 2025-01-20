@@ -1,11 +1,13 @@
 import html2canvas from "html2canvas";
 
-import { Camera, MapMarker } from "../../../Icons";
 import IconButton from "../../../Common/IconButton";
-import MarkerSettings from "../../components/MarkerSettings";
+import MarkerSettings from "../MarkerSettings";
+import DrawingSettings from "../DrawingSettings";
+import { Camera, MapMarker, Draw } from "../../../Icons";
 
 import { useActiveTool } from "../../../../hooks/state/useActiveTool";
 import { useMarkers } from "../../../../hooks/state/useMarkers";
+import { useDrawings } from "../../../../hooks/state/useDrawings";
 
 import { MarkerIcon } from "../../../../types";
 
@@ -21,9 +23,15 @@ const Tools = () => {
       removeMarker,
     },
   ] = useMarkers();
+  const [
+    { selectedDraw, isAddNewDrawingMode },
+    { removeDraw, updateDrawSize, updateDrawColor, unselectDrawing },
+  ] = useDrawings();
 
   const onMarkerToolOpenHandler = () => setActiveTool("marker");
   const onMarkerToolCloseHandler = () => unselectMarker();
+  const onFreehandDrawToolOpenHandler = () => setActiveTool("freehand-draw");
+  const onFreehandDrawToolCloseHandler = () => unselectDrawing();
 
   const onScreenshotToolOpenHandler = async () => {
     const domRef = document.querySelector(".mapboxgl-wrapper") as HTMLElement;
@@ -60,6 +68,17 @@ const Tools = () => {
     removeMarker(id);
   };
 
+  const onDrawDelete = (id: string) => {
+    removeDraw(id);
+  };
+  const onDrawSizeChange = (data: { id: string; scale: number }) => {
+    updateDrawSize(data);
+  };
+
+  const onDrawColorChange = (data: { id: string; color: string }) => {
+    updateDrawColor(data);
+  };
+
   if (activeTool === "marker") {
     return (
       <MarkerSettings
@@ -74,12 +93,30 @@ const Tools = () => {
     );
   }
 
+  if (activeTool === "freehand-draw") {
+    return (
+      <DrawingSettings
+        isAddNewDrawingMode={isAddNewDrawingMode}
+        selectedDraw={selectedDraw}
+        onClose={onFreehandDrawToolCloseHandler}
+        onDrawDelete={onDrawDelete}
+        onDrawSizeChange={onDrawSizeChange}
+        onDrawColorChange={onDrawColorChange}
+      />
+    );
+  }
+
   return (
     <>
       <IconButton
         color="primaryLight"
         iconComponent={MapMarker}
         onClick={onMarkerToolOpenHandler}
+      />
+      <IconButton
+        color="primaryLight"
+        iconComponent={Draw}
+        onClick={onFreehandDrawToolOpenHandler}
       />
       <IconButton
         color="primaryLight"

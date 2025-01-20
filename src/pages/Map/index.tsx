@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import Layout from "../../components/Layout";
 import Map from "../../components/Map";
@@ -15,6 +15,16 @@ const MapPage = () => {
 
   const openIconsModal = () => setIsIconsModalOpen(true);
   const closeIconsModal = () => setIsIconsModalOpen(false);
+
+  useEffect(() => {
+    document.addEventListener(
+      "touchmove",
+      function (e) {
+        e.preventDefault();
+      },
+      { passive: false }
+    );
+  }, []);
 
   return (
     <Layout>
