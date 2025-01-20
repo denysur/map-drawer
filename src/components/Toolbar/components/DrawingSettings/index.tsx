@@ -5,7 +5,14 @@ import { HexColorPicker } from "react-colorful";
 import Button from "../../../Common/Button";
 import { Close } from "../../../Icons";
 
-import { DEFAULT_MARKER_COLOR } from "../../../../constants";
+import { getTextColor } from "../../../../utils/common";
+
+import {
+  DEFAULT_MARKER_COLOR,
+  DEFAULT_MARKER_SCALE,
+  MAXIMUM_MARKER_SCALE,
+  MINIMUM_MARKER_SCALE,
+} from "../../../../constants";
 
 type DrawingSettingsProps = {
   isAddNewDrawingMode: boolean;
@@ -69,47 +76,60 @@ const DrawingSettings: FC<DrawingSettingsProps> = ({
   }
 
   return (
-    <div className="flex flex-col gap-4">
-      <div className="flex w-full justify-end">
-        <Close onClick={onClose} className="cursor-pointer" />
+    <div className="flex flex-col max-w-96 gap-4">
+      <div
+        onClick={onClose}
+        className="absolute p-2 top-1 right-1 justify-self-end rounded-lg ease duration-200 text-zinc-500 hover:bg-black/[.1] hover:text-black dark:hover:bg-white/[.05] dark:hover:text-white cursor-pointer"
+      >
+        <Close className="" />
       </div>
-      <div className="flex w-full gap-2">
-        <div>Колір:</div>
-        <div ref={ref} className="relative">
-          <div
-            className="w-6 h-6 rounded cursor-pointer"
-            style={{
-              backgroundColor: selectedDraw?.color || DEFAULT_MARKER_COLOR,
-            }}
-            onClick={openColorPicker}
-            onBlur={closeColorPicker}
-          ></div>
-          {isColorPickerVisible && (
-            <div className="absolute bottom-8 left-8">
-              <HexColorPicker
-                color={selectedDraw?.color || DEFAULT_MARKER_COLOR}
-                onChange={onDrawColorChangeHandler}
-              />
+      <div>
+        <h2 className="font-bold">Налаштування фігури</h2>
+      </div>
+      {!selectedDraw?.icon && (
+        <div className="flex w-full gap-2 justify-between items-center">
+          <span className="select-none">Змінити колір: </span>
+          <div ref={ref} className="relative">
+            <div
+              className="p-2 w-24 text-center rounded-lg cursor-pointer font-bold"
+              style={{
+                backgroundColor: selectedDraw?.color || DEFAULT_MARKER_COLOR,
+                color: getTextColor(
+                  selectedDraw?.color || DEFAULT_MARKER_COLOR
+                ),
+              }}
+              onClick={openColorPicker}
+              onBlur={closeColorPicker}
+            >
+              {selectedDraw?.color}
             </div>
-          )}
+            {isColorPickerVisible && (
+              <div className="absolute bottom-8 left-8">
+                <HexColorPicker
+                  color={selectedDraw?.color || DEFAULT_MARKER_COLOR}
+                  onChange={onDrawColorChangeHandler}
+                />
+              </div>
+            )}
+          </div>
         </div>
-      </div>
-      <div className="flex w-full gap-2">
-        <div>Розмір:</div>
-        <div>
+      )}
+      <div className="flex w-full gap-2 flex-col justify-between">
+        <span className="select-none">Розмір: </span>
+        <div className="w-full">
           <input
             type="range"
-            value={selectedDraw?.scale || 1}
+            value={selectedDraw?.scale || DEFAULT_MARKER_SCALE}
             onChange={onDrawSizeChangeHandler}
-            min="0.1"
-            max="3"
+            min={MINIMUM_MARKER_SCALE}
+            max={MAXIMUM_MARKER_SCALE}
             step="0.1"
             className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"
           />
         </div>
       </div>
       <div className="flex w-full gap-2">
-        <Button size="small" color="error" onClick={onDrawDeleteHandler}>
+        <Button color="error" className="w-full" onClick={onDrawDeleteHandler}>
           Видалити фігуру
         </Button>
       </div>
