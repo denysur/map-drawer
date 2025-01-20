@@ -9,7 +9,6 @@ import {
 } from "../../../../constants";
 
 import { Marker as MarkerType } from "../../../../types";
-import SafeImage from "../../../Common/SafeImage";
 
 type MarkerProps = {
   marker: MarkerType;
@@ -44,18 +43,21 @@ const Marker: FC<MarkerProps> = memo((props) => {
       onDragEnd={onPositionChangedHandler}
     >
       {icon ? (
-        <SafeImage
-          src={icon.url}
+        <div
+          className="flex items-end justify-center"
           style={{
-            width: DEFAULT_MARKER_SIZE * marker.scale,
             height: DEFAULT_MARKER_SIZE * marker.scale,
           }}
-          className="object-contain object-center-bottom"
-        />
+        >
+          <img
+            src={icon.url}
+            className="object-contain object-center-bottom h-full"
+          />
+        </div>
       ) : (
         <MapMarkerIcon
-          width={24 * marker.scale}
-          height={24 * marker.scale}
+          width={DEFAULT_MARKER_SIZE * marker.scale}
+          height={DEFAULT_MARKER_SIZE * marker.scale}
           fill={marker.color || DEFAULT_MARKER_COLOR}
         />
       )}
