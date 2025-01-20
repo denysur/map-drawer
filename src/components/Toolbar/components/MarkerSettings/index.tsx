@@ -23,6 +23,7 @@ type MarkerSettingsProps = {
   selectedMarker?: Marker;
   onClose: () => void;
   onMarkerSizeChange: (data: { id: string; scale: number }) => void;
+  onMarkerRotationChange: (data: { id: string; rotation: number }) => void;
   onMarkerColorChange: (data: { id: string; color: string }) => void;
   onMarkerIconChange: (data: { id: string; icon: MarkerIcon | null }) => void;
   onMarkerDelete: (id: string) => void;
@@ -33,6 +34,7 @@ const MarkerSettings: FC<MarkerSettingsProps> = ({
   selectedMarker,
   onClose,
   onMarkerSizeChange,
+  onMarkerRotationChange,
   onMarkerColorChange,
   onMarkerIconChange,
   onMarkerDelete,
@@ -73,6 +75,15 @@ const MarkerSettings: FC<MarkerSettingsProps> = ({
       onMarkerSizeChange({
         id: selectedMarker.id,
         scale: Number(e.target.value),
+      });
+    }
+  };
+
+  const onMarkerRotationChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
+    if (selectedMarker) {
+      onMarkerRotationChange({
+        id: selectedMarker.id,
+        rotation: Number(e.target.value),
       });
     }
   };
@@ -188,6 +199,22 @@ const MarkerSettings: FC<MarkerSettingsProps> = ({
           />
         </div>
       </div>
+      {selectedMarker?.icon && (
+        <div className="flex w-full gap-2 flex-col justify-between">
+          <span className="select-none">Поворот: </span>
+          <div className="w-full">
+            <input
+              type="range"
+              value={selectedMarker?.rotation || 0}
+              onChange={onMarkerRotationChangeHandler}
+              min={0}
+              max={360}
+              step="1"
+              className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"
+            />
+          </div>
+        </div>
+      )}
       <div className="flex w-full gap-2">
         <Button
           color="error"

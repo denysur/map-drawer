@@ -4,6 +4,7 @@ export type Marker = {
   id: string;
   color: string | null;
   scale: number;
+  rotation: number;
   longitude: number;
   latitude: number;
   icon: MarkerIcon | null;

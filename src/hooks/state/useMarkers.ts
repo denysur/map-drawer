@@ -9,6 +9,7 @@ import {
   setMarkerSize,
   setMarkerColor,
   setMarkerIcon,
+  setMarkerRotation,
 } from "../../app/slices/markerSlice";
 import { generateId } from "../../utils/common";
 import { useActiveTool } from "./useActiveTool";
@@ -55,12 +56,13 @@ export const useMarkers = () => {
   }, []);
 
   const addMarker = useCallback(
-    (marker: Omit<Marker, "id" | "color" | "scale" | "icon">) => {
+    (marker: Omit<Marker, "rotation" | "id" | "color" | "scale" | "icon">) => {
       dispatch(
         addMarkerAction({
           ...marker,
           color: DEFAULT_MARKER_COLOR,
           scale: DEFAULT_MARKER_SCALE,
+          rotation: 0,
           icon: null,
           id: generateId(),
         })
@@ -81,6 +83,12 @@ export const useMarkers = () => {
   const updateMarkerSize = useCallback(
     (data: { id: string; scale: number }) => {
       dispatch(setMarkerSize(data));
+    },
+    []
+  );
+  const updateMarkerRotation = useCallback(
+    (data: { id: string; rotation: number }) => {
+      dispatch(setMarkerRotation(data));
     },
     []
   );
@@ -109,6 +117,7 @@ export const useMarkers = () => {
           addMarker,
           updateMarkerPosition,
           updateMarkerSize,
+          updateMarkerRotation,
           updateMarkerColor,
           updateMarkerIcon,
         },
