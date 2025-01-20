@@ -199,20 +199,22 @@ const MarkerSettings: FC<MarkerSettingsProps> = ({
           />
         </div>
       </div>
-      <div className="flex w-full gap-2 flex-col justify-between">
-        <span className="select-none">Поворот: </span>
-        <div className="w-full">
-          <input
-            type="range"
-            value={selectedMarker?.rotation || 0}
-            onChange={onMarkerRotationChangeHandler}
-            min={0}
-            max={360}
-            step="1"
-            className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"
-          />
+      {selectedMarker?.icon && (
+        <div className="flex w-full gap-2 flex-col justify-between">
+          <span className="select-none">Поворот: </span>
+          <div className="w-full">
+            <input
+              type="range"
+              value={selectedMarker?.rotation || 0}
+              onChange={onMarkerRotationChangeHandler}
+              min={0}
+              max={360}
+              step="1"
+              className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"
+            />
+          </div>
         </div>
-      </div>
+      )}
       <div className="flex w-full gap-2">
         <Button
           color="error"
