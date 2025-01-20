@@ -1,10 +1,9 @@
 import html2canvas from "html2canvas";
 
-import { Camera, MapMarker } from "../../../Icons";
 import IconButton from "../../../Common/IconButton";
 import MarkerSettings from "../MarkerSettings";
 import DrawingSettings from "../DrawingSettings";
-import { MapMarker, Draw } from "../../../Icons";
+import { Camera, MapMarker, Draw } from "../../../Icons";
 
 import { useActiveTool } from "../../../../hooks/state/useActiveTool";
 import { useMarkers } from "../../../../hooks/state/useMarkers";
