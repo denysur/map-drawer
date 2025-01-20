@@ -1,4 +1,4 @@
-import { FC, SVGPropsM } from "react";
+import { FC, SVGProps } from "react";
 
 const MapMarker: FC<SVGProps<SVGSVGElement>> = (props) => (
   <svg
