@@ -3,13 +3,15 @@ import html2canvas from "html2canvas";
 import IconButton from "../../../Common/IconButton";
 import MarkerSettings from "../MarkerSettings";
 import DrawingSettings from "../DrawingSettings";
-import { Camera, MapMarker, Draw } from "../../../Icons";
+import { Camera, MapMarker, Draw, Arrow } from "../../../Icons";
 
 import { useActiveTool } from "../../../../hooks/state/useActiveTool";
 import { useMarkers } from "../../../../hooks/state/useMarkers";
 import { useDrawings } from "../../../../hooks/state/useDrawings";
 
 import { MarkerIcon } from "../../../../types";
+import { useArrows } from "../../../../hooks/state/useArrows";
+import ArrowSettings from "../ArrowSettings";
 
 const Tools = () => {
   const [activeTool, setActiveTool] = useActiveTool();
@@ -28,11 +30,17 @@ const Tools = () => {
     { selectedDraw, isAddNewDrawingMode },
     { removeDraw, updateDrawSize, updateDrawColor, unselectDrawing },
   ] = useDrawings();
+  const [
+    { selectedArrow, isAddNewArrowMode },
+    { removeArrow, updateArrowSize, updateArrowColor, unselectArrowing },
+  ] = useArrows();
 
   const onMarkerToolOpenHandler = () => setActiveTool("marker");
   const onMarkerToolCloseHandler = () => unselectMarker();
   const onFreehandDrawToolOpenHandler = () => setActiveTool("freehand-draw");
   const onFreehandDrawToolCloseHandler = () => unselectDrawing();
+  const onFreehandArrowToolOpenHandler = () => setActiveTool("arrow");
+  const onFreehandArrowToolCloseHandler = () => unselectArrowing();
 
   const onScreenshotToolOpenHandler = async () => {
     const domRef = document.querySelector(".mapboxgl-wrapper") as HTMLElement;
@@ -84,6 +92,17 @@ const Tools = () => {
     updateDrawColor(data);
   };
 
+  const onArrowDelete = (id: string) => {
+    removeArrow(id);
+  };
+  const onArrowSizeChange = (data: { id: string; scale: number }) => {
+    updateArrowSize(data);
+  };
+
+  const onArrowColorChange = (data: { id: string; color: string }) => {
+    updateArrowColor(data);
+  };
+
   if (activeTool === "marker") {
     return (
       <MarkerSettings
@@ -111,6 +130,18 @@ const Tools = () => {
       />
     );
   }
+  if (activeTool === "arrow") {
+    return (
+      <ArrowSettings
+        isAddNewArrowMode={isAddNewArrowMode}
+        selectedArrow={selectedArrow}
+        onClose={onFreehandArrowToolCloseHandler}
+        onArrowDelete={onArrowDelete}
+        onArrowSizeChange={onArrowSizeChange}
+        onArrowColorChange={onArrowColorChange}
+      />
+    );
+  }
 
   return (
     <>
@@ -123,6 +154,11 @@ const Tools = () => {
         color="primaryLight"
         iconComponent={Draw}
         onClick={onFreehandDrawToolOpenHandler}
+      />
+      <IconButton
+        color="primaryLight"
+        iconComponent={Arrow}
+        onClick={onFreehandArrowToolOpenHandler}
       />
       <IconButton
         color="primaryLight"

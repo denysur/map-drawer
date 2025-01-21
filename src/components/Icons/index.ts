@@ -5,3 +5,4 @@ export { default as Edit } from "./Edit";
 export { default as MapMarker } from "./MapMarker";
 export { default as Upload } from "./Upload";
 export { default as Draw } from "./Draw";
+export { default as Arrow } from "./Arrow";

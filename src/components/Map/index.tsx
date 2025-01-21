@@ -11,9 +11,16 @@ import { useMarkers } from "../../hooks/state/useMarkers";
 import { useDrawings } from "../../hooks/state/useDrawings";
 import { useMapDrawing } from "../../hooks/map/useMapDrawing";
 
-import { Marker as MarkerType, Geometry as GeometryType } from "../../types";
+import {
+  Marker as MarkerType,
+  Geometry as GeometryType,
+  Arrow as ArrowType,
+} from "../../types";
 
 import "mapbox-gl/dist/mapbox-gl.css";
+import { useMapArrows } from "../../hooks/map/useMapArrows";
+import { useArrows } from "../../hooks/state/useArrows";
+import Arrow from "./components/Arrow";
 
 const Map = () => {
   const [zoom, setZoom] = useState(5);
@@ -21,11 +28,20 @@ const Map = () => {
     { isAddNewMarkerMode, markers },
     { addMarker, selectMarker, updateMarkerPosition },
   ] = useMarkers();
-  const [{ isDrawingMode, isAddNewDrawingMode, drawings }, { addDraw }] =
-    useDrawings();
+  const [
+    { isDrawingMode, isAddNewDrawingMode, drawings },
+    { addDraw: addDrawGeometry },
+  ] = useDrawings();
+  const [{ isArrowMode, isAddNewArrowMode, arrows }, { addArrow }] =
+    useArrows();
 
   const onGeometryCreate = useCallback(
-    (geometry: GeometryType) => addDraw(geometry),
+    (geometry: GeometryType) => addDrawGeometry(geometry),
+    []
+  );
+  const onArrowCreate = useCallback(
+    (arrow: ArrowType["vertices"], scaleFactor: number) =>
+      addArrow(arrow, scaleFactor),
     []
   );
 
@@ -64,6 +80,11 @@ const Map = () => {
     onGeometryReady: onGeometryCreate,
   });
 
+  const [{ coordinates: arrowCoordinates }] = useMapArrows({
+    isArrowMode: isAddNewArrowMode,
+    onArrowReady: onArrowCreate,
+  });
+
   return (
     <div className="mapboxgl-wrapper w-full h-full">
       <Logo />
@@ -76,12 +97,16 @@ const Map = () => {
           zoom,
         }}
         minZoom={1}
-        cursor={isAddNewMarkerMode || isDrawingMode ? "pointer" : "grab"}
+        cursor={
+          isAddNewMarkerMode || isDrawingMode || isArrowMode
+            ? "pointer"
+            : "grab"
+        }
         mapStyle="https://api.maptiler.com/maps/bcca4c4a-53a2-4f35-a54f-1d8288722cb1/style.json?key=5adXclVMBOvAgEYziUJG"
         attributionControl={false}
         onClick={onMapClickHandler}
         preserveDrawingBuffer={true}
-        dragPan={!isDrawingMode}
+        dragPan={!isDrawingMode && !isArrowMode}
         onZoom={onMapZoomChangeHandler}
       >
         {markers.map((marker) => (
@@ -95,7 +120,11 @@ const Map = () => {
         {drawings.map((draw) => (
           <Geometry key={draw.id} draw={draw} />
         ))}
+        {arrows.map((arrow) => (
+          <Arrow key={arrow.id} arrow={arrow} />
+        ))}
 
+        <FreehandDrawingResult drawingCoordinates={arrowCoordinates} />
         <FreehandDrawingResult drawingCoordinates={drawingCoordinates} />
       </MapboxMap>
     </div>
