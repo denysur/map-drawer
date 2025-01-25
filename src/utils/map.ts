@@ -2,9 +2,6 @@
 import shapeit from "@amaplex-software/shapeit";
 
 import { Geometry } from "../types";
-import { ARROWHEAD_ANGLE, ARROWHEAD_SIZE } from "../constants";
-
-const toRadians = (angle: number): number => (angle * Math.PI) / 180;
 
 /**
  * Calculates the geometric center (centroid) of a shape given its coordinates.
@@ -123,29 +120,4 @@ export const shapeDetector = (coordinates: number[][], scaleFactor: number) => {
       centerY + (y - centerY) / scaleFactor,
     ]),
   };
-};
-
-export const calculateShiftedLines = (
-  points: number[][],
-  scaleFactor: number = 1
-): number[][] => {
-  const [[x1, y1], [x2, y2]] = points;
-
-  const theta: number = Math.atan2(y2 - y1, x2 - x1);
-
-  const thetaReverse: number = theta + Math.PI;
-
-  const theta1: number = thetaReverse + toRadians(ARROWHEAD_ANGLE / 2);
-  const theta2: number = thetaReverse - toRadians(ARROWHEAD_ANGLE / 2);
-
-  const x3_1: number = x2 + ARROWHEAD_SIZE * Math.cos(theta1) * scaleFactor;
-  const y3_1: number = y2 + ARROWHEAD_SIZE * Math.sin(theta1) * scaleFactor;
-
-  const x3_2: number = x2 + ARROWHEAD_SIZE * Math.cos(theta2) * scaleFactor;
-  const y3_2: number = y2 + ARROWHEAD_SIZE * Math.sin(theta2) * scaleFactor;
-
-  return [
-    [x3_1, y3_1],
-    [x3_2, y3_2],
-  ];
 };
