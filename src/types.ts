@@ -10,16 +10,10 @@ export type Marker = {
   icon: MarkerIcon | null;
 };
 
-export type Geometry =
-  | {
-      name: "circle";
-      center: number[];
-      radius: number;
-    }
-  | {
-      name: "vector" | "open polygon" | "rectangle"; // and others
-      vertices: number[][];
-    };
+export type Geometry = {
+  name: "vector" | "open polygon" | "rectangle" | "polygon"; // and others
+  vertices: number[][];
+};
 
 export type Draw = {
   id: string;

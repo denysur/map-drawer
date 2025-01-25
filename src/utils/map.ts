@@ -1,7 +1,42 @@
 // @ts-ignore
 import shapeit from "@amaplex-software/shapeit";
+import * as turf from "@turf/turf";
 
 import { Geometry } from "../types";
+
+/**
+ * Calculates the bounding rectangle for a given set of coordinates.
+ *
+ * @param {number[][]} coordinates - An array of coordinates in [longitude, latitude] format.
+ * @returns {number[][]} - The bounding rectangle as an array of corner points:
+ *                        [southwest, northwest, northeast, southeast].
+ *
+ * @example
+ * const shapeCoordinates = [
+ *   [30.5, 50.45],
+ *   [30.6, 50.5],
+ *   [30.55, 50.55]
+ * ];
+ * const boundingBox = getBoundingRectangle(shapeCoordinates);
+ * console.log(boundingBox);
+ */
+export const getBoundingRectangle = (coordinates: number[][]): number[][] => {
+  const lons = coordinates.map((coord) => coord[0]);
+  const lats = coordinates.map((coord) => coord[1]);
+
+  const minLon = Math.min(...lons);
+  const maxLon = Math.max(...lons);
+  const minLat = Math.min(...lats);
+  const maxLat = Math.max(...lats);
+
+  // Return rectangle corners: SW, NW, NE, SE
+  return [
+    [minLon, minLat], // Southwest
+    [minLon, maxLat], // Northwest
+    [maxLon, maxLat], // Northeast
+    [maxLon, minLat], // Southeast
+  ];
+};
 
 /**
  * Calculates the geometric center (centroid) of a shape given its coordinates.
@@ -15,14 +50,10 @@ import { Geometry } from "../types";
  * console.log(center); // [5, 5]
  */
 export const getCenterPointOfShape = (coordinates: number[][]) => {
-  const centerX =
-    coordinates.reduce((acc, curr) => {
-      return (acc += curr[0]);
-    }, 0) / coordinates.length;
-  const centerY =
-    coordinates.reduce((acc, curr) => {
-      return (acc += curr[1]);
-    }, 0) / coordinates.length;
+  const boundingRect = getBoundingRectangle(coordinates);
+
+  const centerX = (boundingRect[0][0] + boundingRect[2][0]) / 2;
+  const centerY = (boundingRect[0][1] + boundingRect[2][1]) / 2;
 
   return [centerX, centerY];
 };
@@ -61,6 +92,38 @@ export const getCircleRadiusFromRoughShape = (
 };
 
 /**
+ * Generates a set of points representing a circle on the Earth's surface.
+ *
+ * @param { [number, number] } center - The center of the circle as [longitude, latitude].
+ * @param { number } radius - The radius of the circle in meters.
+ * @param { number } [numPoints=64] - The number of points to approximate the circle (default is 64).
+ * @returns { number[][] } - An array of coordinates representing the circle in [longitude, latitude] format.
+ *
+ * @example
+ * const center = [30.5234, 50.4501];  // Kyiv coordinates
+ * const radius = 1000;  // 1 km
+ * const circlePoints = generateCirclePoints(center, radius);
+ * console.log(circlePoints);
+ */
+export const generateCirclePoints = (
+  center: [number, number],
+  radius: number,
+  numPoints = 64
+): number[][] => {
+  const from = turf.point(center);
+  const to = turf.point([center[0], center[1] + radius]);
+
+  const distance = turf.distance(from, to, { units: "meters" });
+
+  const circle = turf.circle(center, distance, {
+    steps: numPoints,
+    units: "meters",
+  });
+
+  return circle.geometry.coordinates[0];
+};
+
+/**
  * Detects the shape of a given set of coordinates and scales it up or down based on the provided scale factor.
  * The function scales the coordinates to a reference zoom level, identifies the shape, and scales it back to the expected size.
  *
@@ -85,16 +148,21 @@ export const shapeDetector = (coordinates: number[][], scaleFactor: number) => {
     centerY + (y - centerY) * scaleFactor,
   ]);
 
-  const geometry: Geometry = shapeit(newCoord);
+  const geometry:
+    | Geometry
+    | { name: "circle"; center: number[]; radius: number } = shapeit(newCoord);
   const { name: geometryName } = geometry;
 
-  // scale down to expected size cirle
   if (geometryName === "circle") {
+    const radius = getCircleRadiusFromRoughShape(
+      [centerX, centerY],
+      coordinates
+    );
+
     return {
-      ...geometry,
-      center: [centerX, centerY],
-      radius: getCircleRadiusFromRoughShape([centerX, centerY], coordinates),
-    };
+      name: "polygon",
+      vertices: generateCirclePoints([centerX, centerY], radius),
+    } as Geometry;
   }
 
   const { vertices } = geometry;
