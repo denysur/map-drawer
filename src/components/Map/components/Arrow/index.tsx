@@ -21,18 +21,17 @@ const createArrow = (vertices: number[][], scaleFactor: number) => {
   );
   const length = ARROWHEAD_SIZE / (scaleFactor / 50); // Arrowhead size
   const maxLength = turf.distance(vertices[0], vertices[1], "miles") / 4;
-  console.log(length, maxLength);
 
   // Two points for the arrowhead wings
   const leftWing = turf.destination(
     turf.point(vertices[1]),
     length > maxLength ? maxLength : length,
-    bearing - (180 - ARROWHEAD_ANGLE)
+    bearing + 180 + ARROWHEAD_ANGLE
   ).geometry.coordinates;
   const rightWing = turf.destination(
     turf.point(vertices[1]),
     length > maxLength ? maxLength : length,
-    bearing + (180 - ARROWHEAD_ANGLE)
+    bearing + 180 - ARROWHEAD_ANGLE
   ).geometry.coordinates;
 
   // Combine line and arrowhead into GeoJSON
