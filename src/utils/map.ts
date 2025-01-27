@@ -2,7 +2,11 @@
 import shapeit from "@amaplex-software/shapeit";
 import * as turf from "@turf/turf";
 
-import { Geometry } from "../types";
+import { EARTH_RADIUS } from "../constants";
+
+import { Draw, Geometry } from "../types";
+
+const coordinateCache = new Map<string, [number, number]>(); // this is the cache for lonLatToMetersWithCache function
 
 /**
  * Calculates the bounding rectangle for a given set of coordinates.
@@ -158,10 +162,12 @@ export const shapeDetector = (coordinates: number[][], scaleFactor: number) => {
       [centerX, centerY],
       coordinates
     );
+    const circleVertices = generateCirclePoints([centerX, centerY], radius);
 
     return {
-      name: "polygon",
-      vertices: generateCirclePoints([centerX, centerY], radius),
+      name: "circle",
+      vertices: [...circleVertices, circleVertices[0]],
+      center: [centerX, centerY],
     } as Geometry;
   }
 
@@ -181,11 +187,157 @@ export const shapeDetector = (coordinates: number[][], scaleFactor: number) => {
     };
   }
 
+  const polygonVertices = vertices.map(([x, y]) => [
+    centerX + (x - centerX) / scaleFactor,
+    centerY + (y - centerY) / scaleFactor,
+  ]);
+
   return {
     ...geometry,
-    vertices: vertices.map(([x, y]) => [
-      centerX + (x - centerX) / scaleFactor,
-      centerY + (y - centerY) / scaleFactor,
-    ]),
+    vertices:
+      geometryName === "open polygon"
+        ? polygonVertices
+        : [...polygonVertices, polygonVertices[0]],
   };
+};
+
+const toRadians = (degrees: number) => (degrees * Math.PI) / 180;
+
+/**
+ * Converts geographic coordinates (longitude, latitude) to meters using the EPSG:3857 projection.
+ *
+ * @param {number} lon - Longitude in degrees.
+ * @param {number} lat - Latitude in degrees.
+ * @returns {[number, number]} The projected coordinates in meters (x, y).
+ */
+export const lonLatToMeters = (lon: number, lat: number): [number, number] => {
+  const x = lon * ((EARTH_RADIUS * Math.PI) / 180);
+  const y = Math.log(Math.tan(Math.PI / 4 + toRadians(lat) / 2)) * EARTH_RADIUS;
+  return [x, y];
+};
+
+/**
+ * Converts geographic coordinates (longitude, latitude) to meters using the EPSG:3857 projection.
+ * This function uses caching to improve performance for repeated coordinate transformations.
+ *
+ * EPSG:3857 is a popular Web Mercator projection used in web mapping applications.
+ *
+ * @param {number} lon - Longitude in degrees (ranging from -180 to 180).
+ * @param {number} lat - Latitude in degrees (ranging from -85 to 85, to avoid singularities at poles).
+ * @returns {[number, number]} The projected coordinates in meters as [x, y].
+ *
+ * @example
+ * const [x, y] = lonLatToMetersWithCache(30.5234, 50.4501);
+ * console.log(x, y); // Outputs projected coordinates in meters
+ */
+export const lonLatToMetersWithCache = (
+  lon: number,
+  lat: number
+): [number, number] => {
+  const key = `${lon},${lat}`;
+  if (coordinateCache.has(key)) {
+    return coordinateCache.get(key)!;
+  }
+
+  const result = lonLatToMeters(lon, lat);
+
+  coordinateCache.set(key, result);
+
+  return result;
+};
+
+/**
+ * Calculates the Euclidean distance between two points in EPSG:3857 projection.
+ *
+ * @param {[number, number]} coord1 - The first point [x, y] in meters.
+ * @param {[number, number]} coord2 - The second point [x, y] in meters.
+ * @returns {number} The Euclidean distance between the two points in meters.
+ */
+export const euclideanDistance = (
+  coord1: [number, number],
+  coord2: [number, number]
+): number => {
+  const dx = coord2[0] - coord1[0];
+  const dy = coord2[1] - coord1[1];
+  return Math.sqrt(dx * dx + dy * dy);
+};
+
+/**
+ * Calculates the shortest distance from a point to a polyline in the EPSG:3857 projection.
+ *
+ * @param {[number, number]} point - The point to measure from [longitude, latitude].
+ * @param {[number, number][]} line - The polyline represented as an array of [longitude, latitude] pairs.
+ * @returns {number} The minimum distance from the point to the polyline in meters.
+ */
+export const distancePointToProjectedLine = (
+  point: [number, number],
+  line: [number, number][]
+): number => {
+  let minDistance = Infinity;
+
+  const pointMeters = lonLatToMeters(point[0], point[1]);
+
+  for (let i = 1; i < line.length; i++) {
+    const A = lonLatToMetersWithCache(line[i - 1][0], line[i - 1][1]);
+    const B = lonLatToMetersWithCache(line[i][0], line[i][1]);
+
+    // Compute vector components
+    const dX = B[0] - A[0];
+    const dY = B[1] - A[1];
+
+    // Calculate projection of the point onto the line segment
+    const dXPoint = pointMeters[0] - A[0];
+    const dYPoint = pointMeters[1] - A[1];
+
+    const dotProduct = dXPoint * dX + dYPoint * dY;
+    const lengthSquared = dX * dX + dY * dY;
+
+    let t = dotProduct / lengthSquared;
+    t = Math.max(0, Math.min(1, t)); // Clamp t to stay within the segment bounds
+
+    // Find the closest point on the segment
+    const projection = [A[0] + t * dX, A[1] + t * dY] as [number, number];
+
+    // Calculate the distance from the projected point to the original point
+    const dProjection = euclideanDistance(pointMeters, projection);
+
+    if (!isNaN(dProjection)) {
+      minDistance = Math.min(minDistance, dProjection);
+    }
+  }
+
+  return minDistance; // Distance in meters
+};
+
+/**
+ * Finds the draw object that was clicked based on proximity to the line.
+ *
+ * @param {number[]} clickPoint - The clicked point coordinates [longitude, latitude].
+ * @param {Array<{ geometry: { vertices: [number, number][] } }>} drawings - The list of draw objects with geometries.
+ * @param {number} scaleFactor - The scale factor to adjust the click threshold.
+ * @returns {object | null} The clicked draw object, or null if no draw was found within the threshold.
+ *
+ * @example
+ * const clickedDraw = findClickedDraw([30.5234, 50.4501], drawings, scaleFactor);
+ * if (clickedDraw) {
+ *   console.log("Clicked draw found:", clickedDraw);
+ * }
+ */
+export const findClickedDraw = (
+  clickPoint: [number, number],
+  drawings: Draw[],
+  clickThreshold: number
+): Draw | null => {
+  for (const draw of drawings) {
+    const distance = distancePointToProjectedLine(
+      clickPoint,
+      draw.geometry.vertices as [number, number][]
+    );
+
+    if (distance < clickThreshold) {
+      return draw;
+    }
+  }
+
+  return null;
 };

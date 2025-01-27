@@ -1,5 +1,5 @@
-import { useCallback, useState } from "react";
-import { default as MapboxMap, ViewStateChangeEvent } from "react-map-gl";
+import { useCallback } from "react";
+import { default as MapboxMap } from "react-map-gl";
 import { MapMouseEvent } from "mapbox-gl";
 
 import Logo from "../Logo";
@@ -10,6 +10,7 @@ import Geometry from "./components/Geometry";
 import { useMarkers } from "../../hooks/state/useMarkers";
 import { useDrawings } from "../../hooks/state/useDrawings";
 import { useMapDrawing } from "../../hooks/map/useMapDrawing";
+import { findClickedDraw } from "../../utils/map";
 
 import {
   Marker as MarkerType,
@@ -23,14 +24,13 @@ import { useArrows } from "../../hooks/state/useArrows";
 import Arrow from "./components/Arrow";
 
 const Map = () => {
-  const [zoom, setZoom] = useState(5);
   const [
     { isAddNewMarkerMode, markers },
     { addMarker, selectMarker, updateMarkerPosition },
   ] = useMarkers();
   const [
     { isDrawingMode, isAddNewDrawingMode, drawings },
-    { addDraw: addDrawGeometry },
+    { addDraw: addDrawGeometry, selectDraw },
   ] = useDrawings();
   const [{ isArrowMode, isAddNewArrowMode, arrows }, { addArrow }] =
     useArrows();
@@ -56,6 +56,25 @@ const Map = () => {
     []
   );
 
+  const handleGeometryClick = useCallback(
+    (event: MapMouseEvent) => {
+      if (drawings.length) {
+        const { lngLat, target } = event;
+        const clickPoint = [lngLat.lng, lngLat.lat] as [number, number];
+        const zoom = target.getZoom();
+        const scaleFactor = Math.pow(2, zoom);
+        const threshold = 200000 / scaleFactor;
+
+        const draw = findClickedDraw(clickPoint, drawings, threshold);
+
+        if (draw) {
+          selectDraw(draw.id);
+        }
+      }
+    },
+    [drawings]
+  );
+
   const onMapClickHandler = useCallback(
     (e: MapMouseEvent) => {
       if (isAddNewMarkerMode) {
@@ -64,15 +83,10 @@ const Map = () => {
           longitude: e.lngLat.lng,
         });
       }
-    },
-    [isAddNewMarkerMode]
-  );
 
-  const onMapZoomChangeHandler = useCallback(
-    (e: ViewStateChangeEvent) => {
-      setZoom(e.viewState.zoom);
+      handleGeometryClick(e);
     },
-    [isAddNewMarkerMode]
+    [isAddNewMarkerMode, handleGeometryClick]
   );
 
   const [{ coordinates: drawingCoordinates }] = useMapDrawing({
@@ -94,7 +108,7 @@ const Map = () => {
         initialViewState={{
           latitude: 48.829021655585166,
           longitude: 31.753199308325947,
-          zoom,
+          zoom: 5,
         }}
         minZoom={1}
         cursor={
@@ -107,7 +121,8 @@ const Map = () => {
         onClick={onMapClickHandler}
         preserveDrawingBuffer={true}
         dragPan={!isDrawingMode && !isArrowMode}
-        onZoom={onMapZoomChangeHandler}
+        dragRotate={false}
+        touchZoomRotate={false}
       >
         {markers.map((marker) => (
           <Marker

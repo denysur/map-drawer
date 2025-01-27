@@ -5,6 +5,8 @@ export const PAGES = {
 
 export const FIREBASE_MARKER_IMAGES_PATH = "marker-icons/";
 
+export const EARTH_RADIUS = 6378137;
+
 export const DEFAULT_MARKER_COLOR = "#b91c1c";
 export const DEFAULT_MARKER_SIZE = 32;
 export const DEFAULT_MARKER_SCALE = 1;

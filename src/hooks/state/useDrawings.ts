@@ -14,7 +14,7 @@ import { generateId } from "../../utils/common";
 import { DEFAULT_MARKER_COLOR, DEFAULT_MARKER_SCALE } from "../../constants";
 
 import { RootState } from "../../app/store";
-import { Geometry } from "../../types";
+import { Draw, Geometry } from "../../types";
 
 export const useDrawings = () => {
   const [activeTool, setActiveTool] = useActiveTool();
@@ -37,6 +37,12 @@ export const useDrawings = () => {
   );
 
   const dispatch = useDispatch();
+
+  const selectDraw = useCallback((id: Draw["id"]) => {
+    dispatch(setSelectedDrawId(id));
+
+    setActiveTool("freehand-draw");
+  }, []);
 
   const unselectDrawing = useCallback(() => {
     dispatch(setSelectedDrawId(null));
@@ -87,6 +93,7 @@ export const useDrawings = () => {
           updateDrawSize,
           updateDrawColor,
           unselectDrawing,
+          selectDraw,
         },
       ] as const,
     [selectedDraw, selectedDrawId, drawings, isAddNewDrawingMode, isDrawingMode]
