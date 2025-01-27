@@ -1,4 +1,4 @@
-import { FC, ChangeEvent, useState } from "react";
+import { FC, ChangeEvent, MouseEvent, useState, useCallback } from "react";
 import { HexColorPicker } from "react-colorful";
 import { useClickAway } from "@uidotdev/usehooks";
 
@@ -17,6 +17,7 @@ import {
 } from "../../../../constants";
 
 import { Marker, MarkerIcon } from "../../../../types";
+import { useHistory } from "../../../../hooks/state/useHistory";
 
 type MarkerSettingsProps = {
   isAddNewMarkerMode: boolean;
@@ -39,8 +40,13 @@ const MarkerSettings: FC<MarkerSettingsProps> = ({
   onMarkerIconChange,
   onMarkerDelete,
 }) => {
+  const { addHistoryCommit } = useHistory();
+
   const [isColorPickerVisible, setIsColorPickerVisible] = useState(false);
   const [isIconsModalOpen, setIsIconsModalOpen] = useState(false);
+  const [color, setColor] = useState(
+    selectedMarker?.color || DEFAULT_MARKER_COLOR
+  );
 
   const openColorPicker = () => setIsColorPickerVisible(true);
   const closeColorPicker = () => setIsColorPickerVisible(false);
@@ -50,6 +56,18 @@ const MarkerSettings: FC<MarkerSettingsProps> = ({
 
   const onMarkerIconChangeHandler = (icon: MarkerIcon | null) => {
     if (selectedMarker) {
+      addHistoryCommit({
+        tool: "marker",
+        type: "edit",
+        oldState: {
+          id: selectedMarker.id,
+          icon: selectedMarker.icon,
+        },
+        newState: {
+          id: selectedMarker.id,
+          icon,
+        },
+      });
       onMarkerIconChange({
         id: selectedMarker.id,
         icon,
@@ -59,6 +77,18 @@ const MarkerSettings: FC<MarkerSettingsProps> = ({
   };
   const onMarkerIconRemoveHandler = () => {
     if (selectedMarker) {
+      addHistoryCommit({
+        tool: "marker",
+        type: "edit",
+        oldState: {
+          id: selectedMarker.id,
+          icon: selectedMarker.icon,
+        },
+        newState: {
+          id: selectedMarker.id,
+          icon: null,
+        },
+      });
       onMarkerIconChange({
         id: selectedMarker.id,
         icon: null,
@@ -79,6 +109,29 @@ const MarkerSettings: FC<MarkerSettingsProps> = ({
     }
   };
 
+  const onMarkerSizeChangeStartHandler = (e: MouseEvent<HTMLInputElement>) => {
+    const oldScale =
+      Number((e.target as HTMLInputElement).value) ?? DEFAULT_MARKER_SCALE;
+    const handleMouseUp = () => {
+      addHistoryCommit({
+        tool: "marker",
+        type: "edit",
+        oldState: {
+          id: selectedMarker?.id ?? "",
+          scale: oldScale ?? DEFAULT_MARKER_SCALE,
+        },
+        newState: {
+          id: selectedMarker?.id ?? "",
+          scale:
+            Number((e.target as HTMLInputElement).value) ??
+            DEFAULT_MARKER_SCALE,
+        },
+      });
+      document.removeEventListener("mouseup", handleMouseUp);
+    };
+
+    document.addEventListener("mouseup", handleMouseUp);
+  };
   const onMarkerRotationChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
     if (selectedMarker) {
       onMarkerRotationChange({
@@ -88,19 +141,59 @@ const MarkerSettings: FC<MarkerSettingsProps> = ({
     }
   };
 
+  const onMarkerDeleteHandler = () => {
+    if (selectedMarker) {
+      onMarkerDelete(selectedMarker.id);
+    }
+  };
+
+  const onMarkerRotationChangeEndHandler = (
+    e: MouseEvent<HTMLInputElement>
+  ) => {
+    addHistoryCommit({
+      tool: "marker",
+      type: "edit",
+      oldState: {
+        id: selectedMarker?.id ?? "",
+        rotation: selectedMarker?.rotation ?? 0,
+      },
+      newState: {
+        id: selectedMarker?.id ?? "",
+        rotation: Number((e.target as HTMLInputElement)?.value) ?? 0,
+      },
+    });
+  };
+
   const onMarkerColorChangeHandler = (newColor: string) => {
+    setColor(() => newColor);
     if (selectedMarker) {
       onMarkerColorChange({
         id: selectedMarker.id,
         color: newColor,
       });
     }
-  };
-
-  const onMarkerDeleteHandler = () => {
-    if (selectedMarker) {
-      onMarkerDelete(selectedMarker.id);
-    }
+    const handleMouseUp = () => {
+      if (selectedMarker) {
+        onMarkerColorChange({
+          id: selectedMarker.id,
+          color: color ?? DEFAULT_MARKER_COLOR,
+        });
+        addHistoryCommit({
+          tool: "marker",
+          type: "edit",
+          oldState: {
+            id: selectedMarker?.id ?? "",
+            color: selectedMarker?.color ?? DEFAULT_MARKER_COLOR,
+          },
+          newState: {
+            id: selectedMarker?.id ?? "",
+            color: color ?? DEFAULT_MARKER_COLOR,
+          },
+        });
+      }
+      document.removeEventListener("mouseup", handleMouseUp);
+    };
+    document.addEventListener("mouseup", handleMouseUp);
   };
 
   if (isAddNewMarkerMode) {
@@ -164,20 +257,18 @@ const MarkerSettings: FC<MarkerSettingsProps> = ({
             <div
               className="p-2 w-24 text-center rounded-lg cursor-pointer font-bold"
               style={{
-                backgroundColor: selectedMarker?.color || DEFAULT_MARKER_COLOR,
-                color: getTextColor(
-                  selectedMarker?.color || DEFAULT_MARKER_COLOR
-                ),
+                backgroundColor: color || DEFAULT_MARKER_COLOR,
+                color: getTextColor(color || DEFAULT_MARKER_COLOR),
               }}
               onClick={openColorPicker}
               onBlur={closeColorPicker}
             >
-              {selectedMarker?.color}
+              {color}
             </div>
             {isColorPickerVisible && (
               <div className="absolute bottom-8 left-8">
                 <HexColorPicker
-                  color={selectedMarker?.color || DEFAULT_MARKER_COLOR}
+                  color={color || DEFAULT_MARKER_COLOR}
                   onChange={onMarkerColorChangeHandler}
                 />
               </div>
@@ -192,6 +283,7 @@ const MarkerSettings: FC<MarkerSettingsProps> = ({
             type="range"
             value={selectedMarker?.scale || DEFAULT_MARKER_SCALE}
             onChange={onMarkerSizeChangeHandler}
+            onMouseDown={onMarkerSizeChangeStartHandler}
             min={MINIMUM_MARKER_SCALE}
             max={MAXIMUM_MARKER_SCALE}
             step="0.1"
@@ -207,6 +299,7 @@ const MarkerSettings: FC<MarkerSettingsProps> = ({
               type="range"
               value={selectedMarker?.rotation || 0}
               onChange={onMarkerRotationChangeHandler}
+              onMouseUp={onMarkerRotationChangeEndHandler}
               min={0}
               max={360}
               step="1"

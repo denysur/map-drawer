@@ -28,11 +28,11 @@ export type Draw = {
   geometry: Geometry;
 };
 
-export type HistoryType = "add" | "remove";
+export type HistoryType = "add" | "remove" | "edit";
 export type HistoryCommit = {
   tool: ToolNames;
-  marker?: Partial<Marker> & { id: string };
-  drawing?: Partial<Draw> & { id: string };
+  oldState?: Partial<Draw | Marker> & { id: string };
+  newState?: Partial<Draw | Marker> & { id: string };
   timestamp: number;
   type: HistoryType;
 };

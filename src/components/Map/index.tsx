@@ -14,6 +14,7 @@ import { useMapDrawing } from "../../hooks/map/useMapDrawing";
 import { Marker as MarkerType, Geometry as GeometryType } from "../../types";
 
 import "mapbox-gl/dist/mapbox-gl.css";
+import { useHistory } from "../../hooks/state/useHistory";
 
 const Map = () => {
   const [zoom, setZoom] = useState(5);
@@ -23,6 +24,7 @@ const Map = () => {
   ] = useMarkers();
   const [{ isDrawingMode, isAddNewDrawingMode, drawings }, { addDraw }] =
     useDrawings();
+  const { addHistoryCommit } = useHistory();
 
   const onGeometryCreate = useCallback(
     (geometry: GeometryType) => addDraw(geometry),
@@ -35,9 +37,20 @@ const Map = () => {
 
   const onMarkerPositionChanged = useCallback(
     (data: { id: string; latitude: number; longitude: number }) => {
+      const oldState = markers.find((marker) => marker.id === data.id);
       updateMarkerPosition(data);
+      addHistoryCommit({
+        tool: "marker",
+        type: "edit",
+        oldState: {
+          id: oldState?.id ?? "",
+          latitude: oldState?.latitude,
+          longitude: oldState?.longitude,
+        },
+        newState: data,
+      });
     },
-    []
+    [markers]
   );
 
   const onMapClickHandler = useCallback(

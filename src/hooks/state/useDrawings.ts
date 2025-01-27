@@ -57,7 +57,7 @@ export const useDrawings = () => {
     addHistoryCommit({
       tool: "freehand-draw",
       type: "add",
-      drawing,
+      newState: drawing,
     });
 
     setActiveTool("freehand-draw");
@@ -68,7 +68,7 @@ export const useDrawings = () => {
       addHistoryCommit({
         tool: "freehand-draw",
         type: "remove",
-        drawing: drawings.find((draw) => draw.id === id),
+        oldState: drawings.find((draw) => draw.id === id),
       });
       dispatch(removeDrawAction(id));
 

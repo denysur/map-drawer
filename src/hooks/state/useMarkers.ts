@@ -57,7 +57,7 @@ export const useMarkers = () => {
       addHistoryCommit({
         tool: "marker",
         type: "remove",
-        marker: markers.find((marker) => marker.id === id),
+        oldState: markers.find((marker) => marker.id === id),
       });
 
       setActiveTool(null);
@@ -79,7 +79,7 @@ export const useMarkers = () => {
       addHistoryCommit({
         tool: "marker",
         type: "add",
-        marker: markerObj,
+        newState: markerObj,
       });
 
       setActiveTool("marker");

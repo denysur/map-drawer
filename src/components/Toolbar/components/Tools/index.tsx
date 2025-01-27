@@ -16,6 +16,9 @@ import { useHistory } from "../../../../hooks/state/useHistory";
 
 const Tools = () => {
   const [activeTool, setActiveTool] = useActiveTool();
+  const [{ markers }] = useMarkers();
+  const [{ drawings }] = useDrawings();
+  const { addHistoryCommit } = useHistory();
   const [
     { selectedMarker, isAddNewMarkerMode },
     {
