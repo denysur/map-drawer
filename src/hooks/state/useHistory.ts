@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { useCallback, useMemo } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 import { addCommit, setTimestamp } from "../../app/slices/historySlice";
 import { RootState } from "../../app/store";
 import { HistoryCommit } from "../../types";
@@ -11,6 +11,17 @@ export const useHistory = () => {
 
   const history = useSelector((state: RootState) => state.history.history);
   const timestamp = useSelector((state: RootState) => state.history.timestamp);
+
+  const canUndo = useMemo(() => {
+    return history.some((c) => c.timestamp <= (timestamp || 0));
+  }, [history, timestamp]);
+  const canRedo = useMemo(() => {
+    return history.some((c) => c.timestamp > (timestamp || 0));
+  }, [history, timestamp]);
+
+  useEffect(() => {
+    console.table(history);
+  }, [history]);
 
   const addHistoryCommit = useCallback(
     (commit: Omit<HistoryCommit, "timestamp">) => {
@@ -128,6 +139,8 @@ export const useHistory = () => {
 
   return useMemo(
     () => ({
+      canUndo,
+      canRedo,
       history,
       timestamp,
       addHistoryCommit,

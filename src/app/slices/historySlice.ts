@@ -14,12 +14,11 @@ export const historySlice = createSlice({
   reducers: {
     addCommit: (state, action: PayloadAction<HistoryCommit>) => {
       state.history = [
-        ...state.history,
+        ...state.history.filter(
+          (commit) => commit.timestamp <= (state.timestamp || 0)
+        ),
         { ...action.payload, timestamp: new Date().getTime() },
       ];
-      // TODO: filter commits if timestamp is bigger than the current timestamp
-      state.history = state.history;
-      // .filter((commit) => commit.timestamp >= action.payload.timestamp);
       state.timestamp = new Date().getTime();
     },
     undo: (state) => {

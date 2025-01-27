@@ -31,7 +31,7 @@ const Tools = () => {
     { selectedDraw, isAddNewDrawingMode },
     { removeDraw, updateDrawSize, updateDrawColor, unselectDrawing },
   ] = useDrawings();
-  const { undo, redo } = useHistory();
+  const { undo, redo, canUndo, canRedo } = useHistory();
 
   const onMarkerToolOpenHandler = () => setActiveTool("marker");
   const onMarkerToolCloseHandler = () => unselectMarker();
@@ -141,8 +141,18 @@ const Tools = () => {
         iconComponent={Camera}
         onClick={onScreenshotToolOpenHandler}
       />
-      <IconButton iconComponent={Undo} onClick={onUndoButtonClickHandler} />
-      <IconButton iconComponent={Redo} onClick={onRedoButtonClickHandler} />
+      <div className="w-0.5 h-10 bg-gray-200 dark:bg-zinc-800 rounded"></div>
+
+      <IconButton
+        iconComponent={Undo}
+        disabled={!canUndo}
+        onClick={onUndoButtonClickHandler}
+      />
+      <IconButton
+        iconComponent={Redo}
+        disabled={!canRedo}
+        onClick={onRedoButtonClickHandler}
+      />
     </>
   );
 };
