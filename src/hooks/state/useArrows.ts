@@ -14,6 +14,7 @@ import {
   setArrowSize,
   setSelectedArrowId,
 } from "../../app/slices/arrowSlice";
+import { Arrow } from "../../types";
 
 export const useArrows = () => {
   const [activeTool, setActiveTool] = useActiveTool();
@@ -33,6 +34,12 @@ export const useArrows = () => {
   );
 
   const dispatch = useDispatch();
+
+  const selectArrow = useCallback((id: Arrow["id"]) => {
+    dispatch(setSelectedArrowId(id));
+
+    setActiveTool("arrow");
+  }, []);
 
   const unselectArrowing = useCallback(() => {
     dispatch(setSelectedArrowId(null));
@@ -83,6 +90,7 @@ export const useArrows = () => {
         },
         {
           addArrow,
+          selectArrow,
           removeArrow,
           updateArrowSize,
           updateArrowColor,

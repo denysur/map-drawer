@@ -4,7 +4,7 @@ import * as turf from "@turf/turf";
 
 import { EARTH_RADIUS } from "../constants";
 
-import { Draw, Geometry } from "../types";
+import { Arrow, Draw, Geometry } from "../types";
 
 const coordinateCache = new Map<string, [number, number]>(); // this is the cache for lonLatToMetersWithCache function
 
@@ -313,9 +313,9 @@ export const distancePointToProjectedLine = (
  * Finds the draw object that was clicked based on proximity to the line.
  *
  * @param {number[]} clickPoint - The clicked point coordinates [longitude, latitude].
- * @param {Array<{ geometry: { vertices: [number, number][] } }>} drawings - The list of draw objects with geometries.
- * @param {number} scaleFactor - The scale factor to adjust the click threshold.
- * @returns {object | null} The clicked draw object, or null if no draw was found within the threshold.
+ * @param {Array<Draw[]>} drawings - The list of draw objects with geometries.
+ * @param {number} clickThreshold - The click threshold.
+ * @returns {Draw | null} The clicked draw object, or null if no draw was found within the threshold.
  *
  * @example
  * const clickedDraw = findClickedDraw([30.5234, 50.4501], drawings, scaleFactor);
@@ -336,6 +336,39 @@ export const findClickedDraw = (
 
     if (distance < clickThreshold) {
       return draw;
+    }
+  }
+
+  return null;
+};
+
+/**
+ * Finds the arrow object that was clicked based on proximity to the line.
+ *
+ * @param {number[]} clickPoint - The clicked point coordinates [longitude, latitude].
+ * @param {Array<Arrow[]>} arrows - The list of draw objects with geometries.
+ * @param {number} clickThreshold - The click threshold.
+ * @returns {Arrow | null} The clicked draw object, or null if no draw was found within the threshold.
+ *
+ * @example
+ * const clickedDraw = findClickedDraw([30.5234, 50.4501], drawings, scaleFactor);
+ * if (clickedDraw) {
+ *   console.log("Clicked draw found:", clickedDraw);
+ * }
+ */
+export const findClickedArrow = (
+  clickPoint: [number, number],
+  arrows: Arrow[],
+  clickThreshold: number
+): Arrow | null => {
+  for (const arrow of arrows) {
+    const distance = distancePointToProjectedLine(
+      clickPoint,
+      arrow.vertices as [number, number][]
+    );
+
+    if (distance < clickThreshold) {
+      return arrow;
     }
   }
 

@@ -10,7 +10,7 @@ import Geometry from "./components/Geometry";
 import { useMarkers } from "../../hooks/state/useMarkers";
 import { useDrawings } from "../../hooks/state/useDrawings";
 import { useMapDrawing } from "../../hooks/map/useMapDrawing";
-import { findClickedDraw } from "../../utils/map";
+import { findClickedArrow, findClickedDraw } from "../../utils/map";
 
 import {
   Marker as MarkerType,
@@ -32,8 +32,10 @@ const Map = () => {
     { isDrawingMode, isAddNewDrawingMode, drawings },
     { addDraw: addDrawGeometry, selectDraw },
   ] = useDrawings();
-  const [{ isArrowMode, isAddNewArrowMode, arrows }, { addArrow }] =
-    useArrows();
+  const [
+    { isArrowMode, isAddNewArrowMode, arrows },
+    { addArrow, selectArrow },
+  ] = useArrows();
 
   const onGeometryCreate = useCallback(
     (geometry: GeometryType) => addDrawGeometry(geometry),
@@ -75,6 +77,25 @@ const Map = () => {
     [drawings]
   );
 
+  const handleArrowClick = useCallback(
+    (event: MapMouseEvent) => {
+      if (arrows.length) {
+        const { lngLat, target } = event;
+        const clickPoint = [lngLat.lng, lngLat.lat] as [number, number];
+        const zoom = target.getZoom();
+        const scaleFactor = Math.pow(2, zoom);
+        const threshold = 200000 / scaleFactor;
+
+        const arrow = findClickedArrow(clickPoint, arrows, threshold);
+
+        if (arrow) {
+          selectArrow(arrow.id);
+        }
+      }
+    },
+    [arrows]
+  );
+
   const onMapClickHandler = useCallback(
     (e: MapMouseEvent) => {
       if (isAddNewMarkerMode) {
@@ -85,6 +106,7 @@ const Map = () => {
       }
 
       handleGeometryClick(e);
+      handleArrowClick(e);
     },
     [isAddNewMarkerMode, handleGeometryClick]
   );
