@@ -76,7 +76,7 @@ const DrawingSettings: FC<DrawingSettingsProps> = ({
   }
 
   return (
-    <div className="flex flex-col max-w-96 gap-4">
+    <div className="flex flex-col gap-4 w-[270px]">
       <div
         onClick={onClose}
         className="absolute p-2 top-1 right-1 justify-self-end rounded-lg ease duration-200 text-zinc-500 hover:bg-black/[.1] hover:text-black dark:hover:bg-white/[.05] dark:hover:text-white cursor-pointer"
