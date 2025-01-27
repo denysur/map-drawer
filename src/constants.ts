@@ -13,3 +13,5 @@ export const MAXIMUM_MARKER_SCALE = 3;
 
 export const ARROWHEAD_ANGLE = 15;
 export const ARROWHEAD_SIZE = 50;
+export const MINIMUM_ARROWHEAD_SCALE = 0.3;
+export const MAXIMUM_ARROWHEAD_SCALE = 4;

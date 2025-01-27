@@ -9,9 +9,8 @@ import { getTextColor } from "../../../../utils/common";
 
 import {
   DEFAULT_MARKER_COLOR,
-  DEFAULT_MARKER_SCALE,
-  MAXIMUM_MARKER_SCALE,
-  MINIMUM_MARKER_SCALE,
+  MAXIMUM_ARROWHEAD_SCALE,
+  MINIMUM_ARROWHEAD_SCALE,
 } from "../../../../constants";
 
 type ArrowSettingsProps = {
@@ -119,10 +118,10 @@ const ArrowSettings: FC<ArrowSettingsProps> = ({
         <div className="w-full">
           <input
             type="range"
-            value={selectedArrow?.scale || DEFAULT_MARKER_SCALE}
+            value={selectedArrow?.scale || 1}
             onChange={onArrowSizeChangeHandler}
-            min={MINIMUM_MARKER_SCALE}
-            max={MAXIMUM_MARKER_SCALE}
+            min={MINIMUM_ARROWHEAD_SCALE}
+            max={MAXIMUM_ARROWHEAD_SCALE}
             step="0.1"
             className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"
           />

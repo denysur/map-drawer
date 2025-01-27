@@ -1,11 +1,7 @@
-import { FC, useEffect, useMemo, useState } from "react";
-import { Layer, Source, useMap } from "react-map-gl";
+import { FC } from "react";
+import { Layer, Source } from "react-map-gl";
 
-import {
-  ARROWHEAD_ANGLE,
-  ARROWHEAD_SIZE,
-  DEFAULT_MARKER_COLOR,
-} from "../../../../constants";
+import { ARROWHEAD_ANGLE, DEFAULT_MARKER_COLOR } from "../../../../constants";
 import { Arrow as ArrowType } from "../../../../types";
 import * as turf from "@turf/turf";
 
@@ -14,24 +10,23 @@ type ArrowProps = {
 };
 
 // Function to create arrowhead
-const createArrow = (vertices: number[][], scaleFactor: number) => {
+const createArrow = (vertices: number[][], scale: number) => {
   const bearing = turf.bearing(
     turf.point(vertices[0]),
     turf.point(vertices[1])
   );
-  const length = ARROWHEAD_SIZE / (scaleFactor / 50); // Arrowhead size
-  const maxLength =
-    turf.distance(vertices[0], vertices[1], { units: "miles" }) / 4;
+  const length =
+    (turf.distance(vertices[0], vertices[1], { units: "miles" }) / 4) * scale;
 
   // Two points for the arrowhead wings
   const leftWing = turf.destination(
     turf.point(vertices[1]),
-    length > maxLength ? maxLength : length,
+    length,
     bearing + 180 + ARROWHEAD_ANGLE
   ).geometry.coordinates;
   const rightWing = turf.destination(
     turf.point(vertices[1]),
-    length > maxLength ? maxLength : length,
+    length,
     bearing + 180 - ARROWHEAD_ANGLE
   ).geometry.coordinates;
 
@@ -65,30 +60,10 @@ const createArrow = (vertices: number[][], scaleFactor: number) => {
 };
 
 const Arrow: FC<ArrowProps> = ({ arrow }) => {
-  const { vertices, id, color } = arrow;
-
-  const { map } = useMap();
-
-  const [zoom, setZoom] = useState(map?.getZoom() || 5);
-
-  const scaleFactor = useMemo(() => Math.pow(2, zoom - 1), [zoom]);
-
-  const [geoJSON, setGeoJSON] = useState(createArrow(vertices, scaleFactor));
-
-  useEffect(() => {
-    const handleZoom = () => setZoom(map?.getZoom() || 5);
-    map?.on("zoom", handleZoom);
-    return () => {
-      map?.off("zoom", handleZoom);
-    };
-  }, [map]);
-
-  useEffect(() => {
-    setGeoJSON(createArrow(vertices, scaleFactor));
-  }, [scaleFactor, vertices]);
+  const { vertices, id, color, scale } = arrow;
 
   return (
-    <Source id={id} type="geojson" data={geoJSON}>
+    <Source id={id} type="geojson" data={createArrow(vertices, scale)}>
       <Layer
         id={id}
         type="line"
