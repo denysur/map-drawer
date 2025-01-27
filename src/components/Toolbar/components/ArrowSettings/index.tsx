@@ -80,7 +80,7 @@ const ArrowSettings: FC<ArrowSettingsProps> = ({
         <span className="text-center">
           Натисніть будь де на мапу, щоб зробити стрілку.
         </span>
-        <Close onClick={onClose} className="cursor-pointer" />
+        <Close onClick={onClose} className="cursor-pointer min-w-6" />
       </div>
     );
   }

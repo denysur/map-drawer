@@ -70,7 +70,7 @@ const DrawingSettings: FC<DrawingSettingsProps> = ({
         <span className="text-center">
           Натисніть будь де на мапу, щоб почати малювати.
         </span>
-        <Close onClick={onClose} className="cursor-pointer" />
+        <Close onClick={onClose} className="cursor-pointer min-w-6" />
       </div>
     );
   }

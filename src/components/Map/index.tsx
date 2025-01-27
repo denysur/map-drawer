@@ -108,7 +108,7 @@ const Map = () => {
       handleGeometryClick(e);
       handleArrowClick(e);
     },
-    [isAddNewMarkerMode, handleGeometryClick]
+    [isAddNewMarkerMode, handleGeometryClick, handleArrowClick]
   );
 
   const [{ coordinates: drawingCoordinates }] = useMapDrawing({

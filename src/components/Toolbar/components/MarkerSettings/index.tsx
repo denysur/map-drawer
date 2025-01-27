@@ -109,7 +109,7 @@ const MarkerSettings: FC<MarkerSettingsProps> = ({
         <span className="text-center">
           Натисніть будь де на мапу, щоб додати маркер
         </span>
-        <Close onClick={onClose} className="cursor-pointer" />
+        <Close onClick={onClose} className="cursor-pointer min-w-6" />
       </div>
     );
   }
