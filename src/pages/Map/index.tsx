@@ -10,7 +10,10 @@ const MapPage = () => {
     document.addEventListener(
       "touchmove",
       function (e) {
-        e.preventDefault();
+        // @ts-ignore
+        if (e.target.type !== "range") {
+          e.preventDefault();
+        }
       },
       { passive: false }
     );
