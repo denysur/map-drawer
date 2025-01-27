@@ -20,7 +20,8 @@ const createArrow = (vertices: number[][], scaleFactor: number) => {
     turf.point(vertices[1])
   );
   const length = ARROWHEAD_SIZE / (scaleFactor / 50); // Arrowhead size
-  const maxLength = turf.distance(vertices[0], vertices[1], "miles") / 4;
+  const maxLength =
+    turf.distance(vertices[0], vertices[1], { units: "miles" }) / 4;
 
   // Two points for the arrowhead wings
   const leftWing = turf.destination(
