@@ -28,7 +28,7 @@ const Tools = () => {
   ] = useMarkers();
   const [
     { selectedDraw, isAddNewDrawingMode },
-    { removeDraw, updateDrawSize, updateDrawColor, unselectDrawing },
+    { removeDraw, updateDrawWeigh, updateDrawColor, unselectDrawing },
   ] = useDrawings();
   const [
     { selectedArrow, isAddNewArrowMode },
@@ -84,8 +84,8 @@ const Tools = () => {
   const onDrawDelete = (id: string) => {
     removeDraw(id);
   };
-  const onDrawSizeChange = (data: { id: string; scale: number }) => {
-    updateDrawSize(data);
+  const onDrawWeightChange = (data: { id: string; weight: number }) => {
+    updateDrawWeigh(data);
   };
 
   const onDrawColorChange = (data: { id: string; color: string }) => {
@@ -125,7 +125,7 @@ const Tools = () => {
         selectedDraw={selectedDraw}
         onClose={onFreehandDrawToolCloseHandler}
         onDrawDelete={onDrawDelete}
-        onDrawSizeChange={onDrawSizeChange}
+        onDrawWeightChange={onDrawWeightChange}
         onDrawColorChange={onDrawColorChange}
       />
     );

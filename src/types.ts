@@ -24,7 +24,7 @@ export type Geometry =
 export type Draw = {
   id: string;
   color: string | null;
-  scale: number;
+  weight: number;
   geometry: Geometry;
 };
 

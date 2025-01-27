@@ -8,10 +8,10 @@ import { Close } from "../../../Icons";
 import { getTextColor } from "../../../../utils/common";
 
 import {
-  DEFAULT_MARKER_COLOR,
-  DEFAULT_MARKER_SCALE,
-  MAXIMUM_MARKER_SCALE,
-  MINIMUM_MARKER_SCALE,
+  DEFAULT_COLOR,
+  DEFAULT_SCALE,
+  MAXIMUM_SCALE,
+  MINIMUM_SCALE,
 } from "../../../../constants";
 
 type DrawingSettingsProps = {
@@ -19,7 +19,7 @@ type DrawingSettingsProps = {
   selectedDraw?: any;
   onClose: () => void;
   onDrawDelete: (id: string) => void;
-  onDrawSizeChange: (data: { id: string; scale: number }) => void;
+  onDrawWeightChange: (data: { id: string; weight: number }) => void;
   onDrawColorChange: (data: { id: string; color: string }) => void;
 };
 
@@ -28,7 +28,7 @@ const DrawingSettings: FC<DrawingSettingsProps> = ({
   selectedDraw,
   onClose,
   onDrawDelete,
-  onDrawSizeChange,
+  onDrawWeightChange,
   onDrawColorChange,
 }) => {
   const [isColorPickerVisible, setIsColorPickerVisible] = useState(false);
@@ -40,11 +40,11 @@ const DrawingSettings: FC<DrawingSettingsProps> = ({
     closeColorPicker();
   });
 
-  const onDrawSizeChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
+  const onDrawWeightChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
     if (selectedDraw) {
-      onDrawSizeChange({
+      onDrawWeightChange({
         id: selectedDraw.id,
-        scale: Number(e.target.value),
+        weight: Number(e.target.value),
       });
     }
   };
@@ -86,6 +86,24 @@ const DrawingSettings: FC<DrawingSettingsProps> = ({
       <div>
         <h2 className="font-bold">Налаштування фігури</h2>
       </div>
+      <div className="flex w-full gap-1">
+        <span className="select-none">Тип: </span>
+        <span className="select-none">
+          {selectedDraw.geometry.name === "circle"
+            ? "Круг"
+            : selectedDraw.geometry.name === "rectangle"
+              ? "Прямокутник"
+              : selectedDraw.geometry.name === "quadrilateral"
+                ? "Чотирикутник"
+                : selectedDraw.geometry.name === "golden-ratio triangle" ||
+                    selectedDraw.geometry.name === "silver-ratio triangle" ||
+                    selectedDraw.geometry.name === "triangle"
+                  ? "Трикутник"
+                  : selectedDraw.geometry.name === "hexagon"
+                    ? "Шестикутник"
+                    : "Лінія"}
+        </span>
+      </div>
       {!selectedDraw?.icon && (
         <div className="flex w-full gap-2 justify-between items-center">
           <span className="select-none">Змінити колір: </span>
@@ -93,10 +111,8 @@ const DrawingSettings: FC<DrawingSettingsProps> = ({
             <div
               className="p-2 w-24 text-center rounded-lg cursor-pointer font-bold"
               style={{
-                backgroundColor: selectedDraw?.color || DEFAULT_MARKER_COLOR,
-                color: getTextColor(
-                  selectedDraw?.color || DEFAULT_MARKER_COLOR
-                ),
+                backgroundColor: selectedDraw?.color || DEFAULT_COLOR,
+                color: getTextColor(selectedDraw?.color || DEFAULT_COLOR),
               }}
               onClick={openColorPicker}
               onBlur={closeColorPicker}
@@ -106,7 +122,7 @@ const DrawingSettings: FC<DrawingSettingsProps> = ({
             {isColorPickerVisible && (
               <div className="absolute bottom-8 left-8">
                 <HexColorPicker
-                  color={selectedDraw?.color || DEFAULT_MARKER_COLOR}
+                  color={selectedDraw?.color || DEFAULT_COLOR}
                   onChange={onDrawColorChangeHandler}
                 />
               </div>
@@ -115,14 +131,14 @@ const DrawingSettings: FC<DrawingSettingsProps> = ({
         </div>
       )}
       <div className="flex w-full gap-2 flex-col justify-between">
-        <span className="select-none">Розмір: </span>
+        <span className="select-none">Товщина: </span>
         <div className="w-full">
           <input
             type="range"
-            value={selectedDraw?.scale || DEFAULT_MARKER_SCALE}
-            onChange={onDrawSizeChangeHandler}
-            min={MINIMUM_MARKER_SCALE}
-            max={MAXIMUM_MARKER_SCALE}
+            value={selectedDraw?.weight || DEFAULT_SCALE}
+            onChange={onDrawWeightChangeHandler}
+            min={MINIMUM_SCALE}
+            max={MAXIMUM_SCALE}
             step="0.1"
             className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"
           />

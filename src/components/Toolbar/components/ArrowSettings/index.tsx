@@ -8,7 +8,7 @@ import { Close } from "../../../Icons";
 import { getTextColor } from "../../../../utils/common";
 
 import {
-  DEFAULT_MARKER_COLOR,
+  DEFAULT_COLOR,
   MAXIMUM_ARROWHEAD_SCALE,
   MINIMUM_ARROWHEAD_SCALE,
 } from "../../../../constants";
@@ -92,10 +92,8 @@ const ArrowSettings: FC<ArrowSettingsProps> = ({
             <div
               className="p-2 w-24 text-center rounded-lg cursor-pointer font-bold"
               style={{
-                backgroundColor: selectedArrow?.color || DEFAULT_MARKER_COLOR,
-                color: getTextColor(
-                  selectedArrow?.color || DEFAULT_MARKER_COLOR
-                ),
+                backgroundColor: selectedArrow?.color || DEFAULT_COLOR,
+                color: getTextColor(selectedArrow?.color || DEFAULT_COLOR),
               }}
               onClick={openColorPicker}
               onBlur={closeColorPicker}
@@ -105,7 +103,7 @@ const ArrowSettings: FC<ArrowSettingsProps> = ({
             {isColorPickerVisible && (
               <div className="absolute bottom-8 left-8">
                 <HexColorPicker
-                  color={selectedArrow?.color || DEFAULT_MARKER_COLOR}
+                  color={selectedArrow?.color || DEFAULT_COLOR}
                   onChange={onArrowColorChangeHandler}
                 />
               </div>

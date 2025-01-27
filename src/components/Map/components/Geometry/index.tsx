@@ -1,7 +1,7 @@
 import { FC, memo } from "react";
 import { Layer, Source } from "react-map-gl";
 
-import { DEFAULT_MARKER_COLOR } from "../../../../constants";
+import { DEFAULT_COLOR } from "../../../../constants";
 import { Draw } from "../../../../types";
 
 type GeometryProps = {
@@ -9,7 +9,7 @@ type GeometryProps = {
 };
 
 const Geometry: FC<GeometryProps> = memo(({ draw }) => {
-  const { geometry, id, color } = draw;
+  const { geometry, id, color, weight } = draw;
   const { name } = geometry;
 
   if (name === "vector" || name === "open polygon") {
@@ -29,8 +29,8 @@ const Geometry: FC<GeometryProps> = memo(({ draw }) => {
           id={id}
           type="line"
           paint={{
-            "line-color": color || DEFAULT_MARKER_COLOR,
-            "line-width": 3,
+            "line-color": color || DEFAULT_COLOR,
+            "line-width": 3 * weight,
           }}
         />
       </Source>
@@ -53,8 +53,8 @@ const Geometry: FC<GeometryProps> = memo(({ draw }) => {
         id={id}
         type="line"
         paint={{
-          "line-color": color || DEFAULT_MARKER_COLOR,
-          "line-width": 3,
+          "line-color": color || DEFAULT_COLOR,
+          "line-width": 3 * weight,
         }}
       />
     </Source>

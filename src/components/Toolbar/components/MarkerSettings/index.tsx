@@ -10,10 +10,10 @@ import { Edit, Close } from "../../../Icons";
 import { getTextColor } from "../../../../utils/common";
 
 import {
-  DEFAULT_MARKER_COLOR,
-  DEFAULT_MARKER_SCALE,
-  MAXIMUM_MARKER_SCALE,
-  MINIMUM_MARKER_SCALE,
+  DEFAULT_COLOR,
+  DEFAULT_SCALE,
+  MAXIMUM_SCALE,
+  MINIMUM_SCALE,
 } from "../../../../constants";
 
 import { Marker, MarkerIcon } from "../../../../types";
@@ -164,10 +164,8 @@ const MarkerSettings: FC<MarkerSettingsProps> = ({
             <div
               className="p-2 w-24 text-center rounded-lg cursor-pointer font-bold"
               style={{
-                backgroundColor: selectedMarker?.color || DEFAULT_MARKER_COLOR,
-                color: getTextColor(
-                  selectedMarker?.color || DEFAULT_MARKER_COLOR
-                ),
+                backgroundColor: selectedMarker?.color || DEFAULT_COLOR,
+                color: getTextColor(selectedMarker?.color || DEFAULT_COLOR),
               }}
               onClick={openColorPicker}
               onBlur={closeColorPicker}
@@ -177,7 +175,7 @@ const MarkerSettings: FC<MarkerSettingsProps> = ({
             {isColorPickerVisible && (
               <div className="absolute bottom-8 left-8">
                 <HexColorPicker
-                  color={selectedMarker?.color || DEFAULT_MARKER_COLOR}
+                  color={selectedMarker?.color || DEFAULT_COLOR}
                   onChange={onMarkerColorChangeHandler}
                 />
               </div>
@@ -190,10 +188,10 @@ const MarkerSettings: FC<MarkerSettingsProps> = ({
         <div className="w-full">
           <input
             type="range"
-            value={selectedMarker?.scale || DEFAULT_MARKER_SCALE}
+            value={selectedMarker?.scale || DEFAULT_SCALE}
             onChange={onMarkerSizeChangeHandler}
-            min={MINIMUM_MARKER_SCALE}
-            max={MAXIMUM_MARKER_SCALE}
+            min={MINIMUM_SCALE}
+            max={MAXIMUM_SCALE}
             step="0.1"
             className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"
           />

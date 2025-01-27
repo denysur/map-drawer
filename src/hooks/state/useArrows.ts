@@ -4,7 +4,7 @@ import { useCallback, useMemo } from "react";
 import { useActiveTool } from "./useActiveTool";
 import { generateId } from "../../utils/common";
 
-import { DEFAULT_MARKER_COLOR, DEFAULT_MARKER_SCALE } from "../../constants";
+import { DEFAULT_COLOR, DEFAULT_SCALE } from "../../constants";
 
 import { RootState } from "../../app/store";
 import {
@@ -51,8 +51,8 @@ export const useArrows = () => {
     dispatch(
       addArrowAction({
         vertices: vertices,
-        color: DEFAULT_MARKER_COLOR,
-        scale: DEFAULT_MARKER_SCALE,
+        color: DEFAULT_COLOR,
+        scale: DEFAULT_SCALE,
         id: generateId(),
         scaleFactor,
       })

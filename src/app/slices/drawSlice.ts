@@ -35,15 +35,15 @@ export const drawSlice = createSlice({
           : draw
       );
     },
-    setDrawSize: (
+    setDrawWeigh: (
       state,
-      action: PayloadAction<{ id: string; scale: number }>
+      action: PayloadAction<{ id: string; weight: number }>
     ) => {
       state.drawings = state.drawings.map((draw) =>
         draw.id === action.payload.id
           ? {
               ...draw,
-              scale: action.payload.scale,
+              weight: action.payload.weight,
             }
           : draw
       );
@@ -55,7 +55,7 @@ export const {
   addDraw,
   removeDraw,
   setDrawColor,
-  setDrawSize,
+  setDrawWeigh,
   setSelectedDrawId,
 } = drawSlice.actions;
 
