@@ -1,4 +1,4 @@
-export type ToolNames = "marker" | "freehand-draw";
+export type ToolNames = "marker" | "freehand-draw" | "arrow";
 
 export type Marker = {
   id: string;
@@ -28,6 +28,14 @@ export type Draw = {
   geometry: Geometry;
 };
 
+export type Arrow = {
+  id: string;
+  color: string | null;
+  scale: number;
+  scaleFactor: number;
+  vertices: number[][];
+};
+
 export type ToolState = {
   activeTool: ToolNames | null;
 };
@@ -40,6 +48,10 @@ export type MarkerState = {
 export type DrawState = {
   drawings: Draw[];
   selectedDrawId: string | null;
+};
+export type ArrowState = {
+  arrows: Arrow[];
+  selectedArrowId: string | null;
 };
 
 export type ValidationError = {
