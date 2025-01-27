@@ -171,8 +171,9 @@ const Tools = () => {
         iconComponent={Arrow}
         onClick={onFreehandArrowToolOpenHandler}
       />
+      <div className="border-l border-gray-500 h-[48px]" />
       <IconButton
-        color="primaryLight"
+        color="secondaryLight"
         iconComponent={Camera}
         onClick={onScreenshotToolOpenHandler}
       />
