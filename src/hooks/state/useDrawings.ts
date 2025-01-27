@@ -15,9 +15,11 @@ import { DEFAULT_MARKER_COLOR, DEFAULT_MARKER_SCALE } from "../../constants";
 
 import { RootState } from "../../app/store";
 import { Geometry } from "../../types";
+import { useHistory } from "./useHistory";
 
 export const useDrawings = () => {
   const [activeTool, setActiveTool] = useActiveTool();
+  const { addHistoryCommit } = useHistory();
 
   const selectedDrawId = useSelector(
     (state: RootState) => state.draw.selectedDrawId
@@ -45,23 +47,35 @@ export const useDrawings = () => {
   }, []);
 
   const addDraw = useCallback((draw: Geometry) => {
-    dispatch(
-      addDrawAction({
-        geometry: draw,
-        color: DEFAULT_MARKER_COLOR,
-        scale: DEFAULT_MARKER_SCALE,
-        id: generateId(),
-      })
-    );
+    const drawing = {
+      geometry: draw,
+      color: DEFAULT_MARKER_COLOR,
+      scale: DEFAULT_MARKER_SCALE,
+      id: generateId(),
+    };
+    dispatch(addDrawAction(drawing));
+    addHistoryCommit({
+      tool: "freehand-draw",
+      type: "add",
+      drawing,
+    });
 
     setActiveTool("freehand-draw");
   }, []);
 
-  const removeDraw = useCallback((id: string) => {
-    dispatch(removeDrawAction(id));
+  const removeDraw = useCallback(
+    (id: string) => {
+      addHistoryCommit({
+        tool: "freehand-draw",
+        type: "remove",
+        drawing: drawings.find((draw) => draw.id === id),
+      });
+      dispatch(removeDrawAction(id));
 
-    setActiveTool(null);
-  }, []);
+      setActiveTool(null);
+    },
+    [drawings]
+  );
 
   const updateDrawSize = useCallback((data: { id: string; scale: number }) => {
     dispatch(setDrawSize(data));

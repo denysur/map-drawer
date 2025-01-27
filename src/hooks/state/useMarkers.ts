@@ -18,9 +18,11 @@ import { DEFAULT_MARKER_COLOR, DEFAULT_MARKER_SCALE } from "../../constants";
 
 import { RootState } from "../../app/store";
 import { Marker, MarkerIcon } from "../../types";
+import { useHistory } from "./useHistory";
 
 export const useMarkers = () => {
   const [activeTool, setActiveTool] = useActiveTool();
+  const { addHistoryCommit } = useHistory();
 
   const selectedMarkerId = useSelector(
     (state: RootState) => state.marker.selectedMarkerId
@@ -49,24 +51,36 @@ export const useMarkers = () => {
     setActiveTool(null);
   }, []);
 
-  const removeMarker = useCallback((id: Marker["id"]) => {
-    dispatch(removeMarkerAction(id));
+  const removeMarker = useCallback(
+    (id: Marker["id"]) => {
+      dispatch(removeMarkerAction(id));
+      addHistoryCommit({
+        tool: "marker",
+        type: "remove",
+        marker: markers.find((marker) => marker.id === id),
+      });
 
-    setActiveTool(null);
-  }, []);
+      setActiveTool(null);
+    },
+    [markers]
+  );
 
   const addMarker = useCallback(
     (marker: Omit<Marker, "rotation" | "id" | "color" | "scale" | "icon">) => {
-      dispatch(
-        addMarkerAction({
-          ...marker,
-          color: DEFAULT_MARKER_COLOR,
-          scale: DEFAULT_MARKER_SCALE,
-          rotation: 0,
-          icon: null,
-          id: generateId(),
-        })
-      );
+      let markerObj = {
+        ...marker,
+        color: DEFAULT_MARKER_COLOR,
+        scale: DEFAULT_MARKER_SCALE,
+        rotation: 0,
+        icon: null,
+        id: generateId(),
+      };
+      dispatch(addMarkerAction(markerObj));
+      addHistoryCommit({
+        tool: "marker",
+        type: "add",
+        marker: markerObj,
+      });
 
       setActiveTool("marker");
     },

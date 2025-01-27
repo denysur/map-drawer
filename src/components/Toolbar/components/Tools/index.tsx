@@ -10,6 +10,9 @@ import { useMarkers } from "../../../../hooks/state/useMarkers";
 import { useDrawings } from "../../../../hooks/state/useDrawings";
 
 import { MarkerIcon } from "../../../../types";
+import Undo from "../../../Icons/Undo";
+import Redo from "../../../Icons/Redo";
+import { useHistory } from "../../../../hooks/state/useHistory";
 
 const Tools = () => {
   const [activeTool, setActiveTool] = useActiveTool();
@@ -28,6 +31,7 @@ const Tools = () => {
     { selectedDraw, isAddNewDrawingMode },
     { removeDraw, updateDrawSize, updateDrawColor, unselectDrawing },
   ] = useDrawings();
+  const { undo, redo } = useHistory();
 
   const onMarkerToolOpenHandler = () => setActiveTool("marker");
   const onMarkerToolCloseHandler = () => unselectMarker();
@@ -48,6 +52,14 @@ const Tools = () => {
       link.download = "screenshot.png";
       link.click();
     }
+  };
+
+  const onUndoButtonClickHandler = () => {
+    undo();
+  };
+
+  const onRedoButtonClickHandler = () => {
+    redo();
   };
 
   const onMarkerSizeChange = (data: { id: string; scale: number }) => {
@@ -129,6 +141,8 @@ const Tools = () => {
         iconComponent={Camera}
         onClick={onScreenshotToolOpenHandler}
       />
+      <IconButton iconComponent={Undo} onClick={onUndoButtonClickHandler} />
+      <IconButton iconComponent={Redo} onClick={onRedoButtonClickHandler} />
     </>
   );
 };

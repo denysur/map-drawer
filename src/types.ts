@@ -28,6 +28,20 @@ export type Draw = {
   geometry: Geometry;
 };
 
+export type HistoryType = "add" | "remove";
+export type HistoryCommit = {
+  tool: ToolNames;
+  marker?: Partial<Marker> & { id: string };
+  drawing?: Partial<Draw> & { id: string };
+  timestamp: number;
+  type: HistoryType;
+};
+
+export type HistoryState = {
+  timestamp: number | null;
+  history: HistoryCommit[];
+};
+
 export type ToolState = {
   activeTool: ToolNames | null;
 };
