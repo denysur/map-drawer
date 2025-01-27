@@ -60,7 +60,7 @@ const createArrow = (vertices: number[][], scale: number) => {
 };
 
 const Arrow: FC<ArrowProps> = ({ arrow }) => {
-  const { vertices, id, color, scale } = arrow;
+  const { vertices, id, color, scale, weight } = arrow;
 
   return (
     <Source id={id} type="geojson" data={createArrow(vertices, scale)}>
@@ -69,7 +69,7 @@ const Arrow: FC<ArrowProps> = ({ arrow }) => {
         type="line"
         paint={{
           "line-color": color || DEFAULT_COLOR,
-          "line-width": 3,
+          "line-width": 3 * weight,
         }}
       />
     </Source>

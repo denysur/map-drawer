@@ -19,6 +19,7 @@ type ArrowSettingsProps = {
   onClose: () => void;
   onArrowDelete: (id: string) => void;
   onArrowSizeChange: (data: { id: string; scale: number }) => void;
+  onArrowWightChange: (data: { id: string; weight: number }) => void;
   onArrowColorChange: (data: { id: string; color: string }) => void;
 };
 
@@ -28,6 +29,7 @@ const ArrowSettings: FC<ArrowSettingsProps> = ({
   onClose,
   onArrowDelete,
   onArrowSizeChange,
+  onArrowWightChange,
   onArrowColorChange,
 }) => {
   const [isColorPickerVisible, setIsColorPickerVisible] = useState(false);
@@ -44,6 +46,15 @@ const ArrowSettings: FC<ArrowSettingsProps> = ({
       onArrowSizeChange({
         id: selectedArrow.id,
         scale: Number(e.target.value),
+      });
+    }
+  };
+
+  const onArrowWightChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
+    if (selectedArrow) {
+      onArrowWightChange({
+        id: selectedArrow.id,
+        weight: Number(e.target.value),
       });
     }
   };
@@ -118,6 +129,20 @@ const ArrowSettings: FC<ArrowSettingsProps> = ({
             type="range"
             value={selectedArrow?.scale || 1}
             onChange={onArrowSizeChangeHandler}
+            min={MINIMUM_ARROWHEAD_SCALE}
+            max={MAXIMUM_ARROWHEAD_SCALE}
+            step="0.1"
+            className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"
+          />
+        </div>
+      </div>
+      <div className="flex w-full gap-2 flex-col justify-between">
+        <span className="select-none">Товщина лінії: </span>
+        <div className="w-full">
+          <input
+            type="range"
+            value={selectedArrow?.weight || 1}
+            onChange={onArrowWightChangeHandler}
             min={MINIMUM_ARROWHEAD_SCALE}
             max={MAXIMUM_ARROWHEAD_SCALE}
             step="0.1"

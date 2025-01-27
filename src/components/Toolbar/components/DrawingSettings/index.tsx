@@ -131,7 +131,7 @@ const DrawingSettings: FC<DrawingSettingsProps> = ({
         </div>
       )}
       <div className="flex w-full gap-2 flex-col justify-between">
-        <span className="select-none">Товщина: </span>
+        <span className="select-none">Товщина лінії: </span>
         <div className="w-full">
           <input
             type="range"

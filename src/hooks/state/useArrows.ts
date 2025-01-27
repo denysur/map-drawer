@@ -12,6 +12,7 @@ import {
   removeArrow as removeArrowAction,
   setArrowColor,
   setArrowSize,
+  setArrowWeight,
   setSelectedArrowId,
 } from "../../app/slices/arrowSlice";
 import { Arrow } from "../../types";
@@ -53,6 +54,7 @@ export const useArrows = () => {
         vertices: vertices,
         color: DEFAULT_COLOR,
         scale: DEFAULT_SCALE,
+        weight: DEFAULT_SCALE,
         id: generateId(),
         scaleFactor,
       })
@@ -70,6 +72,13 @@ export const useArrows = () => {
   const updateArrowSize = useCallback((data: { id: string; scale: number }) => {
     dispatch(setArrowSize(data));
   }, []);
+
+  const updateArrowWight = useCallback(
+    (data: { id: string; weight: number }) => {
+      dispatch(setArrowWeight(data));
+    },
+    []
+  );
 
   const updateArrowColor = useCallback(
     (data: { id: string; color: string }) => {
@@ -93,6 +102,7 @@ export const useArrows = () => {
           selectArrow,
           removeArrow,
           updateArrowSize,
+          updateArrowWight,
           updateArrowColor,
           unselectArrowing,
         },

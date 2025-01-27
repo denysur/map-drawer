@@ -32,6 +32,7 @@ export type Arrow = {
   id: string;
   color: string | null;
   scale: number;
+  weight: number;
   scaleFactor: number;
   vertices: number[][];
 };
