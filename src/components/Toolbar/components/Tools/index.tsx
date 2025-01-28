@@ -188,7 +188,7 @@ const Tools = () => {
   }
 
   return (
-    <div className="flex flex-wrap justify-center gap-2 md:flex-nowrap">
+    <div className="flex flex-wrap justify-center items-center gap-2 gap-y-3 md:flex-nowrap">
       <div className="flex gap-2">
         <IconButton
           color="primaryLight"
@@ -205,14 +205,15 @@ const Tools = () => {
           iconComponent={Arrow}
           onClick={onFreehandArrowToolOpenHandler}
         />
-        <div className="border-l border-gray-300 h-[48px]" />
+      </div>
+      <div className="flex gap-2 justify-center items-center w-full md:pt-0">
+        <div className="w-0.5 bg-gray-200 dark:bg-zinc-700 h-[36px] rounded hidden md:block" />
         <IconButton
           color="secondaryLight"
           iconComponent={Camera}
           onClick={onScreenshotToolOpenHandler}
         />
-      </div>
-      <div className="flex gap-2 justify-center border-t pt-2 border-gray-300 w-full md:pl-2 md:pt-0 md:border-t-0 md:border-l">
+        <div className="w-0.5 bg-gray-200 dark:bg-zinc-700 h-[36px] rounded" />
         <IconButton
           iconComponent={Undo}
           disabled={!canUndo}

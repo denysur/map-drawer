@@ -1,7 +1,6 @@
 import { useState } from "react";
 
 import Menu from "./components/Menu";
-import IconButton from "../Common/IconButton";
 import Burger from "../Icons/Burger";
 
 const BurgerMenu = () => {
@@ -12,11 +11,12 @@ const BurgerMenu = () => {
   }
 
   return (
-    <IconButton
-      iconComponent={Burger}
-      className="fixed z-10 left-10 top-5 bg-white !text-blue-700 hover:!text-white"
+    <button
+      className="fixed z-10 left-8 top-8 ease duration-200 rounded-full bg-white dark:bg-zinc-900 shadow-lg text-blue-700 dark:text-blue-300 hover:bg-gray-200 dark:hover:bg-zinc-700 p-3"
       onClick={() => setIsMenuOpen(true)}
-    />
+    >
+      <Burger />
+    </button>
   );
 };
 
