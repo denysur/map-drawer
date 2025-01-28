@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { MapMouseEvent, MapTouchEvent, useMap } from "react-map-gl";
 
 import { shapeDetector } from "../../utils/map";
