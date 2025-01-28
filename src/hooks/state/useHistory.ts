@@ -47,106 +47,19 @@ export const useHistory = () => {
     [dispatch]
   );
 
-  const undo = useCallback(() => {
-    const lastCommit = history
-      .filter((c) => (timestamp || 0) >= c.timestamp)
-      .sort((a, b) => b.timestamp - a.timestamp)[0];
+  const handleDrawStateChange = useCallback(
+    (commit: HistoryCommit, action: "undo" | "redo") => {
+      const oldState = commit.oldState as Partial<Draw> & {
+        id: string;
+      };
+      const newState = commit.newState as Partial<Draw> & {
+        id: string;
+      };
 
-    if (lastCommit) {
-      if (lastCommit.tool === "freehand-draw") {
-        const oldState = lastCommit.oldState as Partial<Draw> & {
-          id: string;
-        };
-        const newState = lastCommit.newState as Partial<Draw> & {
-          id: string;
-        };
-
-        if (lastCommit.type === "add") {
+      if (commit.type === "add") {
+        if (action === "undo") {
           if (newState?.id) dispatch(removeDraw(newState.id));
-        } else if (lastCommit.type === "remove") {
-          if (oldState?.id && oldState.geometry)
-            dispatch(
-              addDraw({
-                ...oldState,
-                color: oldState.color ?? null,
-                weight: oldState.weight ?? 1,
-                geometry: oldState.geometry,
-              })
-            );
-        } else if (lastCommit.type === "edit") {
-          if (oldState) dispatch(setDrawProps(oldState));
-        }
-      } else if (lastCommit.tool === "marker") {
-        const oldState = lastCommit.oldState as Partial<Marker> & {
-          id: string;
-        };
-        const newState = lastCommit.newState as Partial<Marker> & {
-          id: string;
-        };
-
-        if (lastCommit.type === "add") {
-          if (newState?.id) dispatch(removeMarker(newState.id));
-        } else if (lastCommit.type === "remove") {
-          if (oldState?.id && oldState)
-            dispatch(
-              addMarker({
-                ...oldState,
-                color: oldState.color ?? null,
-                scale: oldState.scale ?? 1,
-                rotation: oldState.rotation ?? 0,
-                longitude: oldState.longitude ?? 0,
-                latitude: oldState.latitude ?? 0,
-                icon: oldState.icon ?? null,
-              })
-            );
-        } else if (lastCommit.type === "edit") {
-          if (oldState) dispatch(setMarkerProps(oldState));
-        }
-      } else if (lastCommit.tool === "arrow") {
-        const oldState = lastCommit.oldState as Partial<Arrow> & {
-          id: string;
-        };
-        const newState = lastCommit.newState as Partial<Arrow> & {
-          id: string;
-        };
-
-        if (lastCommit.type === "add") {
-          if (newState?.id) dispatch(removeArrow(newState.id));
-        } else if (lastCommit.type === "remove") {
-          if (oldState?.id && oldState)
-            dispatch(
-              addArrow({
-                ...oldState,
-                color: oldState.color ?? null,
-                scale: oldState.scale ?? 1,
-                weight: oldState.weight ?? 1,
-                scaleFactor: oldState.scaleFactor!,
-                vertices: oldState.vertices!,
-              })
-            );
-        } else if (lastCommit.type === "edit") {
-          if (oldState) dispatch(setArrowProps(oldState));
-        }
-      } else {
-        console.warn("Unknown tool", lastCommit.tool);
-      }
-    }
-    dispatch({ type: "historySlice/undo" });
-  }, [dispatch, history, timestamp]);
-
-  const redo = useCallback(() => {
-    const nextCommit = history.find((c) => c.timestamp > (timestamp || 0));
-    if (nextCommit) {
-      if (nextCommit.tool === "freehand-draw") {
-        const oldState = nextCommit.oldState as Partial<Draw> & {
-          id: string;
-        };
-        const newState = nextCommit.newState as Partial<Draw> & {
-          id: string;
-        };
-        if (nextCommit.type === "remove") {
-          if (oldState?.id) dispatch(removeDraw(oldState.id));
-        } else if (nextCommit.type === "add") {
+        } else {
           if (newState?.id && newState.geometry)
             dispatch(
               addDraw({
@@ -156,19 +69,45 @@ export const useHistory = () => {
                 geometry: newState.geometry,
               })
             );
-        } else if (nextCommit.type === "edit") {
+        }
+      } else if (commit.type === "remove") {
+        if (action === "undo") {
+          if (oldState?.id && oldState.geometry)
+            dispatch(
+              addDraw({
+                ...oldState,
+                color: oldState.color ?? null,
+                weight: oldState.weight ?? 1,
+                geometry: oldState.geometry,
+              })
+            );
+        } else {
+          if (oldState?.id) dispatch(removeDraw(oldState.id));
+        }
+      } else if (commit.type === "edit") {
+        if (action === "undo") {
+          if (oldState) dispatch(setDrawProps(oldState));
+        } else {
           if (newState) dispatch(setDrawProps(newState));
         }
-      } else if (nextCommit.tool === "marker") {
-        const oldState = nextCommit.oldState as Partial<Marker> & {
-          id: string;
-        };
-        const newState = nextCommit.newState as Partial<Marker> & {
-          id: string;
-        };
-        if (nextCommit.type === "remove") {
-          if (oldState?.id) dispatch(removeMarker(oldState.id));
-        } else if (nextCommit.type === "add") {
+      }
+    },
+    [dispatch, addDraw, removeDraw, setDrawProps]
+  );
+
+  const handleMarkerStateChange = useCallback(
+    (commit: HistoryCommit, action: "undo" | "redo") => {
+      const oldState = commit.oldState as Partial<Marker> & {
+        id: string;
+      };
+      const newState = commit.newState as Partial<Marker> & {
+        id: string;
+      };
+
+      if (commit.type === "add") {
+        if (action === "undo") {
+          if (newState?.id) dispatch(removeMarker(newState.id));
+        } else {
           if (newState?.id && newState)
             dispatch(
               addMarker({
@@ -181,19 +120,48 @@ export const useHistory = () => {
                 icon: newState.icon ?? null,
               })
             );
-        } else if (nextCommit.type === "edit") {
+        }
+      } else if (commit.type === "remove") {
+        if (action === "undo") {
+          if (oldState?.id && oldState)
+            dispatch(
+              addMarker({
+                ...oldState,
+                color: oldState.color ?? null,
+                scale: oldState.scale ?? 1,
+                rotation: oldState.rotation ?? 0,
+                longitude: oldState.longitude ?? 0,
+                latitude: oldState.latitude ?? 0,
+                icon: oldState.icon ?? null,
+              })
+            );
+        } else {
+          if (oldState?.id) dispatch(removeMarker(oldState.id));
+        }
+      } else if (commit.type === "edit") {
+        if (action === "undo") {
+          if (oldState) dispatch(setMarkerProps(oldState));
+        } else {
           if (newState) dispatch(setMarkerProps(newState));
         }
-      } else if (nextCommit.tool === "arrow") {
-        const oldState = nextCommit.oldState as Partial<Arrow> & {
-          id: string;
-        };
-        const newState = nextCommit.newState as Partial<Arrow> & {
-          id: string;
-        };
-        if (nextCommit.type === "remove") {
-          if (oldState?.id) dispatch(removeArrow(oldState.id));
-        } else if (nextCommit.type === "add") {
+      }
+    },
+    [dispatch, addMarker, removeMarker, setMarkerProps]
+  );
+
+  const handleArrowStateChange = useCallback(
+    (commit: HistoryCommit, action: "undo" | "redo") => {
+      const oldState = commit.oldState as Partial<Arrow> & {
+        id: string;
+      };
+      const newState = commit.newState as Partial<Arrow> & {
+        id: string;
+      };
+
+      if (commit.type === "add") {
+        if (action === "undo") {
+          if (newState?.id) dispatch(removeArrow(newState.id));
+        } else {
           if (newState?.id && newState)
             dispatch(
               addArrow({
@@ -205,15 +173,82 @@ export const useHistory = () => {
                 vertices: newState.vertices!,
               })
             );
-        } else if (nextCommit.type === "edit") {
+        }
+      } else if (commit.type === "remove") {
+        if (action === "undo") {
+          if (oldState?.id && oldState)
+            dispatch(
+              addArrow({
+                ...oldState,
+                color: oldState.color ?? null,
+                scale: oldState.scale ?? 1,
+                weight: oldState.weight ?? 1,
+                scaleFactor: oldState.scaleFactor!,
+                vertices: oldState.vertices!,
+              })
+            );
+        } else {
+          if (oldState?.id) dispatch(removeArrow(oldState.id));
+        }
+      } else if (commit.type === "edit") {
+        if (action === "undo") {
+          if (oldState) dispatch(setArrowProps(oldState));
+        } else {
           if (newState) dispatch(setArrowProps(newState));
         }
+      }
+    },
+    [dispatch, addMarker, removeMarker, setMarkerProps]
+  );
+
+  const undo = useCallback(() => {
+    const lastCommit = history
+      .filter((c) => (timestamp || 0) >= c.timestamp)
+      .sort((a, b) => b.timestamp - a.timestamp)[0];
+
+    if (lastCommit) {
+      if (lastCommit.tool === "freehand-draw") {
+        handleDrawStateChange(lastCommit, "undo");
+      } else if (lastCommit.tool === "marker") {
+        handleMarkerStateChange(lastCommit, "undo");
+      } else if (lastCommit.tool === "arrow") {
+        handleArrowStateChange(lastCommit, "undo");
+      } else {
+        console.warn("Unknown tool", lastCommit.tool);
+      }
+    }
+    dispatch({ type: "historySlice/undo" });
+  }, [
+    dispatch,
+    history,
+    timestamp,
+    handleDrawStateChange,
+    handleMarkerStateChange,
+    handleArrowStateChange,
+  ]);
+
+  const redo = useCallback(() => {
+    const nextCommit = history.find((c) => c.timestamp > (timestamp || 0));
+    if (nextCommit) {
+      if (nextCommit.tool === "freehand-draw") {
+        handleDrawStateChange(nextCommit, "redo");
+      } else if (nextCommit.tool === "marker") {
+        handleMarkerStateChange(nextCommit, "redo");
+      } else if (nextCommit.tool === "arrow") {
+        handleArrowStateChange(nextCommit, "redo");
       } else {
         console.warn("Unknown tool", nextCommit.tool);
       }
     }
     dispatch({ type: "historySlice/redo" });
-  }, [dispatch, history, timestamp]);
+  }, [
+    dispatch,
+    history,
+    timestamp,
+    handleDrawStateChange,
+    handleMarkerStateChange,
+    handleArrowStateChange,
+  ]);
 
   return useMemo(
     () => ({
