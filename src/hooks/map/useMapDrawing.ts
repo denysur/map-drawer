@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { MapMouseEvent, MapTouchEvent, useMap } from "react-map-gl";
 
 import { shapeDetector } from "../../utils/map";
@@ -16,35 +16,8 @@ export const useMapDrawing = ({
 }: UseMapDrawingProps) => {
   const { map } = useMap();
 
-  const zoom = useMemo(() => map?.getZoom() || 5, [map]);
-  const scaleFactor = useMemo(() => Math.pow(2, zoom - 1), [zoom]);
-
   const [isDrawing, setIsDrawing] = useState(isDrawingMode);
-  const [coordinates, setCoordinates] = useState<number[][]>([]);
-
-  const onMouseDownHandler = useCallback(
-    (event: MapMouseEvent | MapTouchEvent) => {
-      if (!isDrawingMode) return;
-
-      setIsDrawing(true);
-
-      const { lng, lat } = event.lngLat;
-
-      setCoordinates([[lng, lat]]);
-    },
-    [isDrawingMode]
-  );
-
-  const onMouseUpHandler = useCallback(() => {
-    setIsDrawing(false);
-    if (coordinates.length <= 1) return;
-
-    const shape = shapeDetector(coordinates, scaleFactor);
-
-    onGeometryReady(shape);
-
-    setCoordinates([]);
-  }, [coordinates, scaleFactor, isDrawing, onGeometryReady]);
+  const [coordinates, setCoordinates] = useState<[number, number][]>([]);
 
   useEffect(() => {
     if (!map) return;
@@ -58,6 +31,30 @@ export const useMapDrawing = ({
       const { lng, lat } = event.lngLat;
 
       setCoordinates((prev) => [...prev, [lng, lat]]);
+    };
+
+    const onMouseDownHandler = (event: MapMouseEvent | MapTouchEvent) => {
+      if (!isDrawingMode) return;
+
+      setIsDrawing(true);
+
+      const { lng, lat } = event.lngLat;
+
+      setCoordinates([[lng, lat]]);
+    };
+
+    const onMouseUpHandler = () => {
+      setIsDrawing(false);
+      if (coordinates.length <= 1) return;
+
+      const zoom = map.getZoom();
+      const scaleFactor = Math.pow(2, zoom) / 2;
+
+      const shape = shapeDetector(coordinates, scaleFactor);
+
+      onGeometryReady(shape);
+
+      setCoordinates([]);
     };
 
     map.on("mousedown", onMouseDownHandler);
@@ -79,7 +76,7 @@ export const useMapDrawing = ({
       map.off("touchcancel", onMouseUpHandler);
       map.off("touchmove", onMouseMoveHandler);
     };
-  }, [map, isDrawingMode, isDrawing, onMouseDownHandler, onMouseUpHandler]);
+  }, [map, isDrawingMode, isDrawing, coordinates, onGeometryReady]);
 
   return useMemo(
     () => [

@@ -4,7 +4,7 @@ import { Layer, Source } from "react-map-gl";
 import { DEFAULT_COLOR } from "../../../../constants";
 
 type FreehandDrawingResultProps = {
-  drawingCoordinates: number[][];
+  drawingCoordinates: [number, number][];
 };
 
 const FreehandDrawingResult: FC<FreehandDrawingResultProps> = ({

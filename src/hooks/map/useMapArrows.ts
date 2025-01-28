@@ -3,7 +3,7 @@ import { MapMouseEvent, MapTouchEvent, useMap } from "react-map-gl";
 
 type UseMapArrowsProps = {
   isArrowMode: boolean;
-  onArrowReady: (vertices: number[][], scaleFactor: number) => void;
+  onArrowReady: (vertices: [number, number][], scaleFactor: number) => void;
 };
 
 export const useMapArrows = ({
@@ -13,7 +13,7 @@ export const useMapArrows = ({
   const { map } = useMap();
 
   const [isArrows, setIsArrows] = useState(isArrowsMode);
-  const [coordinates, setCoordinates] = useState<number[][]>([]);
+  const [coordinates, setCoordinates] = useState<[number, number][]>([]);
 
   const onMouseDownHandler = useCallback(
     (event: MapMouseEvent | MapTouchEvent) => {

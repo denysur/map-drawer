@@ -13,12 +13,12 @@ export type Marker = {
 export type Geometry =
   | {
       name: "circle";
-      vertices: number[][];
+      vertices: [number, number][];
       center: [number, number];
     }
   | {
       name: "vector" | "open polygon" | "rectangle" | "polygon"; // and others
-      vertices: number[][];
+      vertices: [number, number][];
     };
 
 export type Draw = {
@@ -34,7 +34,7 @@ export type Arrow = {
   scale: number;
   weight: number;
   scaleFactor: number;
-  vertices: number[][];
+  vertices: [number, number][];
 };
 export type HistoryType = "add" | "remove" | "edit";
 

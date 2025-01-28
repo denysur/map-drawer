@@ -49,20 +49,23 @@ export const useArrows = () => {
     setActiveTool(null);
   }, []);
 
-  const addArrow = useCallback((vertices: number[][], scaleFactor: number) => {
-    dispatch(
-      addArrowAction({
-        vertices: vertices,
-        color: DEFAULT_COLOR,
-        scale: DEFAULT_SCALE,
-        weight: DEFAULT_SCALE,
-        id: generateId(),
-        scaleFactor,
-      })
-    );
+  const addArrow = useCallback(
+    (vertices: [number, number][], scaleFactor: number) => {
+      dispatch(
+        addArrowAction({
+          vertices: vertices,
+          color: DEFAULT_COLOR,
+          scale: DEFAULT_SCALE,
+          weight: DEFAULT_SCALE,
+          id: generateId(),
+          scaleFactor,
+        })
+      );
 
-    setActiveTool("arrow");
-  }, []);
+      setActiveTool("arrow");
+    },
+    []
+  );
 
   const removeArrow = useCallback((id: string) => {
     dispatch(removeArrowAction(id));
