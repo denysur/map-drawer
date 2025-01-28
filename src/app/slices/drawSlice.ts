@@ -48,6 +48,16 @@ export const drawSlice = createSlice({
           : draw
       );
     },
+    setDrawProps: (state, action: PayloadAction<Partial<Draw>>) => {
+      state.drawings = state.drawings.map((draw) =>
+        draw.id === action.payload.id
+          ? {
+              ...draw,
+              ...action.payload,
+            }
+          : draw
+      );
+    },
   },
 });
 
@@ -57,6 +67,7 @@ export const {
   setDrawColor,
   setDrawWeigh,
   setSelectedDrawId,
+  setDrawProps,
 } = drawSlice.actions;
 
 export default drawSlice.reducer;

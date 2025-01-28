@@ -40,8 +40,9 @@ export type HistoryType = "add" | "remove" | "edit";
 
 export type HistoryCommit = {
   tool: ToolNames;
-  oldState?: Partial<Draw | Marker> & { id: string };
-  newState?: Partial<Draw | Marker> & { id: string };
+  id: string;
+  oldState?: Partial<Draw | Marker | Arrow> & { id: string };
+  newState?: Partial<Draw | Marker | Arrow> & { id: string };
   timestamp: number;
   type: HistoryType;
 };

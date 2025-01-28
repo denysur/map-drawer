@@ -2,13 +2,18 @@ import { useDispatch, useSelector } from "react-redux";
 import { useCallback, useEffect, useMemo } from "react";
 import { addCommit, setTimestamp } from "../../app/slices/historySlice";
 import { RootState } from "../../app/store";
-import { Draw, HistoryCommit, Marker } from "../../types";
-import { addDraw, removeDraw } from "../../app/slices/drawSlice";
+import { Arrow, Draw, HistoryCommit, Marker } from "../../types";
+import { addDraw, removeDraw, setDrawProps } from "../../app/slices/drawSlice";
 import {
   addMarker,
   removeMarker,
   setMarkerProps,
 } from "../../app/slices/markerSlice";
+import {
+  addArrow,
+  removeArrow,
+  setArrowProps,
+} from "../../app/slices/arrowSlice";
 
 export const useHistory = () => {
   const dispatch = useDispatch();
@@ -55,6 +60,7 @@ export const useHistory = () => {
         const newState = lastCommit.newState as Partial<Draw> & {
           id: string;
         };
+
         if (lastCommit.type === "add") {
           if (newState?.id) dispatch(removeDraw(newState.id));
         } else if (lastCommit.type === "remove") {
@@ -67,6 +73,8 @@ export const useHistory = () => {
                 geometry: oldState.geometry,
               })
             );
+        } else if (lastCommit.type === "edit") {
+          if (oldState) dispatch(setDrawProps(oldState));
         }
       } else if (lastCommit.tool === "marker") {
         const oldState = lastCommit.oldState as Partial<Marker> & {
@@ -75,6 +83,7 @@ export const useHistory = () => {
         const newState = lastCommit.newState as Partial<Marker> & {
           id: string;
         };
+
         if (lastCommit.type === "add") {
           if (newState?.id) dispatch(removeMarker(newState.id));
         } else if (lastCommit.type === "remove") {
@@ -92,6 +101,31 @@ export const useHistory = () => {
             );
         } else if (lastCommit.type === "edit") {
           if (oldState) dispatch(setMarkerProps(oldState));
+        }
+      } else if (lastCommit.tool === "arrow") {
+        const oldState = lastCommit.oldState as Partial<Arrow> & {
+          id: string;
+        };
+        const newState = lastCommit.newState as Partial<Arrow> & {
+          id: string;
+        };
+
+        if (lastCommit.type === "add") {
+          if (newState?.id) dispatch(removeArrow(newState.id));
+        } else if (lastCommit.type === "remove") {
+          if (oldState?.id && oldState)
+            dispatch(
+              addArrow({
+                ...oldState,
+                color: oldState.color ?? null,
+                scale: oldState.scale ?? 1,
+                weight: oldState.weight ?? 1,
+                scaleFactor: oldState.scaleFactor!,
+                vertices: oldState.vertices!,
+              })
+            );
+        } else if (lastCommit.type === "edit") {
+          if (oldState) dispatch(setArrowProps(oldState));
         }
       } else {
         console.warn("Unknown tool", lastCommit.tool);
@@ -122,6 +156,8 @@ export const useHistory = () => {
                 geometry: newState.geometry,
               })
             );
+        } else if (nextCommit.type === "edit") {
+          if (newState) dispatch(setDrawProps(newState));
         }
       } else if (nextCommit.tool === "marker") {
         const oldState = nextCommit.oldState as Partial<Marker> & {
@@ -147,6 +183,30 @@ export const useHistory = () => {
             );
         } else if (nextCommit.type === "edit") {
           if (newState) dispatch(setMarkerProps(newState));
+        }
+      } else if (nextCommit.tool === "arrow") {
+        const oldState = nextCommit.oldState as Partial<Arrow> & {
+          id: string;
+        };
+        const newState = nextCommit.newState as Partial<Arrow> & {
+          id: string;
+        };
+        if (nextCommit.type === "remove") {
+          if (oldState?.id) dispatch(removeArrow(oldState.id));
+        } else if (nextCommit.type === "add") {
+          if (newState?.id && newState)
+            dispatch(
+              addArrow({
+                ...newState,
+                color: newState.color ?? null,
+                scale: newState.scale ?? 1,
+                weight: newState.weight ?? 1,
+                scaleFactor: newState.scaleFactor!,
+                vertices: newState.vertices!,
+              })
+            );
+        } else if (nextCommit.type === "edit") {
+          if (newState) dispatch(setArrowProps(newState));
         }
       } else {
         console.warn("Unknown tool", nextCommit.tool);

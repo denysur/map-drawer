@@ -61,6 +61,16 @@ export const arrowSlice = createSlice({
           : arrow
       );
     },
+    setArrowProps: (state, action: PayloadAction<Partial<Arrow>>) => {
+      state.arrows = state.arrows.map((arrow) =>
+        arrow.id === action.payload.id
+          ? {
+              ...arrow,
+              ...action.payload,
+            }
+          : arrow
+      );
+    },
   },
 });
 
@@ -71,6 +81,7 @@ export const {
   setArrowSize,
   setArrowWeight,
   setSelectedArrowId,
+  setArrowProps,
 } = arrowSlice.actions;
 
 export default arrowSlice.reducer;
