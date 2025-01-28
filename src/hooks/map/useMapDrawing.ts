@@ -17,7 +17,7 @@ export const useMapDrawing = ({
   const { map } = useMap();
 
   const [isDrawing, setIsDrawing] = useState(isDrawingMode);
-  const [coordinates, setCoordinates] = useState<number[][]>([]);
+  const [coordinates, setCoordinates] = useState<[number, number][]>([]);
 
   useEffect(() => {
     if (!map) return;

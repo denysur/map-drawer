@@ -11,8 +11,8 @@ const coordinateCache = new Map<string, [number, number]>(); // this is the cach
 /**
  * Calculates the bounding rectangle for a given set of coordinates.
  *
- * @param {number[][]} coordinates - An array of coordinates in [longitude, latitude] format.
- * @returns {number[][]} - The bounding rectangle as an array of corner points:
+ * @param {[number, number][]} coordinates - An array of coordinates in [longitude, latitude] format.
+ * @returns {[number, number][]} - The bounding rectangle as an array of corner points:
  *                        [southwest, northwest, northeast, southeast].
  *
  * @example
@@ -24,7 +24,9 @@ const coordinateCache = new Map<string, [number, number]>(); // this is the cach
  * const boundingBox = getBoundingRectangle(shapeCoordinates);
  * console.log(boundingBox);
  */
-export const getBoundingRectangle = (coordinates: number[][]): number[][] => {
+export const getBoundingRectangle = (
+  coordinates: [number, number][]
+): [number, number][] => {
   const lons = coordinates.map((coord) => coord[0]);
   const lats = coordinates.map((coord) => coord[1]);
 
@@ -45,7 +47,7 @@ export const getBoundingRectangle = (coordinates: number[][]): number[][] => {
 /**
  * Calculates the geometric center (centroid) of a shape given its coordinates.
  *
- * @param {number[][]} coordinates - An array of coordinate pairs, where each element is [x, y].
+ * @param {[number, number][]} coordinates - An array of coordinate pairs, where each element is [x, y].
  * @returns {[number, number]} The center point of the shape as [centerX, centerY].
  *
  * @example
@@ -53,7 +55,7 @@ export const getBoundingRectangle = (coordinates: number[][]): number[][] => {
  * const center = getCenterPointOfShape(coords);
  * console.log(center); // [5, 5]
  */
-export const getCenterPointOfShape = (coordinates: number[][]) => {
+export const getCenterPointOfShape = (coordinates: [number, number][]) => {
   const boundingRect = getBoundingRectangle(coordinates);
 
   const centerX = (boundingRect[0][0] + boundingRect[2][0]) / 2;
@@ -67,8 +69,8 @@ export const getCenterPointOfShape = (coordinates: number[][]) => {
  * The function determines the average distance from the shape's center point
  * to all given coordinates.
  *
- * @param {number[]} centerPoint - The center of the shape as [x, y].
- * @param {number[][]} coordinates - An array of coordinates representing points of the shape,
+ * @param {[number, number]} centerPoint - The center of the shape as [x, y].
+ * @param {[number, number][]} coordinates - An array of coordinates representing points of the shape,
  *                                   where each point is an array [x, y].
  * @returns {number} The average radius of the shape.
  *
@@ -79,8 +81,8 @@ export const getCenterPointOfShape = (coordinates: number[][]) => {
  * console.log(radius); // Output: 5
  */
 export const getCircleRadiusFromRoughShape = (
-  centerPoint: number[],
-  coordinates: number[][]
+  centerPoint: [number, number],
+  coordinates: [number, number][]
 ) => {
   const pointsToRaduses = coordinates.map((point) => {
     return Math.sqrt(
@@ -101,7 +103,7 @@ export const getCircleRadiusFromRoughShape = (
  * @param { [number, number] } center - The center of the circle as [longitude, latitude].
  * @param { number } radius - The radius of the circle in meters.
  * @param { number } [numPoints=64] - The number of points to approximate the circle (default is 64).
- * @returns { number[][] } - An array of coordinates representing the circle in [longitude, latitude] format.
+ * @returns { [number, number][] } - An array of coordinates representing the circle in [longitude, latitude] format.
  *
  * @example
  * const center = [30.5234, 50.4501];  // Kyiv coordinates
@@ -113,7 +115,7 @@ export const generateCirclePoints = (
   center: [number, number],
   radius: number,
   numPoints = 64
-): number[][] => {
+): [number, number][] => {
   const from = turf.point(center);
   const to = turf.point([center[0], center[1] + radius]);
 
@@ -124,14 +126,14 @@ export const generateCirclePoints = (
     units: "meters",
   });
 
-  return circle.geometry.coordinates[0];
+  return circle.geometry.coordinates[0] as [number, number][];
 };
 
 /**
  * Detects the shape of a given set of coordinates and scales it up or down based on the provided scale factor.
  * The function scales the coordinates to a reference zoom level, identifies the shape, and scales it back to the expected size.
  *
- * @param {number[][]} coordinates - An array of coordinate pairs representing the shape, where each element is [x, y].
+ * @param {[number, number][]} coordinates - An array of coordinate pairs representing the shape, where each element is [x, y].
  * @param {number} scaleFactor - The factor by which the coordinates should be scaled up or down.
  * @returns {Geometry} The detected geometry with adjusted coordinates or radius if it's a circle.
  *
@@ -143,7 +145,10 @@ export const generateCirclePoints = (
  * // Example output:
  * // { name: "polygon", vertices: [[0, 0], [5, 0], [5, 5], [0, 5]] }
  */
-export const shapeDetector = (coordinates: number[][], scaleFactor: number) => {
+export const shapeDetector = (
+  coordinates: [number, number][],
+  scaleFactor: number
+) => {
   const [centerX, centerY] = getCenterPointOfShape(coordinates);
 
   // scale up to zoom 1 to try to define geometry
@@ -154,7 +159,8 @@ export const shapeDetector = (coordinates: number[][], scaleFactor: number) => {
 
   const geometry:
     | Geometry
-    | { name: "circle"; center: number[]; radius: number } = shapeit(newCoord);
+    | { name: "circle"; center: [number, number]; radius: number } =
+    shapeit(newCoord);
   const { name: geometryName } = geometry;
 
   if (geometryName === "circle") {
@@ -196,8 +202,8 @@ export const shapeDetector = (coordinates: number[][], scaleFactor: number) => {
     ...geometry,
     vertices:
       geometryName === "open polygon"
-        ? polygonVertices
-        : [...polygonVertices, polygonVertices[0]],
+        ? (polygonVertices as [number, number][])
+        : ([...polygonVertices, polygonVertices[0]] as [number, number][]),
   };
 };
 
@@ -312,7 +318,7 @@ export const distancePointToProjectedLine = (
 /**
  * Finds the draw object that was clicked based on proximity to the line.
  *
- * @param {number[]} clickPoint - The clicked point coordinates [longitude, latitude].
+ * @param {[number, number]} clickPoint - The clicked point coordinates [longitude, latitude].
  * @param {Array<Draw[]>} drawings - The list of draw objects with geometries.
  * @param {number} clickThreshold - The click threshold.
  * @returns {Draw | null} The clicked draw object, or null if no draw was found within the threshold.
@@ -345,7 +351,7 @@ export const findClickedDraw = (
 /**
  * Finds the arrow object that was clicked based on proximity to the line.
  *
- * @param {number[]} clickPoint - The clicked point coordinates [longitude, latitude].
+ * @param {[number, number]} clickPoint - The clicked point coordinates [longitude, latitude].
  * @param {Array<Arrow[]>} arrows - The list of draw objects with geometries.
  * @param {number} clickThreshold - The click threshold.
  * @returns {Arrow | null} The clicked draw object, or null if no draw was found within the threshold.

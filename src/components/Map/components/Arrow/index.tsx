@@ -10,7 +10,7 @@ type ArrowProps = {
 };
 
 // Function to create arrowhead
-const createArrow = (vertices: number[][], scale: number) => {
+const createArrow = (vertices: [number, number][], scale: number) => {
   const bearing = turf.bearing(
     turf.point(vertices[0]),
     turf.point(vertices[1])
