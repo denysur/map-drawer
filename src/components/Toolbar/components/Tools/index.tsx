@@ -3,11 +3,12 @@ import html2canvas from "html2canvas";
 import IconButton from "../../../Common/IconButton";
 import MarkerSettings from "../MarkerSettings";
 import DrawingSettings from "../DrawingSettings";
-import { Camera, MapMarker, Draw, Arrow } from "../../../Icons";
+import { Camera, MapMarker, Draw, Arrow, Undo, Redo } from "../../../Icons";
 
 import { useActiveTool } from "../../../../hooks/state/useActiveTool";
 import { useMarkers } from "../../../../hooks/state/useMarkers";
 import { useDrawings } from "../../../../hooks/state/useDrawings";
+import { useHistory } from "../../../../hooks/state/useHistory";
 
 import { MarkerIcon } from "../../../../types";
 import { useArrows } from "../../../../hooks/state/useArrows";
@@ -40,6 +41,7 @@ const Tools = () => {
       updateArrowWight,
     },
   ] = useArrows();
+  const { undo, redo, canUndo, canRedo } = useHistory();
 
   const onMarkerToolOpenHandler = () => setActiveTool("marker");
   const onMarkerToolCloseHandler = () => unselectMarker();
@@ -113,6 +115,14 @@ const Tools = () => {
     updateArrowColor(data);
   };
 
+  const onUndoButtonClickHandler = () => {
+    undo();
+  };
+
+  const onRedoButtonClickHandler = () => {
+    redo();
+  };
+
   if (activeTool === "marker") {
     return (
       <MarkerSettings
@@ -176,6 +186,17 @@ const Tools = () => {
         color="secondaryLight"
         iconComponent={Camera}
         onClick={onScreenshotToolOpenHandler}
+      />
+      <div className="border-l border-gray-500 h-[48px]" />
+      <IconButton
+        iconComponent={Undo}
+        disabled={!canUndo}
+        onClick={onUndoButtonClickHandler}
+      />
+      <IconButton
+        iconComponent={Redo}
+        disabled={!canRedo}
+        onClick={onRedoButtonClickHandler}
       />
     </>
   );

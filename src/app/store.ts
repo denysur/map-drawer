@@ -4,6 +4,7 @@ import toolReducer from "./slices/toolSlice";
 import markerReducer from "./slices/markerSlice";
 import drawReducer from "./slices/drawSlice";
 import arrowReducer from "./slices/arrowSlice";
+import historyReducer from "./slices/historySlice";
 
 export const store = configureStore({
   reducer: {
@@ -11,6 +12,7 @@ export const store = configureStore({
     marker: markerReducer,
     draw: drawReducer,
     arrow: arrowReducer,
+    history: historyReducer,
   },
 });
 

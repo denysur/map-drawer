@@ -91,6 +91,17 @@ export const markerSlice = createSlice({
           : marker
       );
     },
+
+    setMarkerProps: (state, action: PayloadAction<Partial<Marker>>) => {
+      state.markers = state.markers.map((marker) =>
+        marker.id === action.payload.id
+          ? {
+              ...marker,
+              ...action.payload,
+            }
+          : marker
+      );
+    },
   },
 });
 
@@ -103,6 +114,7 @@ export const {
   setMarkerSize,
   setMarkerIcon,
   setMarkerRotation,
+  setMarkerProps,
 } = markerSlice.actions;
 
 export default markerSlice.reducer;
