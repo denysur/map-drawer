@@ -5,16 +5,16 @@ import {
   addDraw as addDrawAction,
   removeDraw as removeDrawAction,
   setDrawColor,
-  setDrawSize,
+  setDrawWeigh,
   setSelectedDrawId,
 } from "../../app/slices/drawSlice";
 import { useActiveTool } from "./useActiveTool";
 import { generateId } from "../../utils/common";
 
-import { DEFAULT_MARKER_COLOR, DEFAULT_MARKER_SCALE } from "../../constants";
+import { DEFAULT_COLOR, DEFAULT_SCALE } from "../../constants";
 
 import { RootState } from "../../app/store";
-import { Geometry } from "../../types";
+import { Draw, Geometry } from "../../types";
 
 export const useDrawings = () => {
   const [activeTool, setActiveTool] = useActiveTool();
@@ -38,6 +38,12 @@ export const useDrawings = () => {
 
   const dispatch = useDispatch();
 
+  const selectDraw = useCallback((id: Draw["id"]) => {
+    dispatch(setSelectedDrawId(id));
+
+    setActiveTool("freehand-draw");
+  }, []);
+
   const unselectDrawing = useCallback(() => {
     dispatch(setSelectedDrawId(null));
 
@@ -48,8 +54,8 @@ export const useDrawings = () => {
     dispatch(
       addDrawAction({
         geometry: draw,
-        color: DEFAULT_MARKER_COLOR,
-        scale: DEFAULT_MARKER_SCALE,
+        color: DEFAULT_COLOR,
+        weight: DEFAULT_SCALE,
         id: generateId(),
       })
     );
@@ -63,9 +69,12 @@ export const useDrawings = () => {
     setActiveTool(null);
   }, []);
 
-  const updateDrawSize = useCallback((data: { id: string; scale: number }) => {
-    dispatch(setDrawSize(data));
-  }, []);
+  const updateDrawWeigh = useCallback(
+    (data: { id: string; weight: number }) => {
+      dispatch(setDrawWeigh(data));
+    },
+    []
+  );
 
   const updateDrawColor = useCallback((data: { id: string; color: string }) => {
     dispatch(setDrawColor(data));
@@ -84,9 +93,10 @@ export const useDrawings = () => {
         {
           addDraw,
           removeDraw,
-          updateDrawSize,
+          updateDrawWeigh,
           updateDrawColor,
           unselectDrawing,
+          selectDraw,
         },
       ] as const,
     [selectedDraw, selectedDrawId, drawings, isAddNewDrawingMode, isDrawingMode]

@@ -10,10 +10,10 @@ import { Edit, Close } from "../../../Icons";
 import { getTextColor } from "../../../../utils/common";
 
 import {
-  DEFAULT_MARKER_COLOR,
-  DEFAULT_MARKER_SCALE,
-  MAXIMUM_MARKER_SCALE,
-  MINIMUM_MARKER_SCALE,
+  DEFAULT_COLOR,
+  DEFAULT_SCALE,
+  MAXIMUM_SCALE,
+  MINIMUM_SCALE,
 } from "../../../../constants";
 
 import { Marker, MarkerIcon } from "../../../../types";
@@ -109,13 +109,13 @@ const MarkerSettings: FC<MarkerSettingsProps> = ({
         <span className="text-center">
           Натисніть будь де на мапу, щоб додати маркер
         </span>
-        <Close onClick={onClose} className="cursor-pointer" />
+        <Close onClick={onClose} className="cursor-pointer min-w-6" />
       </div>
     );
   }
 
   return (
-    <div className="flex flex-col max-w-96 gap-4">
+    <div className="flex flex-col gap-4 w-[270px]">
       <div
         onClick={onClose}
         className="absolute p-2 top-1 right-1 justify-self-end rounded-lg ease duration-200 text-zinc-500 hover:bg-black/[.1] hover:text-black dark:hover:bg-white/[.05] dark:hover:text-white cursor-pointer"
@@ -164,10 +164,8 @@ const MarkerSettings: FC<MarkerSettingsProps> = ({
             <div
               className="p-2 w-24 text-center rounded-lg cursor-pointer font-bold"
               style={{
-                backgroundColor: selectedMarker?.color || DEFAULT_MARKER_COLOR,
-                color: getTextColor(
-                  selectedMarker?.color || DEFAULT_MARKER_COLOR
-                ),
+                backgroundColor: selectedMarker?.color || DEFAULT_COLOR,
+                color: getTextColor(selectedMarker?.color || DEFAULT_COLOR),
               }}
               onClick={openColorPicker}
               onBlur={closeColorPicker}
@@ -177,7 +175,7 @@ const MarkerSettings: FC<MarkerSettingsProps> = ({
             {isColorPickerVisible && (
               <div className="absolute bottom-8 left-8">
                 <HexColorPicker
-                  color={selectedMarker?.color || DEFAULT_MARKER_COLOR}
+                  color={selectedMarker?.color || DEFAULT_COLOR}
                   onChange={onMarkerColorChangeHandler}
                 />
               </div>
@@ -190,10 +188,10 @@ const MarkerSettings: FC<MarkerSettingsProps> = ({
         <div className="w-full">
           <input
             type="range"
-            value={selectedMarker?.scale || DEFAULT_MARKER_SCALE}
+            value={selectedMarker?.scale || DEFAULT_SCALE}
             onChange={onMarkerSizeChangeHandler}
-            min={MINIMUM_MARKER_SCALE}
-            max={MAXIMUM_MARKER_SCALE}
+            min={MINIMUM_SCALE}
+            max={MAXIMUM_SCALE}
             step="0.1"
             className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"
           />

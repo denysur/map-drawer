@@ -1,7 +1,7 @@
 import { FC } from "react";
 import { Layer, Source } from "react-map-gl";
 
-import { DEFAULT_MARKER_COLOR } from "../../../../constants";
+import { DEFAULT_COLOR } from "../../../../constants";
 
 type FreehandDrawingResultProps = {
   drawingCoordinates: number[][];
@@ -27,7 +27,7 @@ const FreehandDrawingResult: FC<FreehandDrawingResultProps> = ({
           id="line"
           type="line"
           paint={{
-            "line-color": DEFAULT_MARKER_COLOR,
+            "line-color": DEFAULT_COLOR,
             "line-width": 3,
           }}
         />

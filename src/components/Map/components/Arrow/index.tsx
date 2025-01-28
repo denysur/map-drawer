@@ -1,7 +1,7 @@
 import { FC } from "react";
 import { Layer, Source } from "react-map-gl";
 
-import { ARROWHEAD_ANGLE, DEFAULT_MARKER_COLOR } from "../../../../constants";
+import { ARROWHEAD_ANGLE, DEFAULT_COLOR } from "../../../../constants";
 import { Arrow as ArrowType } from "../../../../types";
 import * as turf from "@turf/turf";
 
@@ -60,7 +60,7 @@ const createArrow = (vertices: number[][], scale: number) => {
 };
 
 const Arrow: FC<ArrowProps> = ({ arrow }) => {
-  const { vertices, id, color, scale } = arrow;
+  const { vertices, id, color, scale, weight } = arrow;
 
   return (
     <Source id={id} type="geojson" data={createArrow(vertices, scale)}>
@@ -68,8 +68,8 @@ const Arrow: FC<ArrowProps> = ({ arrow }) => {
         id={id}
         type="line"
         paint={{
-          "line-color": color || DEFAULT_MARKER_COLOR,
-          "line-width": 3,
+          "line-color": color || DEFAULT_COLOR,
+          "line-width": 3 * weight,
         }}
       />
     </Source>

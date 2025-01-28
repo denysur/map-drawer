@@ -13,18 +13,18 @@ export type Marker = {
 export type Geometry =
   | {
       name: "circle";
-      center: number[];
-      radius: number;
+      vertices: number[][];
+      center: [number, number];
     }
   | {
-      name: "vector" | "open polygon" | "rectangle"; // and others
+      name: "vector" | "open polygon" | "rectangle" | "polygon"; // and others
       vertices: number[][];
     };
 
 export type Draw = {
   id: string;
   color: string | null;
-  scale: number;
+  weight: number;
   geometry: Geometry;
 };
 
@@ -32,6 +32,7 @@ export type Arrow = {
   id: string;
   color: string | null;
   scale: number;
+  weight: number;
   scaleFactor: number;
   vertices: number[][];
 };

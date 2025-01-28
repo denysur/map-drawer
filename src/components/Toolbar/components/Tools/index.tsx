@@ -28,11 +28,17 @@ const Tools = () => {
   ] = useMarkers();
   const [
     { selectedDraw, isAddNewDrawingMode },
-    { removeDraw, updateDrawSize, updateDrawColor, unselectDrawing },
+    { removeDraw, updateDrawWeigh, updateDrawColor, unselectDrawing },
   ] = useDrawings();
   const [
     { selectedArrow, isAddNewArrowMode },
-    { removeArrow, updateArrowSize, updateArrowColor, unselectArrowing },
+    {
+      removeArrow,
+      updateArrowSize,
+      updateArrowColor,
+      unselectArrowing,
+      updateArrowWight,
+    },
   ] = useArrows();
 
   const onMarkerToolOpenHandler = () => setActiveTool("marker");
@@ -84,8 +90,8 @@ const Tools = () => {
   const onDrawDelete = (id: string) => {
     removeDraw(id);
   };
-  const onDrawSizeChange = (data: { id: string; scale: number }) => {
-    updateDrawSize(data);
+  const onDrawWeightChange = (data: { id: string; weight: number }) => {
+    updateDrawWeigh(data);
   };
 
   const onDrawColorChange = (data: { id: string; color: string }) => {
@@ -97,6 +103,10 @@ const Tools = () => {
   };
   const onArrowSizeChange = (data: { id: string; scale: number }) => {
     updateArrowSize(data);
+  };
+
+  const onArrowWightChange = (data: { id: string; weight: number }) => {
+    updateArrowWight(data);
   };
 
   const onArrowColorChange = (data: { id: string; color: string }) => {
@@ -125,7 +135,7 @@ const Tools = () => {
         selectedDraw={selectedDraw}
         onClose={onFreehandDrawToolCloseHandler}
         onDrawDelete={onDrawDelete}
-        onDrawSizeChange={onDrawSizeChange}
+        onDrawWeightChange={onDrawWeightChange}
         onDrawColorChange={onDrawColorChange}
       />
     );
@@ -138,6 +148,7 @@ const Tools = () => {
         onClose={onFreehandArrowToolCloseHandler}
         onArrowDelete={onArrowDelete}
         onArrowSizeChange={onArrowSizeChange}
+        onArrowWightChange={onArrowWightChange}
         onArrowColorChange={onArrowColorChange}
       />
     );
@@ -160,8 +171,9 @@ const Tools = () => {
         iconComponent={Arrow}
         onClick={onFreehandArrowToolOpenHandler}
       />
+      <div className="border-l border-gray-500 h-[48px]" />
       <IconButton
-        color="primaryLight"
+        color="secondaryLight"
         iconComponent={Camera}
         onClick={onScreenshotToolOpenHandler}
       />

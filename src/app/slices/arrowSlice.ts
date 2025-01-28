@@ -48,6 +48,19 @@ export const arrowSlice = createSlice({
           : arrow
       );
     },
+    setArrowWeight: (
+      state,
+      action: PayloadAction<{ id: string; weight: number }>
+    ) => {
+      state.arrows = state.arrows.map((arrow) =>
+        arrow.id === action.payload.id
+          ? {
+              ...arrow,
+              weight: action.payload.weight,
+            }
+          : arrow
+      );
+    },
   },
 });
 
@@ -56,6 +69,7 @@ export const {
   removeArrow,
   setArrowColor,
   setArrowSize,
+  setArrowWeight,
   setSelectedArrowId,
 } = arrowSlice.actions;
 

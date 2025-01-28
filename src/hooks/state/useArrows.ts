@@ -4,7 +4,7 @@ import { useCallback, useMemo } from "react";
 import { useActiveTool } from "./useActiveTool";
 import { generateId } from "../../utils/common";
 
-import { DEFAULT_MARKER_COLOR, DEFAULT_MARKER_SCALE } from "../../constants";
+import { DEFAULT_COLOR, DEFAULT_SCALE } from "../../constants";
 
 import { RootState } from "../../app/store";
 import {
@@ -12,8 +12,10 @@ import {
   removeArrow as removeArrowAction,
   setArrowColor,
   setArrowSize,
+  setArrowWeight,
   setSelectedArrowId,
 } from "../../app/slices/arrowSlice";
+import { Arrow } from "../../types";
 
 export const useArrows = () => {
   const [activeTool, setActiveTool] = useActiveTool();
@@ -34,6 +36,12 @@ export const useArrows = () => {
 
   const dispatch = useDispatch();
 
+  const selectArrow = useCallback((id: Arrow["id"]) => {
+    dispatch(setSelectedArrowId(id));
+
+    setActiveTool("arrow");
+  }, []);
+
   const unselectArrowing = useCallback(() => {
     dispatch(setSelectedArrowId(null));
 
@@ -44,8 +52,9 @@ export const useArrows = () => {
     dispatch(
       addArrowAction({
         vertices: vertices,
-        color: DEFAULT_MARKER_COLOR,
-        scale: DEFAULT_MARKER_SCALE,
+        color: DEFAULT_COLOR,
+        scale: DEFAULT_SCALE,
+        weight: DEFAULT_SCALE,
         id: generateId(),
         scaleFactor,
       })
@@ -63,6 +72,13 @@ export const useArrows = () => {
   const updateArrowSize = useCallback((data: { id: string; scale: number }) => {
     dispatch(setArrowSize(data));
   }, []);
+
+  const updateArrowWight = useCallback(
+    (data: { id: string; weight: number }) => {
+      dispatch(setArrowWeight(data));
+    },
+    []
+  );
 
   const updateArrowColor = useCallback(
     (data: { id: string; color: string }) => {
@@ -83,8 +99,10 @@ export const useArrows = () => {
         },
         {
           addArrow,
+          selectArrow,
           removeArrow,
           updateArrowSize,
+          updateArrowWight,
           updateArrowColor,
           unselectArrowing,
         },
