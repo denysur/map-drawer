@@ -144,7 +144,6 @@ const Map = () => {
         preserveDrawingBuffer={true}
         dragPan={!isDrawingMode && !isArrowMode}
         dragRotate={false}
-        touchZoomRotate={false}
       >
         {markers.map((marker) => (
           <Marker
