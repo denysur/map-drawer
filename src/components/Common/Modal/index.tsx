@@ -2,15 +2,23 @@ import { FC, useEffect, useState, ReactNode } from "react";
 import { createPortal } from "react-dom";
 
 import { Close } from "../../Icons";
+import clsx from "clsx";
 
 export type ModalProps = {
   isOpen: boolean;
   onClose: () => void;
   children?: ReactNode;
   title?: string;
+  className?: string;
 };
 
-const Modal: FC<ModalProps> = ({ isOpen, onClose, title, children }) => {
+const Modal: FC<ModalProps> = ({
+  isOpen,
+  onClose,
+  title,
+  children,
+  className,
+}) => {
   const [isVisible, setIsVisible] = useState(isOpen);
   const [isFullyClosed, setIsFullyClosed] = useState(true);
 
@@ -49,7 +57,12 @@ const Modal: FC<ModalProps> = ({ isOpen, onClose, title, children }) => {
         className="w-full h-full fixed inset-0 bg-black/60"
         onClick={handleClose}
       ></div>
-      <div className="overflow-hidden z-10 dark:bg-zinc-900 dark:text-white flex flex-col bg-white max-h-full w-full max-w-[768px] rounded-xl shadow-lg relative">
+      <div
+        className={clsx(
+          "overflow-hidden z-10 dark:bg-zinc-900 dark:text-white flex flex-col bg-white max-h-full w-full max-w-3xl rounded-xl shadow-lg relative",
+          className
+        )}
+      >
         <button
           className={`absolute z-10 p-2 rounded-lg ease duration-200 text-zinc-500 hover:bg-black/[.1] hover:text-black dark:hover:bg-white/[.05] dark:hover:text-white ${title ? "top-[10px] right-[10px]" : "top-1 right-1"}`}
           onClick={handleClose}
