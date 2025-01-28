@@ -2,10 +2,10 @@ import { useState } from "react";
 
 import Modal from "../../../../components/Common/Modal";
 import IconsModal from "../../../../components/IconsModal";
+import MenuItem from "../MenuItem";
+import { Close, Logout, MapMarker } from "../../../Icons";
 
 import { useAuthorization } from "../../../../hooks/useAuthorization";
-import { Close, Logout, MapMarker } from "../../../Icons";
-import MenuItem from "../MenuItem";
 
 const Menu = ({ onMenuClose }: { onMenuClose: () => void }) => {
   const { logout } = useAuthorization();
