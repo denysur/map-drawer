@@ -165,40 +165,45 @@ const Tools = () => {
   }
 
   return (
-    <>
-      <IconButton
-        color="primaryLight"
-        iconComponent={MapMarker}
-        onClick={onMarkerToolOpenHandler}
-      />
-      <IconButton
-        color="primaryLight"
-        iconComponent={Draw}
-        onClick={onFreehandDrawToolOpenHandler}
-      />
-      <IconButton
-        color="primaryLight"
-        iconComponent={Arrow}
-        onClick={onFreehandArrowToolOpenHandler}
-      />
-      <div className="border-l border-gray-500 h-[48px]" />
-      <IconButton
-        color="secondaryLight"
-        iconComponent={Camera}
-        onClick={onScreenshotToolOpenHandler}
-      />
-      <div className="border-l border-gray-500 h-[48px]" />
-      <IconButton
-        iconComponent={Undo}
-        disabled={!canUndo}
-        onClick={onUndoButtonClickHandler}
-      />
-      <IconButton
-        iconComponent={Redo}
-        disabled={!canRedo}
-        onClick={onRedoButtonClickHandler}
-      />
-    </>
+    <div className="flex flex-wrap justify-center gap-2 md:flex-nowrap">
+      <div className="flex gap-2">
+        <IconButton
+          color="primaryLight"
+          iconComponent={MapMarker}
+          onClick={onMarkerToolOpenHandler}
+        />
+        <IconButton
+          color="primaryLight"
+          iconComponent={Draw}
+          onClick={onFreehandDrawToolOpenHandler}
+        />
+        <IconButton
+          color="primaryLight"
+          iconComponent={Arrow}
+          onClick={onFreehandArrowToolOpenHandler}
+        />
+        <div className="border-l border-gray-300 h-[48px]" />
+        <IconButton
+          color="secondaryLight"
+          iconComponent={Camera}
+          onClick={onScreenshotToolOpenHandler}
+        />
+      </div>
+      <div className="flex gap-2 justify-center border-t pt-2 border-gray-300 w-full md:pl-2 md:pt-0 md:border-t-0 md:border-l">
+        <IconButton
+          iconComponent={Undo}
+          disabled={!canUndo}
+          className="bg-orange-100 text-orange-500 hover:!bg-orange-200"
+          onClick={onUndoButtonClickHandler}
+        />
+        <IconButton
+          iconComponent={Redo}
+          disabled={!canRedo}
+          className="bg-orange-100 text-orange-500 hover:!bg-orange-200"
+          onClick={onRedoButtonClickHandler}
+        />
+      </div>
+    </div>
   );
 };
 
