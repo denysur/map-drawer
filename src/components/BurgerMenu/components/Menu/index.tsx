@@ -1,11 +1,11 @@
 import { useState } from "react";
 
-import Button from "../../../../components/Common/Button";
 import Modal from "../../../../components/Common/Modal";
 import IconsModal from "../../../../components/IconsModal";
 
 import { useAuthorization } from "../../../../hooks/useAuthorization";
-import { Close } from "../../../Icons";
+import { Close, Logout, MapMarker } from "../../../Icons";
+import MenuItem from "../MenuItem";
 
 const Menu = ({ onMenuClose }: { onMenuClose: () => void }) => {
   const { logout } = useAuthorization();
@@ -15,23 +15,28 @@ const Menu = ({ onMenuClose }: { onMenuClose: () => void }) => {
   const closeIconsModal = () => setIsIconsModalOpen(false);
 
   return (
-    <div className="fixed z-10 left-10 top-5 bg-white flex flex-col gap-2 p-4 pt-10 rounded-lg">
+    <div className="fixed z-10 left-6 top-6 bg-white dark:bg-zinc-900 shadow-lg flex flex-col gap-1 rounded-3xl max-w-64 w-full">
       <div
         onClick={onMenuClose}
-        className="absolute p-1 top-0 right-0 justify-self-end rounded-lg ease duration-200 text-zinc-500 hover:bg-black/[.1] hover:text-black dark:hover:bg-white/[.05] dark:hover:text-white cursor-pointer"
+        className="absolute p-3 top-2 left-2 justify-self-endease duration-200 text-zinc-500 hover:bg-black/[.1] hover:text-black dark:hover:bg-white/[.05] dark:hover:text-white cursor-pointer rounded-2xl"
       >
-        <Close className="" />
+        <Close />
       </div>
-      <Button
-        onClick={() => {
-          logout();
-        }}
-        color="error"
-      >
-        Вийти
-      </Button>
-
-      <Button onClick={openIconsModal}>Іконки</Button>
+      <div className="text-black dark:text-white ml-10 p-[17px] pl-6 pb-2 font-bold text-lg">
+        Налаштування
+      </div>
+      <div className="p-4 pt-0 flex flex-col gap-2">
+        <MenuItem icon={MapMarker} label="Іконки" onClick={openIconsModal} />
+        <hr className="bg-gray-200 dark:bg-zinc-700 h-0.5 border-0" />
+        <MenuItem
+          icon={Logout}
+          label="Вийти"
+          color={"error"}
+          onClick={() => {
+            logout();
+          }}
+        />
+      </div>
       <Modal
         isOpen={isIconsModalOpen}
         title="Іконки маркеру"
