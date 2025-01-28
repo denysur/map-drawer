@@ -29,7 +29,7 @@ const Form: FC<FormProps> = ({ invalidFields, errorMessage, onSubmit }) => (
             type="email"
             placeholder="Введіть пошту"
             className={clsx(
-              "block appearance-none p-2 border-2 border-gray-500 rounded-lg text-base text-black placeholder:text-gray-400 focus:outline-none focus:ring-blue-700/50 focus:ring-4 focus:border-blue-500 ease duration-200 dark:bg-zinc-800 dark:border-zinc-700 dark:placeholder:text-zinc-500 dark:text-white",
+              "block appearance-none p-2 border-2 border-gray-500 rounded-lg text-base text-black placeholder:text-gray-400 focus:outline-none focus:ring-blue-600/50 focus:ring-4 focus:border-blue-500 ease duration-200 dark:bg-zinc-800 dark:border-zinc-700 dark:placeholder:text-zinc-500 dark:text-white",
               invalidFields.includes("email") && "border-red-500"
             )}
           />
@@ -50,7 +50,7 @@ const Form: FC<FormProps> = ({ invalidFields, errorMessage, onSubmit }) => (
             type="password"
             placeholder="Введіть пароль"
             className={clsx(
-              "block appearance-none p-2 border-2 border-gray-500 rounded-lg text-base text-black placeholder:text-gray-400 focus:outline-none focus:ring-blue-700/50 focus:ring-4 focus:border-blue-500 ease duration-200 dark:bg-zinc-800 dark:border-zinc-700 dark:placeholder:text-zinc-500 dark:text-white",
+              "block appearance-none p-2 border-2 border-gray-500 rounded-lg text-base text-black placeholder:text-gray-400 focus:outline-none focus:ring-blue-600/50 focus:ring-4 focus:border-blue-500 ease duration-200 dark:bg-zinc-800 dark:border-zinc-700 dark:placeholder:text-zinc-500 dark:text-white",
               invalidFields.includes("password") && "border-red-500"
             )}
           />
