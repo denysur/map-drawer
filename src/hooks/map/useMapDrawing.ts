@@ -49,6 +49,9 @@ export const useMapDrawing = ({
   useEffect(() => {
     if (!map) return;
 
+    // TODO: hotfix for disabling phone users rotation
+    map.getMap().touchZoomRotate.disableRotation();
+
     const onMouseMoveHandler = (event: MapMouseEvent | MapTouchEvent) => {
       if (!isDrawing) return;
 

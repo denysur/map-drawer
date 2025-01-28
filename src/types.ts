@@ -36,6 +36,21 @@ export type Arrow = {
   scaleFactor: number;
   vertices: number[][];
 };
+export type HistoryType = "add" | "remove" | "edit";
+
+export type HistoryCommit = {
+  tool: ToolNames;
+  id: string;
+  oldState?: Partial<Draw | Marker | Arrow> & { id: string };
+  newState?: Partial<Draw | Marker | Arrow> & { id: string };
+  timestamp: number;
+  type: HistoryType;
+};
+
+export type HistoryState = {
+  timestamp: number | null;
+  history: HistoryCommit[];
+};
 
 export type ToolState = {
   activeTool: ToolNames | null;

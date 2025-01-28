@@ -12,6 +12,7 @@ import {
   MAXIMUM_ARROWHEAD_SCALE,
   MINIMUM_ARROWHEAD_SCALE,
 } from "../../../../constants";
+import { useOnChangeHistorySubscription } from "../../../../hooks/useOnChangeHistorySubscription";
 
 type ArrowSettingsProps = {
   isAddNewArrowMode: boolean;
@@ -33,6 +34,12 @@ const ArrowSettings: FC<ArrowSettingsProps> = ({
   onArrowColorChange,
 }) => {
   const [isColorPickerVisible, setIsColorPickerVisible] = useState(false);
+
+  const { pushRemove } = useOnChangeHistorySubscription({
+    id: selectedArrow?.id,
+    tool: "arrow",
+    state: selectedArrow,
+  });
 
   const openColorPicker = () => setIsColorPickerVisible(true);
   const closeColorPicker = () => setIsColorPickerVisible(false);
@@ -71,6 +78,7 @@ const ArrowSettings: FC<ArrowSettingsProps> = ({
   const onArrowDeleteHandler = () => {
     if (selectedArrow) {
       onArrowDelete(selectedArrow.id);
+      pushRemove();
     }
   };
 
@@ -112,7 +120,7 @@ const ArrowSettings: FC<ArrowSettingsProps> = ({
               {selectedArrow?.color}
             </div>
             {isColorPickerVisible && (
-              <div className="absolute bottom-8 left-8">
+              <div className="absolute bottom-11 -left-10 md:left-0">
                 <HexColorPicker
                   color={selectedArrow?.color || DEFAULT_COLOR}
                   onChange={onArrowColorChangeHandler}

@@ -7,6 +7,7 @@ export enum ButtonColorEnum {
   secondary = "secondary",
   secondaryLight = "secondaryLight",
   error = "error",
+  errorLight = "errorLight",
 }
 
 export type ButtonColors = keyof typeof ButtonColorEnum;
@@ -45,7 +46,9 @@ const Button: FC<ButtonProps> = ({
             ? "text-blue-700 bg-blue-100 [&:not(:disabled)]:hover:bg-blue-200 dark:text-blue-100 dark:bg-blue-800 [&:not(:disabled)]:dark:hover:bg-blue-700 dark:focus:ring-blue-400"
             : color === ButtonColorEnum.secondaryLight
               ? "text-green-700 bg-green-100 [&:not(:disabled)]:hover:bg-green-200 dark:text-green-100 dark:bg-green-800 [&:not(:disabled)]:dark:hover:bg-green-700 dark:focus:ring-green-400"
-              : "text-white bg-blue-700 [&:not(:disabled)]:hover:bg-blue-800 dark:bg-blue-600 dark:[&:not(:disabled)]:hover:bg-blue-900 dark:focus:ring-blue-800",
+              : color === ButtonColorEnum.errorLight
+                ? "text-red-700 bg-red-100 [&:not(:disabled)]:hover:bg-red-200 dark:text-red-100 dark:bg-red-800 [&:not(:disabled)]:dark:hover:bg-red-700 dark:focus:ring-red-400"
+                : "text-white bg-blue-700 [&:not(:disabled)]:hover:bg-blue-800 dark:bg-blue-600 dark:[&:not(:disabled)]:hover:bg-blue-900 dark:focus:ring-blue-800",
       size === ButtonSizeEnum.small
         ? "text-xs px-3 py-1.5"
         : size === ButtonSizeEnum.large

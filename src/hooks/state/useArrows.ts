@@ -9,6 +9,7 @@ import { DEFAULT_COLOR, DEFAULT_SCALE } from "../../constants";
 import { RootState } from "../../app/store";
 import {
   addArrow as addArrowAction,
+  clearArrowsState,
   removeArrow as removeArrowAction,
   setArrowColor,
   setArrowSize,
@@ -87,6 +88,10 @@ export const useArrows = () => {
     []
   );
 
+  const flushArrowsState = useCallback(() => {
+    dispatch(clearArrowsState());
+  }, []);
+
   return useMemo(
     () =>
       [
@@ -105,6 +110,7 @@ export const useArrows = () => {
           updateArrowWight,
           updateArrowColor,
           unselectArrowing,
+          flushArrowsState,
         },
       ] as const,
     [selectedArrow, selectedArrowId, arrows, isAddNewArrowMode, isArrowMode]

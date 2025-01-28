@@ -13,6 +13,7 @@ import {
   MAXIMUM_SCALE,
   MINIMUM_SCALE,
 } from "../../../../constants";
+import { useOnChangeHistorySubscription } from "../../../../hooks/useOnChangeHistorySubscription";
 
 type DrawingSettingsProps = {
   isAddNewDrawingMode: boolean;
@@ -32,6 +33,12 @@ const DrawingSettings: FC<DrawingSettingsProps> = ({
   onDrawColorChange,
 }) => {
   const [isColorPickerVisible, setIsColorPickerVisible] = useState(false);
+
+  const { pushRemove } = useOnChangeHistorySubscription({
+    id: selectedDraw?.id,
+    tool: "freehand-draw",
+    state: selectedDraw,
+  });
 
   const openColorPicker = () => setIsColorPickerVisible(true);
   const closeColorPicker = () => setIsColorPickerVisible(false);
@@ -61,6 +68,7 @@ const DrawingSettings: FC<DrawingSettingsProps> = ({
   const onDrawDeleteHandler = () => {
     if (selectedDraw) {
       onDrawDelete(selectedDraw.id);
+      pushRemove();
     }
   };
 
@@ -120,7 +128,7 @@ const DrawingSettings: FC<DrawingSettingsProps> = ({
               {selectedDraw?.color}
             </div>
             {isColorPickerVisible && (
-              <div className="absolute bottom-8 left-8">
+              <div className="absolute bottom-11 -left-10 md:left-0">
                 <HexColorPicker
                   color={selectedDraw?.color || DEFAULT_COLOR}
                   onChange={onDrawColorChangeHandler}

@@ -8,6 +8,7 @@ import IconsModal from "../../../IconsModal";
 import { Edit, Close } from "../../../Icons";
 
 import { getTextColor } from "../../../../utils/common";
+import { useOnChangeHistorySubscription } from "../../../../hooks/useOnChangeHistorySubscription";
 
 import {
   DEFAULT_COLOR,
@@ -41,6 +42,12 @@ const MarkerSettings: FC<MarkerSettingsProps> = ({
 }) => {
   const [isColorPickerVisible, setIsColorPickerVisible] = useState(false);
   const [isIconsModalOpen, setIsIconsModalOpen] = useState(false);
+
+  const { pushRemove } = useOnChangeHistorySubscription({
+    id: selectedMarker?.id,
+    tool: "marker",
+    state: selectedMarker,
+  });
 
   const openColorPicker = () => setIsColorPickerVisible(true);
   const closeColorPicker = () => setIsColorPickerVisible(false);
@@ -100,6 +107,7 @@ const MarkerSettings: FC<MarkerSettingsProps> = ({
   const onMarkerDeleteHandler = () => {
     if (selectedMarker) {
       onMarkerDelete(selectedMarker.id);
+      pushRemove();
     }
   };
 
@@ -173,7 +181,7 @@ const MarkerSettings: FC<MarkerSettingsProps> = ({
               {selectedMarker?.color}
             </div>
             {isColorPickerVisible && (
-              <div className="absolute bottom-8 left-8">
+              <div className="absolute bottom-11 -left-10 md:left-0">
                 <HexColorPicker
                   color={selectedMarker?.color || DEFAULT_COLOR}
                   onChange={onMarkerColorChangeHandler}

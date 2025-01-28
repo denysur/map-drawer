@@ -10,6 +10,7 @@ import {
   setMarkerColor,
   setMarkerIcon,
   setMarkerRotation,
+  clearMarkersState,
 } from "../../app/slices/markerSlice";
 import { generateId } from "../../utils/common";
 import { useActiveTool } from "./useActiveTool";
@@ -106,6 +107,10 @@ export const useMarkers = () => {
     []
   );
 
+  const flushMarkersState = useCallback(() => {
+    dispatch(clearMarkersState());
+  }, []);
+
   return useMemo(
     () =>
       [
@@ -120,6 +125,7 @@ export const useMarkers = () => {
           updateMarkerRotation,
           updateMarkerColor,
           updateMarkerIcon,
+          flushMarkersState,
         },
       ] as const,
     [selectedMarkerId, selectedMarker, markers, isAddNewMarkerMode]
