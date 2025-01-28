@@ -38,9 +38,14 @@ export const historySlice = createSlice({
     setTimestamp: (state, action: PayloadAction<number>) => {
       state.timestamp = action.payload;
     },
+    clearHistoryState: (state) => {
+      state.history = [];
+      state.timestamp = null;
+    },
   },
 });
 
-export const { addCommit, setTimestamp, undo, redo } = historySlice.actions;
+export const { addCommit, setTimestamp, undo, redo, clearHistoryState } =
+  historySlice.actions;
 
 export default historySlice.reducer;

@@ -58,6 +58,11 @@ export const drawSlice = createSlice({
           : draw
       );
     },
+
+    clearDrawsState: (state) => {
+      state.drawings = [];
+      state.selectedDrawId = null;
+    },
   },
 });
 
@@ -68,6 +73,7 @@ export const {
   setDrawWeigh,
   setSelectedDrawId,
   setDrawProps,
+  clearDrawsState,
 } = drawSlice.actions;
 
 export default drawSlice.reducer;

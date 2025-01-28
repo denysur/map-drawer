@@ -71,6 +71,11 @@ export const arrowSlice = createSlice({
           : arrow
       );
     },
+
+    clearArrowsState: (state) => {
+      state.arrows = [];
+      state.selectedArrowId = null;
+    },
   },
 });
 
@@ -82,6 +87,7 @@ export const {
   setArrowWeight,
   setSelectedArrowId,
   setArrowProps,
+  clearArrowsState,
 } = arrowSlice.actions;
 
 export default arrowSlice.reducer;

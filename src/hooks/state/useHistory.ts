@@ -1,6 +1,10 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useCallback, useEffect, useMemo } from "react";
-import { addCommit, setTimestamp } from "../../app/slices/historySlice";
+import {
+  addCommit,
+  clearHistoryState,
+  setTimestamp,
+} from "../../app/slices/historySlice";
 import { RootState } from "../../app/store";
 import { Arrow, Draw, HistoryCommit, Marker } from "../../types";
 import { addDraw, removeDraw, setDrawProps } from "../../app/slices/drawSlice";
@@ -250,6 +254,10 @@ export const useHistory = () => {
     handleArrowStateChange,
   ]);
 
+  const flushHistoryState = useCallback(() => {
+    dispatch(clearHistoryState());
+  }, []);
+
   return useMemo(
     () => ({
       canUndo,
@@ -260,6 +268,7 @@ export const useHistory = () => {
       setHistoryTimestamp,
       undo,
       redo,
+      flushHistoryState,
     }),
     [history, timestamp, addHistoryCommit, setHistoryTimestamp, undo, redo]
   );

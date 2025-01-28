@@ -3,7 +3,15 @@ import html2canvas from "html2canvas";
 import IconButton from "../../../Common/IconButton";
 import MarkerSettings from "../MarkerSettings";
 import DrawingSettings from "../DrawingSettings";
-import { Camera, MapMarker, Draw, Arrow, Undo, Redo } from "../../../Icons";
+import {
+  Camera,
+  MapMarker,
+  Draw,
+  Arrow,
+  Undo,
+  Redo,
+  DeleteAll,
+} from "../../../Icons";
 
 import { useActiveTool } from "../../../../hooks/state/useActiveTool";
 import { useMarkers } from "../../../../hooks/state/useMarkers";
@@ -25,11 +33,18 @@ const Tools = () => {
       updateMarkerIcon,
       updateMarkerRotation,
       removeMarker,
+      flushMarkersState,
     },
   ] = useMarkers();
   const [
     { selectedDraw, isAddNewDrawingMode },
-    { removeDraw, updateDrawWeigh, updateDrawColor, unselectDrawing },
+    {
+      removeDraw,
+      updateDrawWeigh,
+      updateDrawColor,
+      unselectDrawing,
+      flushDrawsState,
+    },
   ] = useDrawings();
   const [
     { selectedArrow, isAddNewArrowMode },
@@ -39,9 +54,10 @@ const Tools = () => {
       updateArrowColor,
       unselectArrowing,
       updateArrowWight,
+      flushArrowsState,
     },
   ] = useArrows();
-  const { undo, redo, canUndo, canRedo } = useHistory();
+  const { undo, redo, canUndo, canRedo, flushHistoryState } = useHistory();
 
   const onMarkerToolOpenHandler = () => setActiveTool("marker");
   const onMarkerToolCloseHandler = () => unselectMarker();
@@ -123,6 +139,13 @@ const Tools = () => {
     redo();
   };
 
+  const onClearState = () => {
+    flushMarkersState();
+    flushDrawsState();
+    flushArrowsState();
+    flushHistoryState();
+  };
+
   if (activeTool === "marker") {
     return (
       <MarkerSettings
@@ -193,14 +216,19 @@ const Tools = () => {
         <IconButton
           iconComponent={Undo}
           disabled={!canUndo}
-          className="bg-orange-100 text-orange-500 hover:!bg-orange-200"
+          className="bg-orange-100 text-orange-500 [&:not(:disabled)]:hover:!bg-orange-200"
           onClick={onUndoButtonClickHandler}
         />
         <IconButton
           iconComponent={Redo}
           disabled={!canRedo}
-          className="bg-orange-100 text-orange-500 hover:!bg-orange-200"
+          className="bg-orange-100 text-orange-500 [&:not(:disabled)]:hover:!bg-orange-200"
           onClick={onRedoButtonClickHandler}
+        />
+        <IconButton
+          iconComponent={DeleteAll}
+          color="errorLight"
+          onClick={onClearState}
         />
       </div>
     </div>

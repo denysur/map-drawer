@@ -102,6 +102,10 @@ export const markerSlice = createSlice({
           : marker
       );
     },
+    clearMarkersState: (state) => {
+      state.markers = [];
+      state.selectedMarkerId = null;
+    },
   },
 });
 
@@ -115,6 +119,7 @@ export const {
   setMarkerIcon,
   setMarkerRotation,
   setMarkerProps,
+  clearMarkersState,
 } = markerSlice.actions;
 
 export default markerSlice.reducer;

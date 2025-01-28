@@ -3,6 +3,7 @@ import { useCallback, useMemo } from "react";
 
 import {
   addDraw as addDrawAction,
+  clearDrawsState,
   removeDraw as removeDrawAction,
   setDrawColor,
   setDrawWeigh,
@@ -80,6 +81,10 @@ export const useDrawings = () => {
     dispatch(setDrawColor(data));
   }, []);
 
+  const flushDrawsState = useCallback(() => {
+    dispatch(clearDrawsState());
+  }, []);
+
   return useMemo(
     () =>
       [
@@ -97,6 +102,7 @@ export const useDrawings = () => {
           updateDrawColor,
           unselectDrawing,
           selectDraw,
+          flushDrawsState,
         },
       ] as const,
     [selectedDraw, selectedDrawId, drawings, isAddNewDrawingMode, isDrawingMode]
