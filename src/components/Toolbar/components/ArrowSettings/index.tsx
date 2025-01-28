@@ -120,7 +120,7 @@ const ArrowSettings: FC<ArrowSettingsProps> = ({
               {selectedArrow?.color}
             </div>
             {isColorPickerVisible && (
-              <div className="absolute bottom-8 left-8">
+              <div className="absolute bottom-11 -left-10 md:left-0">
                 <HexColorPicker
                   color={selectedArrow?.color || DEFAULT_COLOR}
                   onChange={onArrowColorChangeHandler}
