@@ -2,6 +2,7 @@ import { useState } from "react";
 
 import Modal from "../../../../components/Common/Modal";
 import IconsModal from "../../../../components/IconsModal";
+import GuideModal from "../../../../components/GuideModal";
 import MenuItem from "../MenuItem";
 
 import { Close, Info, Logout, MapMarker, Palette } from "../../../Icons";
