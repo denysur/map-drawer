@@ -49,7 +49,7 @@ const Modal: FC<ModalProps> = ({ isOpen, onClose, title, children }) => {
         className="w-full h-full fixed inset-0 bg-black/60"
         onClick={handleClose}
       ></div>
-      <div className="overflow-hidden z-10 dark:bg-zinc-900 dark:text-white flex flex-col bg-white max-h-full w-full max-w-[768px] rounded-xl shadow-lg relative">
+      <div className="overflow-hidden z-10 ease duration-200 dark:bg-zinc-900 dark:text-white flex flex-col bg-white max-h-full w-full max-w-[768px] rounded-xl shadow-lg relative">
         <button
           className={`absolute z-10 p-2 rounded-lg ease duration-200 text-zinc-500 hover:bg-black/[.1] hover:text-black dark:hover:bg-white/[.05] dark:hover:text-white ${title ? "top-[10px] right-[10px]" : "top-1 right-1"}`}
           onClick={handleClose}
