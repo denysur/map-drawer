@@ -105,7 +105,7 @@ const GuideModal: FC = () => {
 
   return (
     <div className="flex h-full relative overflow-hidden">
-      <nav className="hidden w-72 border-l border-gray-200 dark:border-zinc-700 px-4 py-16 absolute right-0 top-0 h-full md:block">
+      <nav className="ease duration-200 hidden w-72 border-l border-gray-200 dark:border-zinc-700 px-4 py-16 absolute right-0 top-0 h-full md:block">
         <ul className="space-y-3">
           {SECTIONS.map(({ id, title }) => (
             <li key={id}>
@@ -178,7 +178,7 @@ const GuideModal: FC = () => {
                   Щоб створити маркер, виберіть інструмент <b>Маркер</b>
                   {" ("}
                   <MapMarker
-                    className="inline text-blue-700 mb-1"
+                    className="inline text-blue-700 dark:text-blue-400 mb-1"
                     width={20}
                     height={20}
                   />
@@ -198,7 +198,7 @@ const GuideModal: FC = () => {
                   Для того, щоб змінити іконку маркера, натисніть <b>Змінити</b>
                   {" ("}
                   <Edit
-                    className="inline text-blue-700 mb-1"
+                    className="inline text-blue-700 dark:text-white mb-1"
                     width={20}
                     height={20}
                   />
@@ -237,7 +237,7 @@ const GuideModal: FC = () => {
                   маркерів. Для цього, перейдіть в <b>Налаштування</b>
                   {" ("}
                   <Burger
-                    className="inline text-blue-700 mb-1"
+                    className="inline text-blue-700 dark:text-blue-300 mb-1"
                     width={20}
                     height={20}
                   />
@@ -261,7 +261,7 @@ const GuideModal: FC = () => {
                   <b>Фігури</b>
                   {" ("}
                   <Draw
-                    className="inline text-blue-700 mb-1"
+                    className="inline text-blue-700 dark:text-blue-400 mb-1"
                     width={20}
                     height={20}
                   />
@@ -287,7 +287,7 @@ const GuideModal: FC = () => {
                   Для створення стрілки виберіть інструмент <b>Стрілка</b>
                   {" ("}
                   <Arrow
-                    className="inline text-blue-700 mb-1"
+                    className="inline text-blue-700 dark:text-blue-400 mb-1"
                     width={20}
                     height={20}
                   />
@@ -310,7 +310,7 @@ const GuideModal: FC = () => {
                   Для збереження стану в картинку натисніть <b>Камеру</b>
                   {" ("}
                   <Camera
-                    className="inline text-blue-700 mb-1"
+                    className="inline text-green-700 dark:text-green-400 mb-1"
                     width={20}
                     height={20}
                   />
@@ -327,21 +327,21 @@ const GuideModal: FC = () => {
                   інструментів: <b>Назад</b>
                   {" ("}
                   <Undo
-                    className="inline text-orange-700 mb-1"
+                    className="inline text-orange-700 dark:text-orange-400 mb-1"
                     width={20}
                     height={20}
                   />
                   {") "}, <b>Вперед</b>
                   {" ("}
                   <Redo
-                    className="inline text-orange-700 mb-1"
+                    className="inline text-orange-700 dark:text-orange-400 mb-1"
                     width={20}
                     height={20}
                   />
                   {") "} та <b>Очистити</b>
                   {" ("}
                   <DeleteAll
-                    className="inline text-red-700 mb-1"
+                    className="inline text-red-700 dark:text-red-400 mb-1"
                     width={20}
                     height={20}
                   />
@@ -350,7 +350,7 @@ const GuideModal: FC = () => {
                 <p className="mt-2">
                   {" ("}
                   <Undo
-                    className="inline text-orange-700 mb-1"
+                    className="inline text-orange-700 dark:text-orange-400 mb-1"
                     width={20}
                     height={20}
                   />
@@ -359,7 +359,7 @@ const GuideModal: FC = () => {
                 <p className="mt-2">
                   {" ("}
                   <Redo
-                    className="inline text-orange-700 mb-1"
+                    className="inline text-orange-700 dark:text-orange-400 mb-1"
                     width={20}
                     height={20}
                   />
@@ -369,7 +369,7 @@ const GuideModal: FC = () => {
                 <p className="mt-2">
                   {" ("}
                   <DeleteAll
-                    className="inline text-red-700 mb-1"
+                    className="inline text-red-700 dark:text-red-400 mb-1"
                     width={20}
                     height={20}
                   />
