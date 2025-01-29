@@ -11,3 +11,4 @@ export { default as Undo } from "./Undo";
 export { default as Logout } from "./Logout";
 export { default as DeleteAll } from "./DeleteAll";
 export { default as Burger } from "./Burger";
+export { default as Info } from "./Info";
