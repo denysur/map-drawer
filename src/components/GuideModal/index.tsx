@@ -144,7 +144,7 @@ const GuideModal: FC = () => {
                   змінити його колір, розмір, вибрати іншу іконку або видалити
                   його:
                 </p>
-                <GuideImage src="/public/guide/marker-settings.png" />
+                <GuideImage src="/guide/marker-settings.png" />
                 <p className="mt-2">
                   Для того, щоб змінити іконку маркера, натисніть <b>Змінити</b>
                   {" ("}
@@ -157,11 +157,11 @@ const GuideModal: FC = () => {
                   доступних іконок, або ви можете завнатажити нові. Виберіть
                   необхідну і натисніть <b>Вибрати</b>.
                 </p>
-                <GuideImage src="/public/guide/custom-marker-icon-select.png" />
+                <GuideImage src="/guide/custom-marker-icon-select.png" />
                 <p className="mt-6">
                   Налаштування маркера з кастомною іконкою:
                 </p>
-                <GuideImage src="/public/guide/marker-settings-with-icon.png" />
+                <GuideImage src="/guide/marker-settings-with-icon.png" />
                 <p className="mt-4 flex items-center gap-2 text-red-700 dark:text-red-400">
                   <b className="flex justify-center items-center text-3xl p-1 border-2 border-red-700 bg-red-300 dark:bg-red-900 dark:border-red-400 dark:text-red-400 rounded-full">
                     !
@@ -195,7 +195,7 @@ const GuideModal: FC = () => {
                   {") "} та натисніть на <b>Іконки</b>. Ви побачите інструмент
                   для роботи з іконками:
                 </p>
-                <GuideImage src="/public/guide/icons-change-modal.png" />
+                <GuideImage src="/guide/icons-change-modal.png" />
                 <p className="mt-2">
                   Щоб завантажити іконку, натисніть <b>Завантажити</b>.
                 </p>
@@ -219,17 +219,17 @@ const GuideModal: FC = () => {
                   {") "}на панелі інструментів. Натисніть та протягніть по
                   карті, намалювавши фігуру, подібну до тої яку хочете отримати:
                 </p>
-                <GuideImage src="/public/guide/draw-example.png" />
+                <GuideImage src="/guide/draw-example.png" />
                 <p className="mt-2">
                   Відпустіть по завершенню і інструмент буде намагатися
                   автоматично намалювати необхідру фігуру:
                 </p>
-                <GuideImage src="/public/guide/draw-example-adjusted.png" />
+                <GuideImage src="/guide/draw-example-adjusted.png" />
                 <p className="mt-2">
                   Після створення фігури ви можете змінити колір, товщину лінії,
                   або видалити її.
                 </p>
-                <GuideImage src="/public/guide/draw-settings.png" />
+                <GuideImage src="/guide/draw-settings.png" />
               </>
             )}
             {id === "arrow" && (
@@ -247,12 +247,12 @@ const GuideModal: FC = () => {
                   базою для створення стрілки. Відпустіть і інстумент
                   автоматично перетворить лінію на стрілку:
                 </p>
-                <GuideImage src="/public/guide/arrow-example.png" />
+                <GuideImage src="/guide/arrow-example.png" />
                 <p className="mt-2">
                   Після створення стрілки ви можете змінити колір, товщину
                   лінії, розмір накінечника, або видалити її.
                 </p>
-                <GuideImage src="/public/guide/arrow-settings.png" />
+                <GuideImage src="/guide/arrow-settings.png" />
               </>
             )}
             {id === "screenshot" && (
