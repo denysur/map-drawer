@@ -154,7 +154,7 @@ const GuideModal: FC = () => {
               <li key={id}>
                 <a
                   href={`#${id}`}
-                  className="text-blue-600 font-medium"
+                  className="hover:underline text-blue-700 dark:text-blue-400 hover:text-blue-500 cursor-pointer ease duration-200 font-medium"
                   onClick={(e) => {
                     e.preventDefault();
                     document.getElementById(id)?.scrollIntoView({
