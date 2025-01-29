@@ -9,4 +9,5 @@ export { default as Arrow } from "./Arrow";
 export { default as Redo } from "./Redo";
 export { default as Undo } from "./Undo";
 export { default as Logout } from "./Logout";
+export { default as Palette } from "./Palette";
 export { default as DeleteAll } from "./DeleteAll";
