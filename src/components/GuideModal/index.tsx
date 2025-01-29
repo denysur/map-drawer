@@ -34,18 +34,59 @@ const GuideModal: FC = () => {
     const handleScroll = () => {
       if (!containerRef.current) return;
 
-      const scrollPosition = containerRef.current.scrollTop;
+      const { scrollTop, scrollHeight, clientHeight } = containerRef.current;
+
       let currentSection = SECTIONS[0].id;
 
-      for (const section of SECTIONS) {
-        const element = document.getElementById(section.id);
+      SECTIONS.forEach(({ id }) => {
+        const element = document.getElementById(id);
         if (element) {
-          const offsetTop = element.offsetTop - 100; // Adjust for header spacing
-          if (scrollPosition >= offsetTop) {
-            currentSection = section.id;
+          const elementTop = element.offsetTop;
+          const elementHeight = element.offsetHeight;
+
+          if (
+            scrollTop >= elementTop - 100 &&
+            scrollTop < elementTop + elementHeight + 100
+          ) {
+            currentSection = id;
           }
         }
-      }
+      });
+
+      SECTIONS.slice()
+        .reverse()
+        .forEach(({ id }) => {
+          const element = document.getElementById(id);
+          if (element) {
+            const elementTop = element.offsetTop;
+            const elementHeight = element.clientHeight;
+
+            console.log(
+              "isBottom",
+              scrollHeight - scrollTop - clientHeight,
+              "<",
+              clientHeight,
+              "=",
+              scrollHeight - scrollTop - clientHeight < clientHeight
+            );
+            console.log(
+              "isInView",
+              scrollHeight - scrollTop - clientHeight,
+              ">=",
+              scrollHeight - elementTop + elementHeight - 100,
+              "=",
+              scrollHeight - scrollTop - clientHeight >=
+                scrollHeight - elementTop + elementHeight - 100
+            );
+            if (
+              scrollHeight - scrollTop - clientHeight < clientHeight &&
+              scrollHeight - scrollTop - clientHeight >=
+                scrollHeight - elementTop - elementHeight - 100
+            ) {
+              currentSection = id;
+            }
+          }
+        });
 
       setActiveSection(currentSection);
     };
@@ -64,7 +105,7 @@ const GuideModal: FC = () => {
 
   return (
     <div className="flex h-full relative overflow-hidden">
-      <nav className="hidden w-72 border-l border-gray-300 dark:border-gray-600 px-4 py-16 absolute right-0 top-0 h-full md:block">
+      <nav className="hidden w-72 border-l border-gray-200 dark:border-zinc-700 px-4 py-16 absolute right-0 top-0 h-full md:block">
         <ul className="space-y-3">
           {SECTIONS.map(({ id, title }) => (
             <li key={id}>
@@ -73,15 +114,23 @@ const GuideModal: FC = () => {
                 className={clsx(
                   "block px-3 py-2 rounded-md text-sm font-medium transition-colors",
                   activeSection === id
-                    ? "text-gray-900"
-                    : "text-gray-400 hover:bg-gray-200 dark:text-gray-300 dark:hover:bg-gray-400"
+                    ? "text-gray-900 !font-bold bg-black/15 dark:text-white dark:bg-white/15"
+                    : "text-gray-400 hover:bg-black/10 hover:text-gray-600 dark:text-zinc-500 dark:hover:text-zinc-400 dark:hover:bg-white/10"
                 )}
                 onClick={(e) => {
                   e.preventDefault();
-                  document.getElementById(id)?.scrollIntoView({
-                    behavior: "smooth",
-                    block: "start",
-                  });
+                  const element = document.getElementById(id);
+                  if (containerRef.current && element) {
+                    element?.scrollIntoView({
+                      behavior: "smooth",
+                      block:
+                        containerRef.current.scrollHeight -
+                          containerRef.current.clientHeight >
+                        element.offsetTop
+                          ? "start"
+                          : "end",
+                    });
+                  }
                 }}
               >
                 {title}
@@ -93,9 +142,9 @@ const GuideModal: FC = () => {
 
       <div
         ref={containerRef}
-        className="overflow-y-auto flex-grow px-10 py-16 md:pr-72"
+        className="overflow-y-auto flex-grow px-10 pt-16 md:pr-72"
       >
-        <h2 className="text-3xl font-bold text-center mb-10">
+        <h2 className="text-3xl font-bold text-center mb-4">
           Інструкція з використання
         </h2>
 
@@ -121,7 +170,7 @@ const GuideModal: FC = () => {
           </ul>
         </nav>
         {SECTIONS.map(({ id, title }, index) => (
-          <div key={index} id={id} className="mb-20">
+          <div key={index} id={id} className="pt-8 pb-8">
             <h5 className="text-xl font-bold mb-6">{title}</h5>
             {id === "marker" && (
               <>
