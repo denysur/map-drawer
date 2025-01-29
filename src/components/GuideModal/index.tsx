@@ -11,6 +11,7 @@ import {
   Redo,
   DeleteAll,
 } from "../Icons";
+import clsx from "clsx";
 
 const SECTIONS = [
   { id: "marker", title: "Маркер" },
@@ -22,7 +23,7 @@ const SECTIONS = [
 ];
 
 const GuideImage = ({ src }: { src: string }) => (
-  <img src={src} className="mt-4 mb-10 max-w-[500px]" />
+  <img src={src} className="mt-4 mb-10 w-auto md:max-w-[500px]" />
 );
 
 const GuideModal: FC = () => {
@@ -63,13 +64,62 @@ const GuideModal: FC = () => {
 
   return (
     <div className="flex h-full relative overflow-hidden">
+      <nav className="hidden w-72 border-l border-gray-300 dark:border-gray-600 px-4 py-16 absolute right-0 top-0 h-full md:block">
+        <ul className="space-y-3">
+          {SECTIONS.map(({ id, title }) => (
+            <li key={id}>
+              <a
+                href={`#${id}`}
+                className={clsx(
+                  "block px-3 py-2 rounded-md text-sm font-medium transition-colors",
+                  activeSection === id
+                    ? "text-gray-900"
+                    : "text-gray-400 hover:bg-gray-200 dark:text-gray-300 dark:hover:bg-gray-400"
+                )}
+                onClick={(e) => {
+                  e.preventDefault();
+                  document.getElementById(id)?.scrollIntoView({
+                    behavior: "smooth",
+                    block: "start",
+                  });
+                }}
+              >
+                {title}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+
       <div
         ref={containerRef}
-        className="overflow-y-auto flex-grow px-10 py-16 pr-72"
+        className="overflow-y-auto flex-grow px-10 py-16 md:pr-72"
       >
         <h2 className="text-3xl font-bold text-center mb-10">
           Інструкція з використання
         </h2>
+
+        <nav className="mb-10 md:hidden">
+          <ul className="list-disc list-inside">
+            {SECTIONS.map(({ id, title }) => (
+              <li key={id}>
+                <a
+                  href={`#${id}`}
+                  className="text-blue-600 font-medium"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    document.getElementById(id)?.scrollIntoView({
+                      behavior: "smooth",
+                      block: "start",
+                    });
+                  }}
+                >
+                  {title}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </nav>
         {SECTIONS.map(({ id, title }, index) => (
           <div key={index} id={id} className="mb-20">
             <h5 className="text-xl font-bold mb-6">{title}</h5>
@@ -290,32 +340,6 @@ const GuideModal: FC = () => {
           </div>
         ))}
       </div>
-
-      <nav className="w-72 border-l border-gray-300 dark:border-gray-600 px-4 py-16 absolute right-0 top-0 h-full">
-        <ul className="space-y-3">
-          {SECTIONS.map(({ id, title }) => (
-            <li key={id}>
-              <a
-                href={`#${id}`}
-                className={`block px-3 py-2 rounded-md text-sm font-medium transition-colors ${
-                  activeSection === id
-                    ? "text-gray-900"
-                    : "text-gray-400 hover:bg-gray-200 dark:text-gray-300 dark:hover:bg-gray-400"
-                }`}
-                onClick={(e) => {
-                  e.preventDefault();
-                  document.getElementById(id)?.scrollIntoView({
-                    behavior: "smooth",
-                    block: "start",
-                  });
-                }}
-              >
-                {title}
-              </a>
-            </li>
-          ))}
-        </ul>
-      </nav>
     </div>
   );
 };

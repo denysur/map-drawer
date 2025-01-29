@@ -61,16 +61,18 @@ const IconsModal: FC<IconsModalProps> = ({ onSelect }) => {
     );
 
   return (
-    <div className="flex flex-col overflow-hidden">
-      <div className="px-4 grid grid-cols-2 min-[384px]:grid-cols-3 min-[512px]:grid-cols-4 sm:grid-cols-5 md:grid-cols-6 items-center gap-2 align-center justify-around overflow-auto">
-        {images?.map((icon) => (
-          <MarkerItem
-            key={`marker-${icon.name}`}
-            icon={icon}
-            selected={!!selected && selected.name == icon.name}
-            onClick={onMarkerIconClickHandler}
-          />
-        ))}
+    <div className="flex flex-col overflow-hidden h-dvh md:h-auto">
+      <div className="flex-grow py-4 overflow-y-auto">
+        <div className="px-4 grid grid-cols-2 min-[384px]:grid-cols-3 min-[512px]:grid-cols-4 sm:grid-cols-5 md:grid-cols-6 items-center gap-2 align-center justify-around overflow-auto">
+          {images?.map((icon) => (
+            <MarkerItem
+              key={`marker-${icon.name}`}
+              icon={icon}
+              selected={!!selected && selected.name == icon.name}
+              onClick={onMarkerIconClickHandler}
+            />
+          ))}
+        </div>
       </div>
       <div className="p-4 pt-2 flex justify-end gap-2">
         {!onSelect ? (

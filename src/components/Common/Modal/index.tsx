@@ -49,7 +49,7 @@ const Modal: FC<ModalProps> = ({
 
   return createPortal(
     <div
-      className={`z-20 fixed inset-0 p-4 h-dvh flex items-center justify-center ${
+      className={`z-20 fixed inset-0  h-dvh flex items-center justify-center md:p-4 ${
         !isVisible ? "animate-fadeOut" : "animate-fadeIn"
       }`}
     >
@@ -59,7 +59,7 @@ const Modal: FC<ModalProps> = ({
       ></div>
       <div
         className={clsx(
-          "overflow-hidden z-10 dark:bg-zinc-900 dark:text-white flex flex-col bg-white max-h-full w-full max-w-3xl rounded-xl shadow-lg relative",
+          "overflow-hidden z-10 dark:bg-zinc-900 dark:text-white flex flex-col bg-white max-h-full w-full max-w-3xl shadow-lg relative h-full md:rounded-xl md:h-auto",
           className
         )}
       >
