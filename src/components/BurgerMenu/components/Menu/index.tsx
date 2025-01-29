@@ -12,6 +12,7 @@ import ThemeModal from "../../../ThemeModal";
 const Menu = ({ onMenuClose }: { onMenuClose: () => void }) => {
   const { logout } = useAuthorization();
   const [isIconsModalOpen, setIsIconsModalOpen] = useState(false);
+  const [isGuideModalOpen, setIsGuideModalOpen] = useState(false);
   const [isThemeModalOpen, setIsThemeModalOpen] = useState(false);
 
   const openIconsModal = () => setIsIconsModalOpen(true);
@@ -60,14 +61,13 @@ const Menu = ({ onMenuClose }: { onMenuClose: () => void }) => {
         <IconsModal />
       </Modal>
       <Modal
-
         isOpen={isThemeModalOpen}
         title="Змінити тему"
         onClose={closeThemeModal}
       >
         <ThemeModal />
       </Modal>
-      <Modal>
+      <Modal
         isOpen={isGuideModalOpen}
         onClose={closeGuideModal}
         className="max-w-6xl min-h-96"
