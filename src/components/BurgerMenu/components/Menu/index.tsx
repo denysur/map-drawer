@@ -12,7 +12,7 @@ import ThemeModal from "../../../ThemeModal";
 const Menu = ({ onMenuClose }: { onMenuClose: () => void }) => {
   const { logout } = useAuthorization();
   const [isIconsModalOpen, setIsIconsModalOpen] = useState(false);
-  const [isGuideModalOpen, setIsGuideModalOpen] = useState(false);
+  const [isGuideModalOpen, setGuideModalOpen] = useState(false);
   const [isThemeModalOpen, setIsThemeModalOpen] = useState(false);
 
   const openIconsModal = () => setIsIconsModalOpen(true);
