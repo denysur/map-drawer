@@ -1,6 +1,6 @@
 import { FC } from "react";
 
-const Draw: FC<React.SVGProps<SVGSVGElement>> = (props) => (
+const Info: FC<React.SVGProps<SVGSVGElement>> = (props) => (
   <svg
     focusable="false"
     aria-hidden="true"
@@ -14,4 +14,4 @@ const Draw: FC<React.SVGProps<SVGSVGElement>> = (props) => (
   </svg>
 );
 
-export default Draw;
+export default Info;
