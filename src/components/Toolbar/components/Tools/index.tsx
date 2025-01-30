@@ -1,8 +1,9 @@
-import html2canvas from "html2canvas";
+import html2canvas from "html2canvas-pro";
 
 import IconButton from "../../../Common/IconButton";
 import MarkerSettings from "../MarkerSettings";
 import DrawingSettings from "../DrawingSettings";
+import ArrowSettings from "../ArrowSettings";
 import {
   Camera,
   MapMarker,
@@ -16,11 +17,10 @@ import {
 import { useActiveTool } from "../../../../hooks/state/useActiveTool";
 import { useMarkers } from "../../../../hooks/state/useMarkers";
 import { useDrawings } from "../../../../hooks/state/useDrawings";
+import { useArrows } from "../../../../hooks/state/useArrows";
 import { useHistory } from "../../../../hooks/state/useHistory";
 
 import { MarkerIcon } from "../../../../types";
-import { useArrows } from "../../../../hooks/state/useArrows";
-import ArrowSettings from "../ArrowSettings";
 
 const Tools = () => {
   const [activeTool, setActiveTool] = useActiveTool();
