@@ -32,10 +32,6 @@ export const useHistory = () => {
     return history.some((c) => c.timestamp > (timestamp || 0));
   }, [history, timestamp]);
 
-  useEffect(() => {
-    console.table(history);
-  }, [history]);
-
   const addHistoryCommit = useCallback(
     (commit: Omit<HistoryCommit, "timestamp">) => {
       const newCommit = { ...commit, timestamp: new Date().getTime() };

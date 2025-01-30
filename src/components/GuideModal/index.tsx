@@ -61,23 +61,6 @@ const GuideModal: FC = () => {
             const elementTop = element.offsetTop;
             const elementHeight = element.clientHeight;
 
-            console.log(
-              "isBottom",
-              scrollHeight - scrollTop - clientHeight,
-              "<",
-              clientHeight,
-              "=",
-              scrollHeight - scrollTop - clientHeight < clientHeight
-            );
-            console.log(
-              "isInView",
-              scrollHeight - scrollTop - clientHeight,
-              ">=",
-              scrollHeight - elementTop + elementHeight - 100,
-              "=",
-              scrollHeight - scrollTop - clientHeight >=
-                scrollHeight - elementTop + elementHeight - 100
-            );
             if (
               scrollHeight - scrollTop - clientHeight < clientHeight &&
               scrollHeight - scrollTop - clientHeight >=
