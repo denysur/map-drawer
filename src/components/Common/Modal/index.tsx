@@ -52,6 +52,7 @@ const Modal: FC<ModalProps> = ({
       className={`z-20 fixed inset-0  h-dvh flex items-center justify-center md:p-4 ${
         !isVisible ? "animate-fadeOut" : "animate-fadeIn"
       }`}
+      id="modal"
     >
       <div
         className="w-full h-full fixed inset-0 bg-black/60"
