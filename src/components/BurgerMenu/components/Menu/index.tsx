@@ -1,14 +1,14 @@
 import { useState } from "react";
 
-import Modal from "../../../../components/Common/Modal";
-import IconsModal from "../../../../components/IconsModal";
-import GuideModal from "../../../../components/GuideModal";
+import Modal from "../../../Common/Modal";
+import IconsModal from "../../../IconsModal";
+import GuideModal from "../../../GuideModal";
+import ThemeModal from "../../../ThemeModal";
 import MenuItem from "../MenuItem";
 
 import { Close, Info, Logout, MapMarker, Palette } from "../../../Icons";
 
 import { useAuthorization } from "../../../../hooks/useAuthorization";
-import ThemeModal from "../../../ThemeModal";
 
 const Menu = ({ onMenuClose }: { onMenuClose: () => void }) => {
   const { logout } = useAuthorization();
@@ -18,13 +18,13 @@ const Menu = ({ onMenuClose }: { onMenuClose: () => void }) => {
 
   const openIconsModal = () => setIsIconsModalOpen(true);
   const closeIconsModal = () => setIsIconsModalOpen(false);
- 
+
   const openThemeModal = () => setIsThemeModalOpen(true);
   const closeThemeModal = () => setIsThemeModalOpen(false);
 
   const openGuideModal = () => setGuideModalOpen(true);
   const closeGuideModal = () => setGuideModalOpen(false);
-  
+
   return (
     <div className="ease duration-200 fixed z-10 left-6 top-6 bg-white dark:bg-zinc-900 shadow-lg flex flex-col gap-1 rounded-3xl max-w-64 w-full">
       <div

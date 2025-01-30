@@ -4,12 +4,15 @@ import { MapMouseEvent } from "mapbox-gl";
 
 import Logo from "../Logo";
 import Marker from "./components/Marker";
-import FreehandDrawingResult from "./components/FreehandDrawingResult";
 import Geometry from "./components/Geometry";
+import Arrow from "./components/Arrow";
+import FreehandDrawingResult from "./components/FreehandDrawingResult";
 
 import { useMarkers } from "../../hooks/state/useMarkers";
 import { useDrawings } from "../../hooks/state/useDrawings";
 import { useMapDrawing } from "../../hooks/map/useMapDrawing";
+import { useArrows } from "../../hooks/state/useArrows";
+import { useMapArrows } from "../../hooks/map/useMapArrows";
 import { findClickedArrow, findClickedDraw } from "../../utils/map";
 
 import {
@@ -19,9 +22,6 @@ import {
 } from "../../types";
 
 import "mapbox-gl/dist/mapbox-gl.css";
-import { useMapArrows } from "../../hooks/map/useMapArrows";
-import { useArrows } from "../../hooks/state/useArrows";
-import Arrow from "./components/Arrow";
 
 const Map = () => {
   const [
