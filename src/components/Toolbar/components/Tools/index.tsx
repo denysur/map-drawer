@@ -207,13 +207,13 @@ const Tools = () => {
         />
       </div>
       <div className="flex gap-2 justify-center items-center w-full md:pt-0">
-        <div className="w-0.5 bg-gray-200 dark:bg-zinc-700 h-[36px] rounded hidden md:block" />
+        <div className="w-0.5 bg-gray-200 dark:bg-zinc-700 h-[36px] rounded hidden md:block ease duration-200" />
         <IconButton
           color="secondaryLight"
           iconComponent={Camera}
           onClick={onScreenshotToolOpenHandler}
         />
-        <div className="w-0.5 bg-gray-200 dark:bg-zinc-700 h-[36px] rounded" />
+        <div className="w-0.5 bg-gray-200 dark:bg-zinc-700 h-[36px] rounded ease duration-200" />
         <IconButton
           iconComponent={Undo}
           disabled={!canUndo}
