@@ -1,8 +1,9 @@
-import html2canvas from "html2canvas";
+import html2canvas from "html2canvas-pro";
 
 import IconButton from "../../../Common/IconButton";
 import MarkerSettings from "../MarkerSettings";
 import DrawingSettings from "../DrawingSettings";
+import ArrowSettings from "../ArrowSettings";
 import {
   Camera,
   MapMarker,
@@ -16,11 +17,10 @@ import {
 import { useActiveTool } from "../../../../hooks/state/useActiveTool";
 import { useMarkers } from "../../../../hooks/state/useMarkers";
 import { useDrawings } from "../../../../hooks/state/useDrawings";
+import { useArrows } from "../../../../hooks/state/useArrows";
 import { useHistory } from "../../../../hooks/state/useHistory";
 
 import { MarkerIcon } from "../../../../types";
-import { useArrows } from "../../../../hooks/state/useArrows";
-import ArrowSettings from "../ArrowSettings";
 
 const Tools = () => {
   const [activeTool, setActiveTool] = useActiveTool();
@@ -207,13 +207,13 @@ const Tools = () => {
         />
       </div>
       <div className="flex gap-2 justify-center items-center w-full md:pt-0">
-        <div className="w-0.5 bg-gray-200 dark:bg-zinc-700 h-[36px] rounded hidden md:block" />
+        <div className="w-0.5 bg-gray-200 dark:bg-zinc-700 h-[36px] rounded hidden md:block ease duration-200" />
         <IconButton
           color="secondaryLight"
           iconComponent={Camera}
           onClick={onScreenshotToolOpenHandler}
         />
-        <div className="w-0.5 bg-gray-200 dark:bg-zinc-700 h-[36px] rounded" />
+        <div className="w-0.5 bg-gray-200 dark:bg-zinc-700 h-[36px] rounded ease duration-200" />
         <IconButton
           iconComponent={Undo}
           disabled={!canUndo}

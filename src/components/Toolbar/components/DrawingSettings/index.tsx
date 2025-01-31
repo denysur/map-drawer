@@ -148,7 +148,7 @@ const DrawingSettings: FC<DrawingSettingsProps> = ({
             min={MINIMUM_SCALE}
             max={MAXIMUM_SCALE}
             step="0.1"
-            className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"
+            className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-zinc-700 ease duration-200"
           />
         </div>
       </div>

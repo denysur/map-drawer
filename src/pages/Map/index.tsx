@@ -7,16 +7,21 @@ import BurgerMenu from "../../components/BurgerMenu";
 
 const MapPage = () => {
   useEffect(() => {
-    document.addEventListener(
-      "touchmove",
-      function (e) {
-        // @ts-ignore
-        if (e.target.type !== "range") {
-          e.preventDefault();
-        }
-      },
-      { passive: false }
-    );
+    const handleTouchMove = (e: TouchEvent) => {
+      let parent = e.target as HTMLElement;
+      while (parent) {
+        parent = parent.parentElement as HTMLElement;
+        if (!parent || parent.id === "modal") break;
+      }
+      if ((e.target as HTMLInputElement).type !== "range" && !parent) {
+        e.preventDefault();
+      }
+    };
+    document.addEventListener("touchmove", handleTouchMove, { passive: false });
+
+    return () => {
+      document.removeEventListener("touchmove", handleTouchMove);
+    };
   }, []);
 
   return (

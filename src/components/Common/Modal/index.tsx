@@ -52,14 +52,16 @@ const Modal: FC<ModalProps> = ({
       className={`z-20 fixed inset-0  h-dvh flex items-center justify-center md:p-4 ${
         !isVisible ? "animate-fadeOut" : "animate-fadeIn"
       }`}
+      id="modal"
     >
       <div
         className="w-full h-full fixed inset-0 bg-black/60"
         onClick={handleClose}
       ></div>
+
       <div
         className={clsx(
-          "overflow-hidden z-10 dark:bg-zinc-900 dark:text-white flex flex-col bg-white max-h-full w-full max-w-3xl shadow-lg relative h-full md:rounded-xl md:h-auto",
+          "overflow-hidden z-10 ease duration-200 dark:bg-zinc-900 dark:text-white flex flex-col bg-white max-h-full w-full max-w-3xl shadow-lg relative h-full md:rounded-xl md:h-auto",
           className
         )}
       >

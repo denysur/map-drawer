@@ -12,6 +12,9 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+.mapboxgl-control-container {
+  display: none !important;
+}
 
 body {
   margin: 0;

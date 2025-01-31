@@ -1,23 +1,26 @@
 import { useDispatch, useSelector } from "react-redux";
-import { useCallback, useEffect, useMemo } from "react";
-import {
-  addCommit,
-  clearHistoryState,
-  setTimestamp,
-} from "../../app/slices/historySlice";
+import { useCallback, useMemo } from "react";
+
 import { RootState } from "../../app/store";
-import { Arrow, Draw, HistoryCommit, Marker } from "../../types";
-import { addDraw, removeDraw, setDrawProps } from "../../app/slices/drawSlice";
+
 import {
   addMarker,
   removeMarker,
   setMarkerProps,
 } from "../../app/slices/markerSlice";
+import { addDraw, removeDraw, setDrawProps } from "../../app/slices/drawSlice";
 import {
   addArrow,
   removeArrow,
   setArrowProps,
 } from "../../app/slices/arrowSlice";
+import {
+  addCommit,
+  clearHistoryState,
+  setTimestamp,
+} from "../../app/slices/historySlice";
+
+import { Arrow, Draw, HistoryCommit, Marker } from "../../types";
 
 export const useHistory = () => {
   const dispatch = useDispatch();
@@ -31,10 +34,6 @@ export const useHistory = () => {
   const canRedo = useMemo(() => {
     return history.some((c) => c.timestamp > (timestamp || 0));
   }, [history, timestamp]);
-
-  useEffect(() => {
-    console.table(history);
-  }, [history]);
 
   const addHistoryCommit = useCallback(
     (commit: Omit<HistoryCommit, "timestamp">) => {
