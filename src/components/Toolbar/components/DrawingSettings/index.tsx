@@ -74,11 +74,13 @@ const DrawingSettings: FC<DrawingSettingsProps> = ({
 
   if (isAddNewDrawingMode) {
     return (
-      <div className="flex gap-2 justify-between">
+      <div className="flex gap-2 justify-between flex-col max-w-[270px]">
         <span className="text-center">
           Натисніть будь де на мапу, щоб почати малювати.
         </span>
-        <Close onClick={onClose} className="cursor-pointer min-w-6" />
+        <Button onClick={onClose} className="cursor-pointer min-w-6">
+          Повернутися назад
+        </Button>
       </div>
     );
   }
