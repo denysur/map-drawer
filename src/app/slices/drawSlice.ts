@@ -12,7 +12,7 @@ export const drawSlice = createSlice({
   initialState,
   reducers: {
     addDraw: (state, action: PayloadAction<Draw>) => {
-      state.selectedDrawId = action.payload.id;
+      //state.selectedDrawId = action.payload.id;
       state.drawings = [...state.drawings, action.payload];
     },
     removeDraw: (state, action: PayloadAction<Draw["id"]>) => {

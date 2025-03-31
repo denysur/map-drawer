@@ -12,7 +12,7 @@ export const arrowSlice = createSlice({
   initialState,
   reducers: {
     addArrow: (state, action: PayloadAction<Arrow>) => {
-      state.selectedArrowId = action.payload.id;
+      //state.selectedArrowId = action.payload.id;
       state.arrows = [...state.arrows, action.payload];
     },
     removeArrow: (state, action: PayloadAction<Arrow["id"]>) => {

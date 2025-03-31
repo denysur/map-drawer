@@ -77,6 +77,7 @@ export const useMarkers = () => {
   const updateMarkerPosition = useCallback(
     (data: { id: string; latitude: number; longitude: number }) => {
       dispatch(setMarkerPosition(data));
+      console.log(data);
     },
     []
   );
