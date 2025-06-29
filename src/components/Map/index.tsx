@@ -9,6 +9,7 @@ import Arrow from "./components/Arrow";
 import FreehandDrawingResult from "./components/FreehandDrawingResult";
 
 import { useMarkers } from "../../hooks/state/useMarkers";
+import { useMapMarkers } from "../../hooks/map/useMapMarkers";
 import { useDrawings } from "../../hooks/state/useDrawings";
 import { useMapDrawing } from "../../hooks/map/useMapDrawing";
 import { useArrows } from "../../hooks/state/useArrows";
@@ -26,7 +27,7 @@ import "mapbox-gl/dist/mapbox-gl.css";
 const Map = () => {
   const [
     { isAddNewMarkerMode, markers },
-    { addMarker, selectMarker, updateMarkerPosition },
+    { selectMarker, updateMarkerPosition },
   ] = useMarkers();
   const [
     { isDrawingMode, isAddNewDrawingMode, drawings },
@@ -98,18 +99,13 @@ const Map = () => {
 
   const onMapClickHandler = useCallback(
     (e: MapMouseEvent) => {
-      if (isAddNewMarkerMode) {
-        addMarker({
-          latitude: e.lngLat.lat,
-          longitude: e.lngLat.lng,
-        });
-      }
-
       handleGeometryClick(e);
       handleArrowClick(e);
     },
     [isAddNewMarkerMode, handleGeometryClick, handleArrowClick]
   );
+
+  useMapMarkers({ isMarkerMode: isAddNewMarkerMode });
 
   const [{ coordinates: drawingCoordinates }] = useMapDrawing({
     isDrawingMode: isAddNewDrawingMode,
@@ -142,7 +138,7 @@ const Map = () => {
         attributionControl={false}
         onClick={onMapClickHandler}
         preserveDrawingBuffer={true}
-        dragPan={!isDrawingMode && !isArrowMode}
+        dragPan={!isAddNewMarkerMode && !isDrawingMode && !isArrowMode}
         dragRotate={false}
       >
         {markers.map((marker) => (

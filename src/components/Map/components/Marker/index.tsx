@@ -1,11 +1,11 @@
-import { FC, memo } from "react";
+import { FC, memo, MouseEventHandler } from "react";
 import { Marker as MapMarker, MarkerDragEvent } from "react-map-gl";
-
-import { MapMarker as MapMarkerIcon } from "../../../Icons";
 
 import { DEFAULT_COLOR, DEFAULT_MARKER_SIZE } from "../../../../constants";
 
 import { Marker as MarkerType } from "../../../../types";
+import { useMarkers } from "../../../../hooks/state/useMarkers";
+import DefaultIcon from "../../../Icons/Markers/DefaultIcon";
 
 type MarkerProps = {
   marker: MarkerType;
@@ -20,8 +20,16 @@ type MarkerProps = {
 const Marker: FC<MarkerProps> = memo((props) => {
   const { marker, onClick = () => {}, onPositionChanged = () => {} } = props;
   const { latitude, longitude, icon } = marker;
+  const [{ isAddNewMarkerMode }] = useMarkers();
 
-  const onMarkerClickHandler = () => onClick(marker);
+  const onMarkerClickHandler: MouseEventHandler<HTMLDivElement> = (e) => {
+    onClick(marker);
+    if (isAddNewMarkerMode) {
+      e.stopPropagation();
+      e.preventDefault();
+    }
+  };
+
   const onPositionChangedHandler = (e: MarkerDragEvent) => {
     onPositionChanged({
       id: marker.id,
@@ -36,29 +44,32 @@ const Marker: FC<MarkerProps> = memo((props) => {
       longitude={longitude}
       anchor="bottom"
       draggable
-      onClick={onMarkerClickHandler}
       onDragEnd={onPositionChangedHandler}
     >
-      {icon ? (
-        <div
-          className="flex items-end justify-center"
-          style={{
-            height: DEFAULT_MARKER_SIZE * marker.scale,
-            transform: `rotate(${marker.rotation}deg)`,
-          }}
-        >
-          <img
-            src={icon.url}
-            className="object-contain object-center-bottom h-full"
+      <div onMouseDown={onMarkerClickHandler} className="w-full h-full">
+        {icon && icon.type === "image" ? (
+          <div
+            className="flex items-end justify-center"
+            style={{
+              height: DEFAULT_MARKER_SIZE * marker.scale,
+              transform: `rotate(${marker.rotation}deg)`,
+            }}
+          >
+            <img
+              src={icon.url}
+              className="object-contain object-center-bottom h-full"
+            />
+          </div>
+        ) : (
+          <DefaultIcon
+            name={icon?.name || "default"}
+            width={DEFAULT_MARKER_SIZE * marker.scale}
+            height={DEFAULT_MARKER_SIZE * marker.scale * 1.25}
+            style={{ transform: `rotate(${marker.rotation}deg)` }}
+            fill={marker.color || DEFAULT_COLOR}
           />
-        </div>
-      ) : (
-        <MapMarkerIcon
-          width={DEFAULT_MARKER_SIZE * marker.scale}
-          height={DEFAULT_MARKER_SIZE * marker.scale}
-          fill={marker.color || DEFAULT_COLOR}
-        />
-      )}
+        )}
+      </div>
     </MapMarker>
   );
 });

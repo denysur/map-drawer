@@ -6,7 +6,7 @@ import {
   clearDrawsState,
   removeDraw as removeDrawAction,
   setDrawColor,
-  setDrawWeigh,
+  setDrawWeight,
   setSelectedDrawId,
 } from "../../app/slices/drawSlice";
 import { useActiveTool } from "./useActiveTool";
@@ -70,9 +70,9 @@ export const useDrawings = () => {
     setActiveTool(null);
   }, []);
 
-  const updateDrawWeigh = useCallback(
+  const updateDrawWeight = useCallback(
     (data: { id: string; weight: number }) => {
-      dispatch(setDrawWeigh(data));
+      dispatch(setDrawWeight(data));
     },
     []
   );
@@ -98,7 +98,7 @@ export const useDrawings = () => {
         {
           addDraw,
           removeDraw,
-          updateDrawWeigh,
+          updateDrawWeight,
           updateDrawColor,
           unselectDrawing,
           selectDraw,

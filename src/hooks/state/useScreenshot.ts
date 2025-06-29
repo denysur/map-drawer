@@ -7,32 +7,47 @@ export const useScreenshot = () => {
   const isScreenshoting = useSelector(
     (state: RootState) => state.screenshot.isScreenshoting
   );
-
   const dispatch = useDispatch();
 
   const makeScreenshot = async () => {
-    await Promise.resolve(); // waits logo opacity to change
-    const domRef = document.querySelector(".mapboxgl-wrapper") as HTMLElement;
-    if (domRef) {
+    try {
+      // Ждем, чтобы логотип успел скрыться (если нужно)
+      await Promise.resolve();
+
+      const domRef = document.querySelector(
+        ".mapboxgl-wrapper"
+      ) as HTMLElement | null;
+
+      if (!domRef) {
+        console.warn("DOM element .mapboxgl-wrapper not found.");
+        return;
+      }
+
       const canvas = await html2canvas(domRef, {
         allowTaint: false,
         useCORS: true,
+        logging: false,
+        backgroundColor: null, // делает фон прозрачным, если нужно
       });
+
       const dataUrl = canvas.toDataURL("image/png");
 
       const link = document.createElement("a");
       link.href = dataUrl;
-      const dateNow = new Date().toISOString().split("T")[0];
+      const dateNow = new Date().toISOString().replace(/[:.]/g, "-");
       link.download = `MapState_${dateNow}.png`;
       link.click();
+    } catch (error) {
+      console.error("Failed to capture screenshot:", error);
+    } finally {
       dispatch(setIsScreenshoting(false));
     }
   };
+
   const screenshot = () => {
+    if (isScreenshoting) return;
     dispatch(setIsScreenshoting(true));
-    makeScreenshot().finally(() => {
-      dispatch(setIsScreenshoting(false));
-    });
+    makeScreenshot();
   };
 
   return { isScreenshoting, screenshot };

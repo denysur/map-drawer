@@ -19,13 +19,13 @@ import { useArrows } from "../../../../hooks/state/useArrows";
 import { useHistory } from "../../../../hooks/state/useHistory";
 import { useScreenshot } from "../../../../hooks/state/useScreenshot";
 
-import { MarkerIcon } from "../../../../types";
+import { DefaultMarkerIcon, MarkerIcon } from "../../../../types";
 
 const Tools = () => {
   const [activeTool, setActiveTool] = useActiveTool();
   const { screenshot } = useScreenshot();
   const [
-    { selectedMarker, isAddNewMarkerMode },
+    { selectedMarker, isAddNewMarkerMode, iconOnCreating },
     {
       unselectMarker,
       updateMarkerSize,
@@ -34,13 +34,14 @@ const Tools = () => {
       updateMarkerRotation,
       removeMarker,
       flushMarkersState,
+      updateIconOnCreating,
     },
   ] = useMarkers();
   const [
     { selectedDraw, isAddNewDrawingMode },
     {
       removeDraw,
-      updateDrawWeigh,
+      updateDrawWeight,
       updateDrawColor,
       unselectDrawing,
       flushDrawsState,
@@ -53,7 +54,7 @@ const Tools = () => {
       updateArrowSize,
       updateArrowColor,
       unselectArrowing,
-      updateArrowWight,
+      updateArrowWeight,
       flushArrowsState,
     },
   ] = useArrows();
@@ -84,7 +85,7 @@ const Tools = () => {
 
   const onMarkerIconChange = (data: {
     id: string;
-    icon: MarkerIcon | null;
+    icon: MarkerIcon | DefaultMarkerIcon | null;
   }) => {
     updateMarkerIcon(data);
   };
@@ -92,12 +93,15 @@ const Tools = () => {
   const onMarkerDelete = (id: string) => {
     removeMarker(id);
   };
+  const onIconCreatingChange = (icon?: string) => {
+    updateIconOnCreating(icon);
+  };
 
   const onDrawDelete = (id: string) => {
     removeDraw(id);
   };
   const onDrawWeightChange = (data: { id: string; weight: number }) => {
-    updateDrawWeigh(data);
+    updateDrawWeight(data);
   };
 
   const onDrawColorChange = (data: { id: string; color: string }) => {
@@ -111,8 +115,8 @@ const Tools = () => {
     updateArrowSize(data);
   };
 
-  const onArrowWightChange = (data: { id: string; weight: number }) => {
-    updateArrowWight(data);
+  const onArrowWeightChange = (data: { id: string; weight: number }) => {
+    updateArrowWeight(data);
   };
 
   const onArrowColorChange = (data: { id: string; color: string }) => {
@@ -139,6 +143,8 @@ const Tools = () => {
       <MarkerSettings
         isAddNewMarkerMode={isAddNewMarkerMode}
         selectedMarker={selectedMarker}
+        iconOnCreating={iconOnCreating?.name}
+        onIconCreatingChange={onIconCreatingChange}
         onClose={onMarkerToolCloseHandler}
         onMarkerSizeChange={onMarkerSizeChange}
         onMarkerRotationChange={onMarkerRotationChange}
@@ -169,7 +175,7 @@ const Tools = () => {
         onClose={onFreehandArrowToolCloseHandler}
         onArrowDelete={onArrowDelete}
         onArrowSizeChange={onArrowSizeChange}
-        onArrowWightChange={onArrowWightChange}
+        onArrowWeightChange={onArrowWeightChange}
         onArrowColorChange={onArrowColorChange}
       />
     );

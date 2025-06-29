@@ -110,7 +110,7 @@ export const useArrows = () => {
           selectArrow,
           removeArrow,
           updateArrowSize,
-          updateArrowWight: updateArrowWeight,
+          updateArrowWeight: updateArrowWeight,
           updateArrowColor,
           unselectArrowing,
           flushArrowsState,

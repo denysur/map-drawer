@@ -17,28 +17,43 @@ import {
   MINIMUM_SCALE,
 } from "../../../../constants";
 
-import { Marker, MarkerIcon } from "../../../../types";
+import { DefaultMarkerIcon, Marker, MarkerIcon } from "../../../../types";
+import DefaultIcon from "../../../Icons/Markers/DefaultIcon";
+import clsx from "clsx";
+
+const DEFAULT_MARKERS = [
+  { id: "rocket", name: "Ракета" },
+  { id: "shahed", name: "Шахед" },
+  { id: "cruise-missile", name: "Крилата ракета" },
+];
 
 type MarkerSettingsProps = {
   isAddNewMarkerMode: boolean;
   selectedMarker?: Marker;
+  iconOnCreating?: string;
   onClose: () => void;
   onMarkerSizeChange: (data: { id: string; scale: number }) => void;
   onMarkerRotationChange: (data: { id: string; rotation: number }) => void;
   onMarkerColorChange: (data: { id: string; color: string }) => void;
-  onMarkerIconChange: (data: { id: string; icon: MarkerIcon | null }) => void;
+  onMarkerIconChange: (data: {
+    id: string;
+    icon: MarkerIcon | DefaultMarkerIcon | null;
+  }) => void;
   onMarkerDelete: (id: string) => void;
+  onIconCreatingChange: (icon?: string) => void;
 };
 
 const MarkerSettings: FC<MarkerSettingsProps> = ({
   isAddNewMarkerMode,
   selectedMarker,
+  iconOnCreating,
   onClose,
   onMarkerSizeChange,
   onMarkerRotationChange,
   onMarkerColorChange,
   onMarkerIconChange,
   onMarkerDelete,
+  onIconCreatingChange,
 }) => {
   const [isColorPickerVisible, setIsColorPickerVisible] = useState(false);
   const [isIconsModalOpen, setIsIconsModalOpen] = useState(false);
@@ -57,19 +72,13 @@ const MarkerSettings: FC<MarkerSettingsProps> = ({
 
   const onMarkerIconChangeHandler = (icon: MarkerIcon | null) => {
     if (selectedMarker) {
-      onMarkerIconChange({
-        id: selectedMarker.id,
-        icon,
-      });
+      onMarkerIconChange({ id: selectedMarker.id, icon });
     }
     setIsIconsModalOpen(false);
   };
   const onMarkerIconRemoveHandler = () => {
     if (selectedMarker) {
-      onMarkerIconChange({
-        id: selectedMarker.id,
-        icon: null,
-      });
+      onMarkerIconChange({ id: selectedMarker.id, icon: null });
     }
   };
 
@@ -97,10 +106,7 @@ const MarkerSettings: FC<MarkerSettingsProps> = ({
 
   const onMarkerColorChangeHandler = (newColor: string) => {
     if (selectedMarker) {
-      onMarkerColorChange({
-        id: selectedMarker.id,
-        color: newColor,
-      });
+      onMarkerColorChange({ id: selectedMarker.id, color: newColor });
     }
   };
 
@@ -113,11 +119,36 @@ const MarkerSettings: FC<MarkerSettingsProps> = ({
 
   if (isAddNewMarkerMode) {
     return (
-      <div className="flex gap-2 justify-between">
-        <span className="text-center">
-          Натисніть будь де на мапу, щоб додати маркер
-        </span>
-        <Close onClick={onClose} className="cursor-pointer min-w-6" />
+      <div className="flex flex-col gap-4">
+        <div className="flex gap-2 justify-between flex-wrap items-center">
+          {DEFAULT_MARKERS.map((marker) => (
+            <button
+              className={clsx(
+                "!p-2 flex gap-4 items-center rounded-md flex-1 w-full h-full flex-col leading-4",
+                marker.id === iconOnCreating
+                  ? "bg-blue-500 text-white"
+                  : "bg-white text-black dark:bg-zinc-800 dark:text-white"
+              )}
+              onClick={() => {
+                onIconCreatingChange(
+                  marker.id === iconOnCreating ? undefined : marker.id
+                );
+              }}
+            >
+              <DefaultIcon
+                name={marker.id}
+                style={{ transform: "rotate(45deg) scale(1.2)" }}
+              />
+              <span className="text-sm text-nowrap">{marker.name}</span>
+            </button>
+          ))}
+        </div>
+        <div className="flex gap-2 justify-between">
+          <span className="text-center">
+            Натисніть будь де на мапу, щоб додати маркер
+          </span>
+          <Close onClick={onClose} className="cursor-pointer min-w-6" />
+        </div>
       </div>
     );
   }
@@ -137,9 +168,11 @@ const MarkerSettings: FC<MarkerSettingsProps> = ({
         <div className="truncate">
           <span className="select-none">Іконка: </span>
           <span>
-            {selectedMarker?.icon
-              ? selectedMarker.icon.name
-              : "(за замовчуванням)"}
+            {selectedMarker?.icon?.type === "image"
+              ? selectedMarker?.icon?.name
+              : selectedMarker?.icon?.name
+                ? `(${selectedMarker?.icon?.name})`
+                : "(за замовчуванням)"}
           </span>
         </div>
         <div className="flex gap-2">
@@ -205,22 +238,21 @@ const MarkerSettings: FC<MarkerSettingsProps> = ({
           />
         </div>
       </div>
-      {selectedMarker?.icon && (
-        <div className="flex w-full gap-2 flex-col justify-between">
-          <span className="select-none">Поворот: </span>
-          <div className="w-full">
-            <input
-              type="range"
-              value={selectedMarker?.rotation || 0}
-              onChange={onMarkerRotationChangeHandler}
-              min={0}
-              max={360}
-              step="1"
-              className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-zinc-700 ease duration-200"
-            />
-          </div>
+      <div className="flex w-full gap-2 flex-col justify-between">
+        <span className="select-none">Поворот: </span>
+        <div className="w-full">
+          <input
+            type="range"
+            value={selectedMarker?.rotation || 0}
+            onChange={onMarkerRotationChangeHandler}
+            min={0}
+            max={360}
+            step="1"
+            className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-zinc-700 ease duration-200"
+          />
         </div>
-      )}
+      </div>
+
       <div className="flex w-full gap-2">
         <Button
           color="error"

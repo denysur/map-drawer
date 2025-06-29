@@ -11,6 +11,7 @@ import {
   setMarkerIcon,
   setMarkerRotation,
   clearMarkersState,
+  setIconOnCreating,
 } from "../../app/slices/markerSlice";
 import { generateId } from "../../utils/common";
 import { useActiveTool } from "./useActiveTool";
@@ -18,7 +19,7 @@ import { useActiveTool } from "./useActiveTool";
 import { DEFAULT_COLOR, DEFAULT_SCALE } from "../../constants";
 
 import { RootState } from "../../app/store";
-import { Marker, MarkerIcon } from "../../types";
+import { DefaultMarkerIcon, Marker, MarkerIcon } from "../../types";
 
 export const useMarkers = () => {
   const [activeTool, setActiveTool] = useActiveTool();
@@ -30,6 +31,10 @@ export const useMarkers = () => {
     state.marker.markers.find(({ id }) => id === selectedMarkerId)
   );
   const markers = useSelector((state: RootState) => state.marker.markers);
+
+  const iconOnCreating = useSelector(
+    (state: RootState) => state.marker.iconOnCreating
+  );
 
   const isAddNewMarkerMode = useMemo(
     () => activeTool === "marker" && !selectedMarker,
@@ -58,20 +63,24 @@ export const useMarkers = () => {
 
   const addMarker = useCallback(
     (marker: Omit<Marker, "rotation" | "id" | "color" | "scale" | "icon">) => {
+      const id = generateId();
+
       dispatch(
         addMarkerAction({
           ...marker,
           color: DEFAULT_COLOR,
           scale: DEFAULT_SCALE,
           rotation: 0,
-          icon: null,
-          id: generateId(),
+          icon: iconOnCreating,
+          id,
         })
       );
 
       setActiveTool("marker");
+
+      return id;
     },
-    []
+    [iconOnCreating]
   );
 
   const updateMarkerPosition = useCallback(
@@ -101,7 +110,7 @@ export const useMarkers = () => {
     []
   );
   const updateMarkerIcon = useCallback(
-    (data: { id: string; icon: MarkerIcon | null }) => {
+    (data: { id: string; icon: MarkerIcon | DefaultMarkerIcon | null }) => {
       dispatch(setMarkerIcon(data));
     },
     []
@@ -111,10 +120,20 @@ export const useMarkers = () => {
     dispatch(clearMarkersState());
   }, []);
 
+  const updateIconOnCreating = useCallback((icon?: string) => {
+    dispatch(setIconOnCreating(icon ? { type: "default", name: icon } : null));
+  }, []);
+
   return useMemo(
     () =>
       [
-        { selectedMarkerId, selectedMarker, markers, isAddNewMarkerMode },
+        {
+          selectedMarkerId,
+          selectedMarker,
+          markers,
+          isAddNewMarkerMode,
+          iconOnCreating,
+        },
         {
           selectMarker,
           unselectMarker,
@@ -126,8 +145,17 @@ export const useMarkers = () => {
           updateMarkerColor,
           updateMarkerIcon,
           flushMarkersState,
+          updateIconOnCreating,
         },
       ] as const,
-    [selectedMarkerId, selectedMarker, markers, isAddNewMarkerMode]
+    [
+      selectedMarkerId,
+      selectedMarker,
+      markers,
+      isAddNewMarkerMode,
+      iconOnCreating,
+      addMarker,
+      updateIconOnCreating,
+    ]
   );
 };
