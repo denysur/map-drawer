@@ -22,7 +22,7 @@ const Menu = ({ onMenuClose }: { onMenuClose: () => void }) => {
   const closeGuideModal = () => setGuideModalOpen(false);
 
   return (
-    <div className="fixed z-20 p-4 top-0 left-0 max-w-96 w-full">
+    <div className="fixed z-30 p-4 top-0 left-0 max-w-96 w-full">
       <div className="relative ease duration-200 bg-white dark:bg-zinc-900 shadow-lg flex flex-col gap-1 rounded-3xl">
         <div
           onClick={onMenuClose}

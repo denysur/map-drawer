@@ -1,7 +1,18 @@
-const Logo = () => (
-  <div className="fixed z-10 right-5 top-5 w-10 h-10 lg:right-10 lg:top-10 lg:w-20 lg:h-20 flex items-center justify-center pointer-events-none">
-    <img className="w-full" alt="Times of Ukraine logo" src="/logo.svg" />
-  </div>
-);
+import { useScreenshot } from "../../hooks/state/useScreenshot";
+
+const Logo = () => {
+  const { isScreenshoting } = useScreenshot();
+
+  return (
+    <div
+      className="fixed z-10 w-dvw h-dvh mix-blend-color-burn bg-[url(/logo.svg)] flex items-center justify-center pointer-events-none"
+      style={{
+        backgroundSize: "auto max(16px, 1.5vmax)",
+        backgroundPosition: "center center",
+        opacity: isScreenshoting ? 0.08 : 0.04,
+      }}
+    ></div>
+  );
+};
 
 export default Logo;

@@ -77,7 +77,7 @@ export const useArrows = () => {
     dispatch(setArrowSize(data));
   }, []);
 
-  const updateArrowWight = useCallback(
+  const updateArrowWeight = useCallback(
     (data: { id: string; weight: number }) => {
       dispatch(setArrowWeight(data));
     },
@@ -110,7 +110,7 @@ export const useArrows = () => {
           selectArrow,
           removeArrow,
           updateArrowSize,
-          updateArrowWight,
+          updateArrowWight: updateArrowWeight,
           updateArrowColor,
           unselectArrowing,
           flushArrowsState,

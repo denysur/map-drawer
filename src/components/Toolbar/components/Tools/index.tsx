@@ -1,5 +1,3 @@
-import html2canvas from "html2canvas-pro";
-
 import IconButton from "../../../Common/IconButton";
 import MarkerSettings from "../MarkerSettings";
 import DrawingSettings from "../DrawingSettings";
@@ -19,11 +17,13 @@ import { useMarkers } from "../../../../hooks/state/useMarkers";
 import { useDrawings } from "../../../../hooks/state/useDrawings";
 import { useArrows } from "../../../../hooks/state/useArrows";
 import { useHistory } from "../../../../hooks/state/useHistory";
+import { useScreenshot } from "../../../../hooks/state/useScreenshot";
 
 import { MarkerIcon } from "../../../../types";
 
 const Tools = () => {
   const [activeTool, setActiveTool] = useActiveTool();
+  const { screenshot } = useScreenshot();
   const [
     { selectedMarker, isAddNewMarkerMode },
     {
@@ -67,19 +67,7 @@ const Tools = () => {
   const onFreehandArrowToolCloseHandler = () => unselectArrowing();
 
   const onScreenshotToolOpenHandler = async () => {
-    const domRef = document.querySelector(".mapboxgl-wrapper") as HTMLElement;
-    if (domRef) {
-      const canvas = await html2canvas(domRef, {
-        allowTaint: false,
-        useCORS: true,
-      });
-      const dataUrl = canvas.toDataURL("image/png");
-
-      const link = document.createElement("a");
-      link.href = dataUrl;
-      link.download = "screenshot.png";
-      link.click();
-    }
+    screenshot();
   };
 
   const onMarkerSizeChange = (data: { id: string; scale: number }) => {
