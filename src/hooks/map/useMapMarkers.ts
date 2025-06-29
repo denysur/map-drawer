@@ -12,32 +12,38 @@ export const useMapMarkers = ({ isMarkerMode }: UseMapMarkersProps) => {
   const [selectedMarkerId, setSelectedMarkerId] = useState<string | null>(null);
   const [coordinates, setCoordinates] = useState<[number, number][]>([]);
 
-  const [{}, { addMarker, updateMarkerRotation }] = useMarkers();
+  const [{ markers }, { addMarker, updateMarkerRotation }] = useMarkers();
 
   const onMouseDownHandler = useCallback(
     (event: MapMouseEvent | MapTouchEvent) => {
-      if (!isMarkerMode) return;
+      if (!isMarkerMode || selectedMarkerId) return;
 
       setIsMarker(true);
 
       const { lng, lat } = event.lngLat;
-
       setCoordinates([[lng, lat]]);
+      if (
+        markers.some(
+          (marker) => marker.latitude === lat && marker.longitude === lng
+        )
+      ) {
+        console.warn("Marker already exists at this location.");
+        return;
+      }
 
       const id = addMarker({ latitude: lat, longitude: lng });
-
       setSelectedMarkerId(id);
+
+      event.preventDefault();
+      event.originalEvent.preventDefault();
     },
     [isMarkerMode, addMarker]
   );
 
   const onMouseUpHandler = useCallback(() => {
-    setIsMarker(false);
-    if (coordinates.length <= 1) return;
-
-    setSelectedMarkerId(null);
-
     setCoordinates([]);
+    setSelectedMarkerId(null);
+    setIsMarker(false);
   }, [coordinates, isMarker]);
 
   useEffect(() => {

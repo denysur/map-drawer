@@ -19,6 +19,10 @@ export const markerSlice = createSlice({
   reducers: {
     addMarker: (state, action: PayloadAction<Marker>) => {
       // state.selectedMarkerId = action.payload.id;
+      if (state.markers.some(({ id }) => id === action.payload.id)) {
+        return;
+      }
+
       state.markers = [...state.markers, action.payload];
     },
     removeMarker: (state, action: PayloadAction<Marker["id"]>) => {

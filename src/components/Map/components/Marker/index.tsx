@@ -1,4 +1,4 @@
-import { FC, memo, MouseEventHandler } from "react";
+import { FC, memo } from "react";
 import { Marker as MapMarker, MarkerDragEvent } from "react-map-gl";
 
 import { DEFAULT_COLOR, DEFAULT_MARKER_SIZE } from "../../../../constants";
@@ -22,11 +22,11 @@ const Marker: FC<MarkerProps> = memo((props) => {
   const { latitude, longitude, icon } = marker;
   const [{ isAddNewMarkerMode }] = useMarkers();
 
-  const onMarkerClickHandler: MouseEventHandler<HTMLDivElement> = (e) => {
+  const onMarkerClickHandler = (e: unknown) => {
     onClick(marker);
     if (isAddNewMarkerMode) {
-      e.stopPropagation();
-      e.preventDefault();
+      (e as Event).stopPropagation();
+      (e as Event).preventDefault();
     }
   };
 
@@ -46,7 +46,11 @@ const Marker: FC<MarkerProps> = memo((props) => {
       draggable
       onDragEnd={onPositionChangedHandler}
     >
-      <div onMouseDown={onMarkerClickHandler} className="w-full h-full">
+      <div
+        onMouseDown={onMarkerClickHandler}
+        onTouchStart={onMarkerClickHandler}
+        className="w-full h-full"
+      >
         {icon && icon.type === "image" ? (
           <div
             className="flex items-end justify-center"

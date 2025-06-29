@@ -20,9 +20,11 @@ import { DEFAULT_COLOR, DEFAULT_SCALE } from "../../constants";
 
 import { RootState } from "../../app/store";
 import { DefaultMarkerIcon, Marker, MarkerIcon } from "../../types";
+import { useHistory } from "./useHistory";
 
 export const useMarkers = () => {
   const [activeTool, setActiveTool] = useActiveTool();
+  const { addHistoryCommit } = useHistory();
 
   const selectedMarkerId = useSelector(
     (state: RootState) => state.marker.selectedMarkerId
@@ -75,6 +77,21 @@ export const useMarkers = () => {
           id,
         })
       );
+
+      addHistoryCommit({
+        type: "add",
+        id,
+        tool: "marker",
+        newState: {
+          id,
+          latitude: marker.latitude,
+          longitude: marker.longitude,
+          color: DEFAULT_COLOR,
+          scale: DEFAULT_SCALE,
+          rotation: 0,
+          icon: iconOnCreating,
+        },
+      });
 
       setActiveTool("marker");
 
