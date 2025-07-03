@@ -1,11 +1,12 @@
 import { FC, memo } from "react";
 import { Marker as MapMarker, MarkerDragEvent } from "react-map-gl";
 
+import DefaultIcon from "../../../Icons/Markers/DefaultIcon";
+
 import { DEFAULT_COLOR, DEFAULT_MARKER_SIZE } from "../../../../constants";
 
 import { Marker as MarkerType } from "../../../../types";
 import { useMarkers } from "../../../../hooks/state/useMarkers";
-import DefaultIcon from "../../../Icons/Markers/DefaultIcon";
 
 type MarkerProps = {
   marker: MarkerType;
@@ -38,6 +39,19 @@ const Marker: FC<MarkerProps> = memo((props) => {
     });
   };
 
+  const markerSize = DEFAULT_MARKER_SIZE * marker.scale;
+
+  const getMarkerAdditionalScaleByName = (value: number, name?: string) => {
+    if (name === "rocket") {
+      return value * 1.2;
+    }
+    if (name === "cruise-missile") {
+      return value * 1.2;
+    }
+
+    return value;
+  };
+
   return (
     <MapMarker
       latitude={latitude}
@@ -55,7 +69,7 @@ const Marker: FC<MarkerProps> = memo((props) => {
           <div
             className="flex items-end justify-center"
             style={{
-              height: DEFAULT_MARKER_SIZE * marker.scale,
+              height: markerSize,
               transform: `rotate(${marker.rotation}deg)`,
             }}
           >
@@ -67,8 +81,11 @@ const Marker: FC<MarkerProps> = memo((props) => {
         ) : (
           <DefaultIcon
             name={icon?.name || "default"}
-            width={DEFAULT_MARKER_SIZE * marker.scale}
-            height={DEFAULT_MARKER_SIZE * marker.scale * 1.25}
+            width={getMarkerAdditionalScaleByName(markerSize, icon?.name)}
+            height={getMarkerAdditionalScaleByName(
+              markerSize * 1.25,
+              icon?.name
+            )}
             style={{ transform: `rotate(${marker.rotation}deg)` }}
             fill={marker.color || DEFAULT_COLOR}
           />

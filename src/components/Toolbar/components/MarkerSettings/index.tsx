@@ -4,8 +4,10 @@ import { useClickAway } from "@uidotdev/usehooks";
 
 import Button from "../../../Common/Button";
 import Modal from "../../../Common/Modal";
+import IconButton from "../../../Common/IconButton";
 import IconsModal from "../../../IconsModal";
 import { Edit, Close } from "../../../Icons";
+import DefaultIcon from "../../../Icons/Markers/DefaultIcon";
 
 import { getTextColor } from "../../../../utils/common";
 import { useOnChangeHistorySubscription } from "../../../../hooks/useOnChangeHistorySubscription";
@@ -18,8 +20,6 @@ import {
 } from "../../../../constants";
 
 import { DefaultMarkerIcon, Marker, MarkerIcon } from "../../../../types";
-import DefaultIcon from "../../../Icons/Markers/DefaultIcon";
-import clsx from "clsx";
 
 const DEFAULT_MARKERS = [
   { id: "rocket", name: "Ракета" },
@@ -119,36 +119,28 @@ const MarkerSettings: FC<MarkerSettingsProps> = ({
 
   if (isAddNewMarkerMode) {
     return (
-      <div className="flex flex-col gap-4">
-        <div className="flex gap-2 justify-between flex-wrap items-center">
+      <div className="flex gap-4 items-center">
+        <div className="flex gap-2 items-center mx-auto">
           {DEFAULT_MARKERS.map((marker) => (
-            <button
-              className={clsx(
-                "!p-2 flex gap-4 items-center rounded-md flex-1 w-full h-full flex-col leading-4",
-                marker.id === iconOnCreating
-                  ? "bg-blue-500 text-white"
-                  : "bg-white text-black dark:bg-zinc-800 dark:text-white"
+            <IconButton
+              color={marker.id === iconOnCreating ? "primary" : "primaryLight"}
+              iconComponent={() => (
+                <DefaultIcon
+                  name={marker.id}
+                  style={{
+                    transform: `rotate(45deg) scale(1.2)${marker.id === "shahed" ? "translate(-1px, -3px)" : ""}`,
+                  }}
+                />
               )}
               onClick={() => {
                 onIconCreatingChange(
                   marker.id === iconOnCreating ? undefined : marker.id
                 );
               }}
-            >
-              <DefaultIcon
-                name={marker.id}
-                style={{ transform: "rotate(45deg) scale(1.2)" }}
-              />
-              <span className="text-sm text-nowrap">{marker.name}</span>
-            </button>
+            />
           ))}
         </div>
-        <div className="flex gap-2 justify-between">
-          <span className="text-center">
-            Натисніть будь де на мапу, щоб додати маркер
-          </span>
-          <Close onClick={onClose} className="cursor-pointer min-w-6" />
-        </div>
+        <Close onClick={onClose} className="cursor-pointer min-w-6" />
       </div>
     );
   }
