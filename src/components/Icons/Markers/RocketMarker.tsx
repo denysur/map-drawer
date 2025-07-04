@@ -20,7 +20,6 @@ const RocketMarker: FC<SVGProps<SVGSVGElement> & { withArrow?: boolean }> = ({
     >
       <path
         d="M72.5 0L108.996 173.56L108.989 395.619L145 460.929H116.569V478H28.4314V460.929H0L36.0131 395.973L35.9606 173.56L72.5 0Z"
-        fill="#FFDC22"
         stroke="#1278E6"
         strokeWidth={20}
         strokeLinecap="round"
