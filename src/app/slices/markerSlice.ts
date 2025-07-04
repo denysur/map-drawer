@@ -1,10 +1,16 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-import { Marker, MarkerIcon, MarkerState } from "../../types";
+import {
+  DefaultMarkerIcon,
+  Marker,
+  MarkerIcon,
+  MarkerState,
+} from "../../types";
 
 const initialState: MarkerState = {
   markers: [],
   selectedMarkerId: null,
+  iconOnCreating: null,
 };
 
 export const markerSlice = createSlice({
@@ -12,7 +18,11 @@ export const markerSlice = createSlice({
   initialState,
   reducers: {
     addMarker: (state, action: PayloadAction<Marker>) => {
-      state.selectedMarkerId = action.payload.id;
+      // state.selectedMarkerId = action.payload.id;
+      if (state.markers.some(({ id }) => id === action.payload.id)) {
+        return;
+      }
+
       state.markers = [...state.markers, action.payload];
     },
     removeMarker: (state, action: PayloadAction<Marker["id"]>) => {
@@ -45,23 +55,20 @@ export const markerSlice = createSlice({
     ) => {
       state.markers = state.markers.map((marker) =>
         marker.id === action.payload.id
-          ? {
-              ...marker,
-              color: action.payload.color,
-            }
+          ? { ...marker, color: action.payload.color }
           : marker
       );
     },
     setMarkerIcon: (
       state,
-      action: PayloadAction<{ id: string; icon: MarkerIcon | null }>
+      action: PayloadAction<{
+        id: string;
+        icon: MarkerIcon | DefaultMarkerIcon | null;
+      }>
     ) => {
       state.markers = state.markers.map((marker) =>
         marker.id === action.payload.id
-          ? {
-              ...marker,
-              icon: action.payload.icon,
-            }
+          ? { ...marker, icon: action.payload.icon }
           : marker
       );
     },
@@ -71,10 +78,7 @@ export const markerSlice = createSlice({
     ) => {
       state.markers = state.markers.map((marker) =>
         marker.id === action.payload.id
-          ? {
-              ...marker,
-              scale: action.payload.scale,
-            }
+          ? { ...marker, scale: action.payload.scale }
           : marker
       );
     },
@@ -84,10 +88,7 @@ export const markerSlice = createSlice({
     ) => {
       state.markers = state.markers.map((marker) =>
         marker.id === action.payload.id
-          ? {
-              ...marker,
-              rotation: action.payload.rotation,
-            }
+          ? { ...marker, rotation: action.payload.rotation }
           : marker
       );
     },
@@ -95,12 +96,15 @@ export const markerSlice = createSlice({
     setMarkerProps: (state, action: PayloadAction<Partial<Marker>>) => {
       state.markers = state.markers.map((marker) =>
         marker.id === action.payload.id
-          ? {
-              ...marker,
-              ...action.payload,
-            }
+          ? { ...marker, ...action.payload }
           : marker
       );
+    },
+    setIconOnCreating: (
+      state,
+      action: PayloadAction<DefaultMarkerIcon | null>
+    ) => {
+      state.iconOnCreating = action.payload;
     },
     clearMarkersState: (state) => {
       state.markers = [];
@@ -119,6 +123,7 @@ export const {
   setMarkerIcon,
   setMarkerRotation,
   setMarkerProps,
+  setIconOnCreating,
   clearMarkersState,
 } = markerSlice.actions;
 

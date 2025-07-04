@@ -9,9 +9,7 @@ import { useMarkerImages } from "../../hooks/useMarkerImages";
 
 import { MarkerIcon } from "../../types";
 
-type IconsModalProps = {
-  onSelect?: (icon: MarkerIcon | null) => void;
-};
+type IconsModalProps = { onSelect?: (icon: MarkerIcon | null) => void };
 
 const IconsModal: FC<IconsModalProps> = ({ onSelect }) => {
   const { images, fetchAll, deleteImage, uploadImage } = useMarkerImages();
@@ -29,7 +27,9 @@ const IconsModal: FC<IconsModalProps> = ({ onSelect }) => {
   }, []);
 
   const onMarkerIconClickHandler = (icon: MarkerIcon) => {
-    setSelected(icon.name != selected?.name ? icon : null);
+    setSelected(
+      icon.name != selected?.name ? { ...icon, type: "image" } : null
+    );
   };
 
   const onImageUploadHandler = () => {
