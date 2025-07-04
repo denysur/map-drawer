@@ -7,9 +7,9 @@ const Logo = () => {
     <div
       className="fixed z-10 w-dvw h-dvh mix-blend-color-burn bg-[url(/logo.svg)] flex items-center justify-center pointer-events-none"
       style={{
-        backgroundSize: "auto max(16px, 1.5vmax)",
+        backgroundSize: "auto max(32px, 3vmax)",
         backgroundPosition: "center center",
-        opacity: isScreenshoting ? 0.08 : 0.04,
+        opacity: isScreenshoting ? 0.16 : 0.04,
       }}
     ></div>
   );

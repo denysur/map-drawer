@@ -7,6 +7,7 @@ import { DEFAULT_COLOR, DEFAULT_MARKER_SIZE } from "../../../../constants";
 
 import { Marker as MarkerType } from "../../../../types";
 import { useMarkers } from "../../../../hooks/state/useMarkers";
+import clsx from "clsx";
 
 type MarkerProps = {
   marker: MarkerType;
@@ -63,14 +64,20 @@ const Marker: FC<MarkerProps> = memo((props) => {
       <div
         onMouseDown={onMarkerClickHandler}
         onTouchStart={onMarkerClickHandler}
-        className="w-full h-full"
+        className={clsx(
+          "w-full h-full",
+          icon?.name && "arrow",
+          isAddNewMarkerMode && "pointer-events-none"
+        )}
+        style={{
+          transform: icon?.name && `rotate(${marker.rotation}deg)`,
+        }}
       >
         {icon && icon.type === "image" ? (
           <div
             className="flex items-end justify-center"
             style={{
               height: markerSize,
-              transform: `rotate(${marker.rotation}deg)`,
             }}
           >
             <img
@@ -86,8 +93,8 @@ const Marker: FC<MarkerProps> = memo((props) => {
               markerSize * 1.25,
               icon?.name
             )}
-            style={{ transform: `rotate(${marker.rotation}deg)` }}
             fill={marker.color || DEFAULT_COLOR}
+            withArrow
           />
         )}
       </div>

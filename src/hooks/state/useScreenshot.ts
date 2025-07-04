@@ -1,7 +1,7 @@
-import html2canvas from "html2canvas-pro";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../app/store";
 import { setIsScreenshoting } from "../../app/slices/screenshotSlice";
+import { domToBlob } from "modern-screenshot";
 
 export const useScreenshot = () => {
   const isScreenshoting = useSelector(
@@ -10,8 +10,8 @@ export const useScreenshot = () => {
   const dispatch = useDispatch();
 
   const makeScreenshot = async () => {
+    let dataUrl: string | undefined;
     try {
-      // Ждем, чтобы логотип успел скрыться (если нужно)
       await Promise.resolve();
 
       const domRef = document.querySelector(
@@ -23,23 +23,28 @@ export const useScreenshot = () => {
         return;
       }
 
-      const canvas = await html2canvas(domRef, {
-        allowTaint: false,
-        useCORS: true,
-        logging: false,
-        backgroundColor: null, // делает фон прозрачным, если нужно
+      const blob = await domToBlob(domRef, {
+        quality: 1,
       });
 
-      const dataUrl = canvas.toDataURL("image/png");
+      dataUrl = URL.createObjectURL(blob);
 
       const link = document.createElement("a");
+      link.rel = "noopener noreferrer";
+      link.target = "_blank";
+      link.style.display = "none";
       link.href = dataUrl;
+
       const dateNow = new Date().toISOString().replace(/[:.]/g, "-");
       link.download = `MapState_${dateNow}.png`;
+
+      document.body.appendChild(link);
       link.click();
+      document.body.removeChild(link);
     } catch (error) {
       console.error("Failed to capture screenshot:", error);
     } finally {
+      if (dataUrl) URL.revokeObjectURL(dataUrl);
       dispatch(setIsScreenshoting(false));
     }
   };

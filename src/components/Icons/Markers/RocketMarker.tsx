@@ -1,25 +1,39 @@
+import clsx from "clsx";
 import { FC, SVGProps } from "react";
+import Arrow from "../Arrow";
 
-const RocketMarker: FC<SVGProps<SVGSVGElement>> = (props) => (
-  <svg
-    focusable="false"
-    aria-hidden="true"
-    width={24}
-    height={24}
-    viewBox="0 0 145 478"
-    fill="currentColor"
-    {...props}
-  >
-    <path d="M72.5 0L108.996 173.56H35.9606L72.5 0Z" />
-    <path d="M36.0131 173.56H108.987V458.083H36.0131V173.56Z" />
-    <path d="M28.4314 460.929H116.569V478H28.4314V460.929Z" />
-    <path d="M36.2817 395.488H108.917L145 460.929H0L36.2817 395.488Z" />
-    <path
-      fill-rule="evenodd"
-      clip-rule="evenodd"
-      d="M145 460.929L108.917 395.488H36.2817L0 460.929H145Z"
-    />
-  </svg>
+const RocketMarker: FC<SVGProps<SVGSVGElement> & { withArrow?: boolean }> = ({
+  withArrow,
+  className,
+  ...props
+}) => (
+  <div className="relative size-full">
+    <svg
+      focusable="false"
+      aria-hidden="true"
+      width={24}
+      height={24}
+      viewBox="0 0 155 488"
+      fill="currentColor"
+      className={clsx("arrow", className)}
+      {...props}
+    >
+      <path
+        d="M72.5 0L108.996 173.56L108.989 395.619L145 460.929H116.569V478H28.4314V460.929H0L36.0131 395.973L35.9606 173.56L72.5 0Z"
+        fill="#FFDC22"
+        stroke="#1278E6"
+        strokeWidth={20}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+    {withArrow && (
+      <Arrow
+        className="absolute bottom-full left-0 scale-50 size-full text-current -mb-2 -rotate-45"
+        style={{ color: "#ee5522" }}
+      />
+    )}
+  </div>
 );
 
 export default RocketMarker;
