@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { default as MapboxMap } from "react-map-gl";
 import { MapMouseEvent } from "mapbox-gl";
 
@@ -23,8 +23,16 @@ import {
 } from "../../types";
 
 import "mapbox-gl/dist/mapbox-gl.css";
+import { useTheme } from "../../hooks/useTheme";
 
 const Map = () => {
+  const { mapTheme } = useTheme();
+  const [isDarkMode, setIsDarkMode] = useState(
+    mapTheme === "dark" ||
+      (mapTheme === "system" &&
+        window.matchMedia("(prefers-color-scheme: dark)").matches)
+  );
+
   const [
     { isAddNewMarkerMode, markers },
     { selectMarker, updateMarkerPosition },
@@ -117,6 +125,27 @@ const Map = () => {
     onArrowReady: onArrowCreate,
   });
 
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+
+    const handler = (event: MediaQueryListEvent) => {
+      setIsDarkMode(
+        mapTheme === "dark" || (mapTheme === "system" && event.matches)
+      );
+    };
+
+    mediaQuery.addEventListener("change", handler);
+    return () => mediaQuery.removeEventListener("change", handler);
+  }, []);
+
+  useEffect(() => {
+    setIsDarkMode(
+      mapTheme === "dark" ||
+        (mapTheme === "system" &&
+          window.matchMedia("(prefers-color-scheme: dark)").matches)
+    );
+  }, [mapTheme]);
+
   return (
     <div className="mapboxgl-wrapper w-full h-full">
       <Logo />
@@ -134,7 +163,11 @@ const Map = () => {
             ? "pointer"
             : "grab"
         }
-        mapStyle="https://api.maptiler.com/maps/bcca4c4a-53a2-4f35-a54f-1d8288722cb1/style.json?key=5adXclVMBOvAgEYziUJG"
+        mapStyle={
+          isDarkMode
+            ? import.meta.env.VITE_MAP_DARK_STYLE_URL
+            : import.meta.env.VITE_MAP_LIGHT_STYLE_URL
+        }
         attributionControl={false}
         onClick={onMapClickHandler}
         preserveDrawingBuffer={true}

@@ -6,6 +6,9 @@ import drawReducer from "./slices/drawSlice";
 import arrowReducer from "./slices/arrowSlice";
 import historyReducer from "./slices/historySlice";
 import screenshotReducer from "./slices/screenshotSlice";
+import themeReducer from "./slices/themeSlice";
+
+import { themeMiddleware } from "./middlewares/themeMiddleware";
 
 export const store = configureStore({
   reducer: {
@@ -15,7 +18,10 @@ export const store = configureStore({
     arrow: arrowReducer,
     history: historyReducer,
     screenshot: screenshotReducer,
+    theme: themeReducer,
   },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().concat(themeMiddleware),
 });
 
 export type RootState = ReturnType<typeof store.getState>;

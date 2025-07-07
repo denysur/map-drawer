@@ -9,7 +9,7 @@ const Logo = () => {
       style={{
         backgroundSize: "auto max(32px, 3vmax)",
         backgroundPosition: "center center",
-        opacity: isScreenshoting ? 0.16 : 0.04,
+        opacity: isScreenshoting ? 0.3 : 0.04,
       }}
     ></div>
   );

@@ -9,9 +9,12 @@ import MenuItem from "../MenuItem";
 import { Close, Info, Logout, MapMarker } from "../../../Icons";
 
 import { useAuthorization } from "../../../../hooks/useAuthorization";
+import { useTheme } from "../../../../hooks/useTheme";
 
 const Menu = ({ onMenuClose }: { onMenuClose: () => void }) => {
   const { logout } = useAuthorization();
+  const { mapTheme, setMapTheme } = useTheme();
+
   const [isIconsModalOpen, setIsIconsModalOpen] = useState(false);
   const [isGuideModalOpen, setGuideModalOpen] = useState(false);
 
@@ -33,6 +36,11 @@ const Menu = ({ onMenuClose }: { onMenuClose: () => void }) => {
         <div className="ml-10 p-[17px] pl-6 pb-2 font-bold text-lg">Меню</div>
         <div className="p-4 pt-0 flex flex-col gap-2">
           <ThemeModal />
+          <ThemeModal
+            value={mapTheme}
+            onChange={setMapTheme}
+            label="Тема мапи"
+          />
           <MenuItem icon={MapMarker} label="Іконки" onClick={openIconsModal} />
           <MenuItem icon={Info} label="Довідка" onClick={openGuideModal} />
           <hr className="ease duration-200 bg-gray-200 dark:bg-zinc-700 h-0.5 border-0" />

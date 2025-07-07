@@ -49,6 +49,9 @@ const Marker: FC<MarkerProps> = memo((props) => {
     if (name === "cruise-missile") {
       return value * 1.2;
     }
+    if (name === "shahed") {
+      return value * 1.2;
+    }
 
     return value;
   };

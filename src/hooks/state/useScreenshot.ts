@@ -24,7 +24,7 @@ export const useScreenshot = () => {
       }
 
       const blob = await domToBlob(domRef, {
-        quality: 1,
+        scale: 3,
       });
 
       dataUrl = URL.createObjectURL(blob);

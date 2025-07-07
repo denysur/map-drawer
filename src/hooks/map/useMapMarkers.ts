@@ -16,7 +16,13 @@ export const useMapMarkers = ({ isMarkerMode }: UseMapMarkersProps) => {
 
   const onMouseDownHandler = useCallback(
     (event: MapMouseEvent | MapTouchEvent) => {
-      if (!isMarkerMode || selectedMarkerId) return;
+      if (
+        !isMarkerMode ||
+        selectedMarkerId ||
+        ((event.originalEvent as MouseEvent).button &&
+          (event.originalEvent as MouseEvent).button !== 0)
+      )
+        return;
 
       setIsMarker(true);
 

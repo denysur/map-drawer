@@ -124,6 +124,11 @@ const MarkerSettings: FC<MarkerSettingsProps> = ({
           {DEFAULT_MARKERS.map((marker) => (
             <IconButton
               color={marker.id === iconOnCreating ? "primary" : "primaryLight"}
+              className={
+                marker.id === iconOnCreating
+                  ? "scale-110 dark:bg-blue-200!"
+                  : ""
+              }
               iconComponent={() => (
                 <DefaultIcon
                   name={marker.id}

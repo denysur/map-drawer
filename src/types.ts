@@ -1,5 +1,7 @@
 export type ToolNames = "fast-marker" | "marker" | "freehand-draw" | "arrow";
 
+export type Theme = "light" | "dark" | "system";
+
 export type Marker = {
   id: string;
   color: string | null;

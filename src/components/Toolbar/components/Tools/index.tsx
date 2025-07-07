@@ -211,13 +211,13 @@ const Tools = () => {
         <IconButton
           iconComponent={Undo}
           disabled={!canUndo}
-          className="!text-orange-700 bg-orange-100 [&:not(:disabled)]:hover:bg-orange-200 dark:!text-orange-100 dark:bg-orange-800 [&:not(:disabled)]:dark:hover:bg-orange-700 dark:focus:ring-orange-400"
+          className="!text-orange-700 bg-orange-100 [&:not(:disabled)]:hover:bg-orange-200 dark:!text-orange-100 dark:bg-orange-900 [&:not(:disabled)]:dark:hover:!bg-orange-800 dark:focus:ring-orange-400"
           onClick={onUndoButtonClickHandler}
         />
         <IconButton
           iconComponent={Redo}
           disabled={!canRedo}
-          className="!text-orange-700 bg-orange-100 [&:not(:disabled)]:hover:bg-orange-200 dark:!text-orange-100 dark:bg-orange-800 [&:not(:disabled)]:dark:hover:bg-orange-700 dark:focus:ring-orange-400"
+          className="!text-orange-700 bg-orange-100 [&:not(:disabled)]:hover:bg-orange-200 dark:!text-orange-100 dark:bg-orange-900 [&:not(:disabled)]:dark:hover:!bg-orange-800 dark:focus:ring-orange-400"
           onClick={onRedoButtonClickHandler}
         />
         <IconButton
