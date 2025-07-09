@@ -22,6 +22,8 @@ jobs:
           VITE_FIREBASE_APP_MESSANGING_SENDER_ID: ${{ secrets.VITE_FIREBASE_APP_MESSANGING_SENDER_ID }}
           VITE_FIREBASE_APP_ID: ${{ secrets.VITE_FIREBASE_APP_ID }}
           VITE_FIREBASE_APP_MEASURMENT_ID: ${{ secrets.VITE_FIREBASE_APP_MEASURMENT_ID }}
+          VITE_MAP_LIGHT_STYLE_URL: ${{ secrets.VITE_MAP_LIGHT_STYLE_URL }}
+          VITE_MAP_DARK_STYLE_URL: ${{ secrets.VITE_MAP_DARK_STYLE_URL }}
 
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
