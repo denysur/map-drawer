@@ -44,13 +44,13 @@ const Marker: FC<MarkerProps> = memo((props) => {
 
   const getMarkerAdditionalScaleByName = (value: number, name?: string) => {
     if (name === "rocket") {
-      return value * 1.2;
+      return value * 1.4;
     }
     if (name === "cruise-missile") {
-      return value * 1.2;
+      return value * 0.8;
     }
     if (name === "shahed") {
-      return value * 1.2;
+      return value * 0.8;
     }
 
     return value;

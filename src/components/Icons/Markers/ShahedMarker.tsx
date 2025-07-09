@@ -23,7 +23,7 @@ const ShahedMarker: FC<SVGProps<SVGSVGElement> & { withArrow?: boolean }> = ({
     </svg>
     {withArrow && (
       <Arrow
-        className="absolute bottom-full left-1/2 -translate-x-1/2 scale-50 size-8 text-current -mb-2 -rotate-45"
+        className="absolute bottom-full left-1/2 -translate-x-1/2 scale-50 size-6 text-current -mb-1 -rotate-45"
         style={{ color: "#ee8800" }}
       />
     )}
