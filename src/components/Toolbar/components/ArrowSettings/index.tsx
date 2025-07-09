@@ -20,7 +20,7 @@ type ArrowSettingsProps = {
   onClose: () => void;
   onArrowDelete: (id: string) => void;
   onArrowSizeChange: (data: { id: string; scale: number }) => void;
-  onArrowWightChange: (data: { id: string; weight: number }) => void;
+  onArrowWeightChange: (data: { id: string; weight: number }) => void;
   onArrowColorChange: (data: { id: string; color: string }) => void;
 };
 
@@ -30,7 +30,7 @@ const ArrowSettings: FC<ArrowSettingsProps> = ({
   onClose,
   onArrowDelete,
   onArrowSizeChange,
-  onArrowWightChange,
+  onArrowWeightChange,
   onArrowColorChange,
 }) => {
   const [isColorPickerVisible, setIsColorPickerVisible] = useState(false);
@@ -57,9 +57,9 @@ const ArrowSettings: FC<ArrowSettingsProps> = ({
     }
   };
 
-  const onArrowWightChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
+  const onArrowWeightChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
     if (selectedArrow) {
-      onArrowWightChange({
+      onArrowWeightChange({
         id: selectedArrow.id,
         weight: Number(e.target.value),
       });
@@ -68,10 +68,7 @@ const ArrowSettings: FC<ArrowSettingsProps> = ({
 
   const onArrowColorChangeHandler = (newColor: string) => {
     if (selectedArrow) {
-      onArrowColorChange({
-        id: selectedArrow.id,
-        color: newColor,
-      });
+      onArrowColorChange({ id: selectedArrow.id, color: newColor });
     }
   };
 
@@ -150,7 +147,7 @@ const ArrowSettings: FC<ArrowSettingsProps> = ({
           <input
             type="range"
             value={selectedArrow?.weight || 1}
-            onChange={onArrowWightChangeHandler}
+            onChange={onArrowWeightChangeHandler}
             min={MINIMUM_ARROWHEAD_SCALE}
             max={MAXIMUM_ARROWHEAD_SCALE}
             step="0.1"
