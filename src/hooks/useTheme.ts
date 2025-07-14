@@ -11,6 +11,13 @@ import {
 export const useTheme = () => {
   const theme = useSelector((state: RootState) => state.theme.theme);
   const mapTheme = useSelector((state: RootState) => state.theme.mapTheme);
+  const isMapInDarkMode = useMemo(
+    () =>
+      mapTheme === "dark" ||
+      (mapTheme === "system" &&
+        window.matchMedia("(prefers-color-scheme: dark)").matches),
+    [mapTheme]
+  );
 
   const dispatch = useDispatch();
 
@@ -33,6 +40,7 @@ export const useTheme = () => {
       ({
         theme,
         mapTheme,
+        isMapInDarkMode,
         setTheme,
         setMapTheme,
       }) as const,

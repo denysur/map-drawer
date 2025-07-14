@@ -26,12 +26,8 @@ import "mapbox-gl/dist/mapbox-gl.css";
 import { useTheme } from "../../hooks/useTheme";
 
 const Map = () => {
-  const { mapTheme } = useTheme();
-  const [isDarkMode, setIsDarkMode] = useState(
-    mapTheme === "dark" ||
-      (mapTheme === "system" &&
-        window.matchMedia("(prefers-color-scheme: dark)").matches)
-  );
+  const { mapTheme, isMapInDarkMode } = useTheme();
+  const [isDarkMode, setIsDarkMode] = useState(isMapInDarkMode);
 
   const [
     { isAddNewMarkerMode, markers },
@@ -136,15 +132,11 @@ const Map = () => {
 
     mediaQuery.addEventListener("change", handler);
     return () => mediaQuery.removeEventListener("change", handler);
-  }, []);
+  }, [mapTheme]);
 
   useEffect(() => {
-    setIsDarkMode(
-      mapTheme === "dark" ||
-        (mapTheme === "system" &&
-          window.matchMedia("(prefers-color-scheme: dark)").matches)
-    );
-  }, [mapTheme]);
+    setIsDarkMode(isMapInDarkMode);
+  }, [isMapInDarkMode]);
 
   return (
     <div className="mapboxgl-wrapper w-full h-full">
