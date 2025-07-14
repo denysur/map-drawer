@@ -11,9 +11,9 @@ import DefaultIcon from "../../../Icons/Markers/DefaultIcon";
 
 import { getTextColor } from "../../../../utils/common";
 import { useOnChangeHistorySubscription } from "../../../../hooks/useOnChangeHistorySubscription";
+import { useItemDefaultColor } from "../../../../hooks/useItemDefaultColor";
 
 import {
-  DEFAULT_COLOR,
   DEFAULT_SCALE,
   MAXIMUM_SCALE,
   MINIMUM_SCALE,
@@ -57,6 +57,7 @@ const MarkerSettings: FC<MarkerSettingsProps> = ({
 }) => {
   const [isColorPickerVisible, setIsColorPickerVisible] = useState(false);
   const [isIconsModalOpen, setIsIconsModalOpen] = useState(false);
+  const defaultColor = useItemDefaultColor();
 
   const { pushRemove } = useOnChangeHistorySubscription({
     id: selectedMarker?.id,
@@ -202,8 +203,8 @@ const MarkerSettings: FC<MarkerSettingsProps> = ({
             <div
               className="p-2 w-24 text-center rounded-lg cursor-pointer font-bold"
               style={{
-                backgroundColor: selectedMarker?.color || DEFAULT_COLOR,
-                color: getTextColor(selectedMarker?.color || DEFAULT_COLOR),
+                backgroundColor: selectedMarker?.color || defaultColor,
+                color: getTextColor(selectedMarker?.color || defaultColor),
               }}
               onClick={openColorPicker}
               onBlur={closeColorPicker}
@@ -213,7 +214,7 @@ const MarkerSettings: FC<MarkerSettingsProps> = ({
             {isColorPickerVisible && (
               <div className="absolute bottom-11 -left-10 md:left-0">
                 <HexColorPicker
-                  color={selectedMarker?.color || DEFAULT_COLOR}
+                  color={selectedMarker?.color || defaultColor}
                   onChange={onMarkerColorChangeHandler}
                 />
               </div>

@@ -15,16 +15,18 @@ import {
 } from "../../app/slices/markerSlice";
 import { generateId } from "../../utils/common";
 import { useActiveTool } from "./useActiveTool";
+import { useHistory } from "./useHistory";
+import { useItemDefaultColor } from "../useItemDefaultColor";
 
-import { DEFAULT_COLOR, DEFAULT_SCALE } from "../../constants";
+import { DEFAULT_SCALE } from "../../constants";
 
 import { RootState } from "../../app/store";
 import { DefaultMarkerIcon, Marker, MarkerIcon } from "../../types";
-import { useHistory } from "./useHistory";
 
 export const useMarkers = () => {
   const [activeTool, setActiveTool] = useActiveTool();
   const { addHistoryCommit } = useHistory();
+  const defaultColor = useItemDefaultColor();
 
   const selectedMarkerId = useSelector(
     (state: RootState) => state.marker.selectedMarkerId
@@ -70,7 +72,7 @@ export const useMarkers = () => {
       dispatch(
         addMarkerAction({
           ...marker,
-          color: DEFAULT_COLOR,
+          color: defaultColor,
           scale: DEFAULT_SCALE,
           rotation: 0,
           icon: iconOnCreating,
@@ -86,7 +88,7 @@ export const useMarkers = () => {
           id,
           latitude: marker.latitude,
           longitude: marker.longitude,
-          color: DEFAULT_COLOR,
+          color: defaultColor,
           scale: DEFAULT_SCALE,
           rotation: 0,
           icon: iconOnCreating,
@@ -97,7 +99,7 @@ export const useMarkers = () => {
 
       return id;
     },
-    [iconOnCreating]
+    [iconOnCreating, defaultColor]
   );
 
   const updateMarkerPosition = useCallback(

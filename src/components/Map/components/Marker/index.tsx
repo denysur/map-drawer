@@ -1,13 +1,15 @@
 import { FC, memo } from "react";
 import { Marker as MapMarker, MarkerDragEvent } from "react-map-gl";
+import clsx from "clsx";
 
 import DefaultIcon from "../../../Icons/Markers/DefaultIcon";
 
-import { DEFAULT_COLOR, DEFAULT_MARKER_SIZE } from "../../../../constants";
+import { useMarkers } from "../../../../hooks/state/useMarkers";
+import { useItemDefaultColor } from "../../../../hooks/useItemDefaultColor";
+
+import { DEFAULT_MARKER_SIZE } from "../../../../constants";
 
 import { Marker as MarkerType } from "../../../../types";
-import { useMarkers } from "../../../../hooks/state/useMarkers";
-import clsx from "clsx";
 
 type MarkerProps = {
   marker: MarkerType;
@@ -23,6 +25,7 @@ const Marker: FC<MarkerProps> = memo((props) => {
   const { marker, onClick = () => {}, onPositionChanged = () => {} } = props;
   const { latitude, longitude, icon } = marker;
   const [{ isAddNewMarkerMode }] = useMarkers();
+  const defaultColor = useItemDefaultColor();
 
   const onMarkerClickHandler = (e: unknown) => {
     onClick(marker);
@@ -60,9 +63,10 @@ const Marker: FC<MarkerProps> = memo((props) => {
     <MapMarker
       latitude={latitude}
       longitude={longitude}
-      anchor="bottom"
+      anchor={icon?.name ? "center" : "bottom"}
       draggable
       onDragEnd={onPositionChangedHandler}
+      rotation={icon?.name ? marker.rotation : undefined}
     >
       <div
         onMouseDown={onMarkerClickHandler}
@@ -72,9 +76,6 @@ const Marker: FC<MarkerProps> = memo((props) => {
           icon?.name && "arrow",
           isAddNewMarkerMode && "pointer-events-none"
         )}
-        style={{
-          transform: icon?.name && `rotate(${marker.rotation}deg)`,
-        }}
       >
         {icon && icon.type === "image" ? (
           <div
@@ -96,7 +97,7 @@ const Marker: FC<MarkerProps> = memo((props) => {
               markerSize * 1.25,
               icon?.name
             )}
-            fill={marker.color || DEFAULT_COLOR}
+            fill={marker.color || defaultColor}
             withArrow
           />
         )}

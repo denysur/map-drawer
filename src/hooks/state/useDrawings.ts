@@ -11,14 +11,16 @@ import {
 } from "../../app/slices/drawSlice";
 import { useActiveTool } from "./useActiveTool";
 import { generateId } from "../../utils/common";
+import { useItemDefaultColor } from "../useItemDefaultColor";
 
-import { DEFAULT_COLOR, DEFAULT_SCALE } from "../../constants";
+import { DEFAULT_SCALE } from "../../constants";
 
 import { RootState } from "../../app/store";
 import { Draw, Geometry } from "../../types";
 
 export const useDrawings = () => {
   const [activeTool, setActiveTool] = useActiveTool();
+  const defaultColor = useItemDefaultColor();
 
   const selectedDrawId = useSelector(
     (state: RootState) => state.draw.selectedDrawId
@@ -51,18 +53,21 @@ export const useDrawings = () => {
     setActiveTool(null);
   }, []);
 
-  const addDraw = useCallback((draw: Geometry) => {
-    dispatch(
-      addDrawAction({
-        geometry: draw,
-        color: DEFAULT_COLOR,
-        weight: DEFAULT_SCALE,
-        id: generateId(),
-      })
-    );
+  const addDraw = useCallback(
+    (draw: Geometry) => {
+      dispatch(
+        addDrawAction({
+          geometry: draw,
+          color: defaultColor,
+          weight: DEFAULT_SCALE,
+          id: generateId(),
+        })
+      );
 
-    setActiveTool("freehand-draw");
-  }, []);
+      setActiveTool("freehand-draw");
+    },
+    [defaultColor]
+  );
 
   const removeDraw = useCallback((id: string) => {
     dispatch(removeDrawAction(id));

@@ -3,10 +3,7 @@ import { useCallback, useMemo } from "react";
 
 import { useActiveTool } from "./useActiveTool";
 import { generateId } from "../../utils/common";
-
-import { DEFAULT_COLOR, DEFAULT_SCALE } from "../../constants";
-
-import { RootState } from "../../app/store";
+import { useItemDefaultColor } from "../useItemDefaultColor";
 import {
   addArrow as addArrowAction,
   clearArrowsState,
@@ -16,10 +13,15 @@ import {
   setArrowWeight,
   setSelectedArrowId,
 } from "../../app/slices/arrowSlice";
+
+import { DEFAULT_SCALE } from "../../constants";
+
+import { RootState } from "../../app/store";
 import { Arrow } from "../../types";
 
 export const useArrows = () => {
   const [activeTool, setActiveTool] = useActiveTool();
+  const defaultColor = useItemDefaultColor();
 
   const selectedArrowId = useSelector(
     (state: RootState) => state.arrow.selectedArrowId
@@ -54,7 +56,7 @@ export const useArrows = () => {
       dispatch(
         addArrowAction({
           vertices: vertices,
-          color: DEFAULT_COLOR,
+          color: defaultColor,
           scale: DEFAULT_SCALE,
           weight: DEFAULT_SCALE,
           id: generateId(),
@@ -64,7 +66,7 @@ export const useArrows = () => {
 
       setActiveTool("arrow");
     },
-    []
+    [defaultColor]
   );
 
   const removeArrow = useCallback((id: string) => {
