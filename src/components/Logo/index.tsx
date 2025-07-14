@@ -1,15 +1,11 @@
-import { useScreenshot } from "../../hooks/state/useScreenshot";
-
 const Logo = () => {
-  const { isScreenshoting } = useScreenshot();
-
   return (
     <div
-      className="fixed z-10 w-dvw h-dvh mix-blend-color-burn bg-[url(/logo.svg)] flex items-center justify-center pointer-events-none"
+      className="fixed z-10 w-dvw h-dvh bg-[url(/logo.svg)] flex items-center justify-center pointer-events-none bg-[size:auto_80px]"
       style={{
-        backgroundSize: "auto max(32px, 3vmax)",
+        // backgroundSize: "auto max(32px, 5vmax)",
         backgroundPosition: "center center",
-        opacity: isScreenshoting ? 0.3 : 0.04,
+        opacity: 0.08,
       }}
     ></div>
   );

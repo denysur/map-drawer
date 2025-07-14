@@ -13,9 +13,6 @@ const ShahedMarker: FC<SVGProps<SVGSVGElement> & { withArrow?: boolean }> = ({
       width={24}
       height={24}
       viewBox="-20 0 513 512"
-      style={{
-        filter: `drop-shadow(0px 1px 0 #ee8800) drop-shadow(0px -1px 0 #ee8800) drop-shadow(1px 0 0 #ee8800) drop-shadow(-1px 0 0 #ee8800)`,
-      }}
       fill="currentColor"
       {...props}
     >
@@ -24,7 +21,7 @@ const ShahedMarker: FC<SVGProps<SVGSVGElement> & { withArrow?: boolean }> = ({
     {withArrow && (
       <Arrow
         className="absolute bottom-full left-1/2 -translate-x-1/2 scale-50 size-6 text-current -mb-1 -rotate-45"
-        style={{ color: "#ee8800" }}
+        style={{ color: props.fill }}
       />
     )}
   </div>
