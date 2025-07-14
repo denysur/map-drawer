@@ -21,10 +21,14 @@ export const useMarkerImages = () => {
       const result = await listAll(imagesRef);
 
       const urls = await Promise.all(
-        result.items.map(async (item) => ({
-          name: item.name,
-          url: await getDownloadURL(item),
-        }))
+        result.items.map(
+          async (item) =>
+            ({
+              type: "image",
+              name: item.name,
+              url: await getDownloadURL(item),
+            }) as MarkerIcon
+        )
       );
 
       setImages(urls);
@@ -61,12 +65,12 @@ export const useMarkerImages = () => {
         if (imageIndex !== -1) {
           // Update existing image
           const updatedImages = [...prevImages];
-          updatedImages[imageIndex] = { name: file.name, url };
+          updatedImages[imageIndex] = { name: file.name, url, type: "image" };
           return updatedImages;
         }
 
         // Add new image
-        return [...prevImages, { name: file.name, url }];
+        return [...prevImages, { name: file.name, url, type: "image" }];
       });
     } catch (error) {
       console.error("Error uploading image:", error);

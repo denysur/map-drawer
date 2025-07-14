@@ -5,14 +5,14 @@ import { HexColorPicker } from "react-colorful";
 import Button from "../../../Common/Button";
 import { Close } from "../../../Icons";
 
+import { useOnChangeHistorySubscription } from "../../../../hooks/useOnChangeHistorySubscription";
+import { useItemDefaultColor } from "../../../../hooks/useItemDefaultColor";
 import { getTextColor } from "../../../../utils/common";
 
 import {
-  DEFAULT_COLOR,
   MAXIMUM_ARROWHEAD_SCALE,
   MINIMUM_ARROWHEAD_SCALE,
 } from "../../../../constants";
-import { useOnChangeHistorySubscription } from "../../../../hooks/useOnChangeHistorySubscription";
 
 type ArrowSettingsProps = {
   isAddNewArrowMode: boolean;
@@ -20,7 +20,7 @@ type ArrowSettingsProps = {
   onClose: () => void;
   onArrowDelete: (id: string) => void;
   onArrowSizeChange: (data: { id: string; scale: number }) => void;
-  onArrowWightChange: (data: { id: string; weight: number }) => void;
+  onArrowWeightChange: (data: { id: string; weight: number }) => void;
   onArrowColorChange: (data: { id: string; color: string }) => void;
 };
 
@@ -30,10 +30,11 @@ const ArrowSettings: FC<ArrowSettingsProps> = ({
   onClose,
   onArrowDelete,
   onArrowSizeChange,
-  onArrowWightChange,
+  onArrowWeightChange,
   onArrowColorChange,
 }) => {
   const [isColorPickerVisible, setIsColorPickerVisible] = useState(false);
+  const defaultColor = useItemDefaultColor();
 
   const { pushRemove } = useOnChangeHistorySubscription({
     id: selectedArrow?.id,
@@ -57,9 +58,9 @@ const ArrowSettings: FC<ArrowSettingsProps> = ({
     }
   };
 
-  const onArrowWightChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
+  const onArrowWeightChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
     if (selectedArrow) {
-      onArrowWightChange({
+      onArrowWeightChange({
         id: selectedArrow.id,
         weight: Number(e.target.value),
       });
@@ -68,10 +69,7 @@ const ArrowSettings: FC<ArrowSettingsProps> = ({
 
   const onArrowColorChangeHandler = (newColor: string) => {
     if (selectedArrow) {
-      onArrowColorChange({
-        id: selectedArrow.id,
-        color: newColor,
-      });
+      onArrowColorChange({ id: selectedArrow.id, color: newColor });
     }
   };
 
@@ -111,8 +109,8 @@ const ArrowSettings: FC<ArrowSettingsProps> = ({
             <div
               className="p-2 w-24 text-center rounded-lg cursor-pointer font-bold"
               style={{
-                backgroundColor: selectedArrow?.color || DEFAULT_COLOR,
-                color: getTextColor(selectedArrow?.color || DEFAULT_COLOR),
+                backgroundColor: selectedArrow?.color || defaultColor,
+                color: getTextColor(selectedArrow?.color || defaultColor),
               }}
               onClick={openColorPicker}
               onBlur={closeColorPicker}
@@ -122,7 +120,7 @@ const ArrowSettings: FC<ArrowSettingsProps> = ({
             {isColorPickerVisible && (
               <div className="absolute bottom-11 -left-10 md:left-0">
                 <HexColorPicker
-                  color={selectedArrow?.color || DEFAULT_COLOR}
+                  color={selectedArrow?.color || defaultColor}
                   onChange={onArrowColorChangeHandler}
                 />
               </div>
@@ -150,7 +148,7 @@ const ArrowSettings: FC<ArrowSettingsProps> = ({
           <input
             type="range"
             value={selectedArrow?.weight || 1}
-            onChange={onArrowWightChangeHandler}
+            onChange={onArrowWeightChangeHandler}
             min={MINIMUM_ARROWHEAD_SCALE}
             max={MAXIMUM_ARROWHEAD_SCALE}
             step="0.1"

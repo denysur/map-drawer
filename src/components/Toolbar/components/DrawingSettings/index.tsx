@@ -5,15 +5,15 @@ import { HexColorPicker } from "react-colorful";
 import Button from "../../../Common/Button";
 import { Close } from "../../../Icons";
 
+import { useOnChangeHistorySubscription } from "../../../../hooks/useOnChangeHistorySubscription";
+import { useItemDefaultColor } from "../../../../hooks/useItemDefaultColor";
 import { getTextColor } from "../../../../utils/common";
 
 import {
-  DEFAULT_COLOR,
   DEFAULT_SCALE,
   MAXIMUM_SCALE,
   MINIMUM_SCALE,
 } from "../../../../constants";
-import { useOnChangeHistorySubscription } from "../../../../hooks/useOnChangeHistorySubscription";
 
 type DrawingSettingsProps = {
   isAddNewDrawingMode: boolean;
@@ -33,6 +33,7 @@ const DrawingSettings: FC<DrawingSettingsProps> = ({
   onDrawColorChange,
 }) => {
   const [isColorPickerVisible, setIsColorPickerVisible] = useState(false);
+  const defaultColor = useItemDefaultColor();
 
   const { pushRemove } = useOnChangeHistorySubscription({
     id: selectedDraw?.id,
@@ -119,8 +120,8 @@ const DrawingSettings: FC<DrawingSettingsProps> = ({
             <div
               className="p-2 w-24 text-center rounded-lg cursor-pointer font-bold"
               style={{
-                backgroundColor: selectedDraw?.color || DEFAULT_COLOR,
-                color: getTextColor(selectedDraw?.color || DEFAULT_COLOR),
+                backgroundColor: selectedDraw?.color || defaultColor,
+                color: getTextColor(selectedDraw?.color || defaultColor),
               }}
               onClick={openColorPicker}
               onBlur={closeColorPicker}
@@ -130,7 +131,7 @@ const DrawingSettings: FC<DrawingSettingsProps> = ({
             {isColorPickerVisible && (
               <div className="absolute bottom-11 -left-10 md:left-0">
                 <HexColorPicker
-                  color={selectedDraw?.color || DEFAULT_COLOR}
+                  color={selectedDraw?.color || defaultColor}
                   onChange={onDrawColorChangeHandler}
                 />
               </div>
