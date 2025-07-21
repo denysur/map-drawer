@@ -2,10 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 import { Draw, DrawState } from "../../types";
 
-const initialState: DrawState = {
-  drawings: [],
-  selectedDrawId: null,
-};
+const initialState: DrawState = { drawings: [], selectedDrawId: null };
 
 export const drawSlice = createSlice({
   name: "drawSlice",
@@ -28,34 +25,23 @@ export const drawSlice = createSlice({
     ) => {
       state.drawings = state.drawings.map((draw) =>
         draw.id === action.payload.id
-          ? {
-              ...draw,
-              color: action.payload.color,
-            }
+          ? { ...draw, color: action.payload.color }
           : draw
       );
     },
-    setDrawWeigh: (
+    setDrawWeight: (
       state,
       action: PayloadAction<{ id: string; weight: number }>
     ) => {
       state.drawings = state.drawings.map((draw) =>
         draw.id === action.payload.id
-          ? {
-              ...draw,
-              weight: action.payload.weight,
-            }
+          ? { ...draw, weight: action.payload.weight }
           : draw
       );
     },
     setDrawProps: (state, action: PayloadAction<Partial<Draw>>) => {
       state.drawings = state.drawings.map((draw) =>
-        draw.id === action.payload.id
-          ? {
-              ...draw,
-              ...action.payload,
-            }
-          : draw
+        draw.id === action.payload.id ? { ...draw, ...action.payload } : draw
       );
     },
 
@@ -70,7 +56,7 @@ export const {
   addDraw,
   removeDraw,
   setDrawColor,
-  setDrawWeigh,
+  setDrawWeight,
   setSelectedDrawId,
   setDrawProps,
   clearDrawsState,
