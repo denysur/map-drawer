@@ -66,7 +66,10 @@ const Marker: FC<MarkerProps> = memo((props) => {
       anchor={icon?.name ? "center" : "bottom"}
       draggable
       onDragEnd={onPositionChangedHandler}
-      style={{ pointerEvents: isAddNewMarkerMode ? "none" : "auto" }}
+      style={{
+        pointerEvents: isAddNewMarkerMode ? "none" : "auto",
+        zIndex: 1,
+      }}
       rotation={icon?.name ? marker.rotation : undefined}
     >
       <div

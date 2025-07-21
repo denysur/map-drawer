@@ -140,7 +140,6 @@ const Map = () => {
 
   return (
     <div className="mapboxgl-wrapper w-full h-full">
-      <Logo />
       <MapboxMap
         id="map"
         mapboxAccessToken={import.meta.env.VITE_MAP_API_KEY}
@@ -166,6 +165,7 @@ const Map = () => {
         dragPan={!isAddNewMarkerMode && !isDrawingMode && !isArrowMode}
         dragRotate={false}
       >
+        <Logo />
         {markers.map((marker) => (
           <Marker
             key={marker.id}
