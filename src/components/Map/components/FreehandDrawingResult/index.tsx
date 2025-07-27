@@ -1,7 +1,7 @@
 import { FC } from "react";
 import { Layer, Source } from "react-map-gl";
 
-import { DEFAULT_COLOR } from "../../../../constants";
+import { useItemDefaultColor } from "../../../../hooks/useItemDefaultColor";
 
 type FreehandDrawingResultProps = {
   drawingCoordinates: [number, number][];
@@ -10,6 +10,8 @@ type FreehandDrawingResultProps = {
 const FreehandDrawingResult: FC<FreehandDrawingResultProps> = ({
   drawingCoordinates,
 }) => {
+  const defaultColor = useItemDefaultColor();
+
   return (
     drawingCoordinates.length > 1 && (
       <Source
@@ -27,7 +29,7 @@ const FreehandDrawingResult: FC<FreehandDrawingResultProps> = ({
           id="line"
           type="line"
           paint={{
-            "line-color": DEFAULT_COLOR,
+            "line-color": defaultColor,
             "line-width": 3,
           }}
         />

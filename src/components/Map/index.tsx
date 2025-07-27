@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { default as MapboxMap } from "react-map-gl";
 import { MapMouseEvent } from "mapbox-gl";
 
@@ -9,6 +9,7 @@ import Arrow from "./components/Arrow";
 import FreehandDrawingResult from "./components/FreehandDrawingResult";
 
 import { useMarkers } from "../../hooks/state/useMarkers";
+import { useMapMarkers } from "../../hooks/map/useMapMarkers";
 import { useDrawings } from "../../hooks/state/useDrawings";
 import { useMapDrawing } from "../../hooks/map/useMapDrawing";
 import { useArrows } from "../../hooks/state/useArrows";
@@ -22,11 +23,15 @@ import {
 } from "../../types";
 
 import "mapbox-gl/dist/mapbox-gl.css";
+import { useTheme } from "../../hooks/useTheme";
 
 const Map = () => {
+  const { mapTheme, isMapInDarkMode } = useTheme();
+  const [isDarkMode, setIsDarkMode] = useState(isMapInDarkMode);
+
   const [
     { isAddNewMarkerMode, markers },
-    { addMarker, selectMarker, updateMarkerPosition },
+    { selectMarker, updateMarkerPosition },
   ] = useMarkers();
   const [
     { isDrawingMode, isAddNewDrawingMode, drawings },
@@ -98,18 +103,13 @@ const Map = () => {
 
   const onMapClickHandler = useCallback(
     (e: MapMouseEvent) => {
-      if (isAddNewMarkerMode) {
-        addMarker({
-          latitude: e.lngLat.lat,
-          longitude: e.lngLat.lng,
-        });
-      }
-
       handleGeometryClick(e);
       handleArrowClick(e);
     },
     [isAddNewMarkerMode, handleGeometryClick, handleArrowClick]
   );
+
+  useMapMarkers({ isMarkerMode: isAddNewMarkerMode });
 
   const [{ coordinates: drawingCoordinates }] = useMapDrawing({
     isDrawingMode: isAddNewDrawingMode,
@@ -121,9 +121,25 @@ const Map = () => {
     onArrowReady: onArrowCreate,
   });
 
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+
+    const handler = (event: MediaQueryListEvent) => {
+      setIsDarkMode(
+        mapTheme === "dark" || (mapTheme === "system" && event.matches)
+      );
+    };
+
+    mediaQuery.addEventListener("change", handler);
+    return () => mediaQuery.removeEventListener("change", handler);
+  }, [mapTheme]);
+
+  useEffect(() => {
+    setIsDarkMode(isMapInDarkMode);
+  }, [isMapInDarkMode]);
+
   return (
     <div className="mapboxgl-wrapper w-full h-full">
-      <Logo />
       <MapboxMap
         id="map"
         mapboxAccessToken={import.meta.env.VITE_MAP_API_KEY}
@@ -138,13 +154,18 @@ const Map = () => {
             ? "pointer"
             : "grab"
         }
-        mapStyle="https://api.maptiler.com/maps/bcca4c4a-53a2-4f35-a54f-1d8288722cb1/style.json?key=5adXclVMBOvAgEYziUJG"
+        mapStyle={
+          isDarkMode
+            ? import.meta.env.VITE_MAP_DARK_STYLE_URL
+            : import.meta.env.VITE_MAP_LIGHT_STYLE_URL
+        }
         attributionControl={false}
         onClick={onMapClickHandler}
         preserveDrawingBuffer={true}
-        dragPan={!isDrawingMode && !isArrowMode}
+        dragPan={!isAddNewMarkerMode && !isDrawingMode && !isArrowMode}
         dragRotate={false}
       >
+        <Logo />
         {markers.map((marker) => (
           <Marker
             key={marker.id}

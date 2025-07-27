@@ -7,8 +7,10 @@ export const FIREBASE_MARKER_IMAGES_PATH = "marker-icons/";
 
 export const EARTH_RADIUS = 6378137;
 
-export const DEFAULT_COLOR = "#b91c1c";
-export const DEFAULT_MARKER_SIZE = 32;
+// "#970000"
+export const DEFAULT_COLOR = "#ba0000";
+export const DEFAULT_COLOR_DARK_MODE = "#e40000";
+export const DEFAULT_MARKER_SIZE = 24;
 export const DEFAULT_SCALE = 1;
 export const MINIMUM_SCALE = 0.3;
 export const MAXIMUM_SCALE = 3;

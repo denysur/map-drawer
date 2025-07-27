@@ -2,7 +2,7 @@ import { FC, ReactNode } from "react";
 
 const ToolbarContainer: FC<{ children: ReactNode }> = ({ children }) => {
   return (
-    <div className="ease duration-200 fixed bottom-5 shadow-lg rounded-xl right-1/2 translate-x-1/2 bg-white dark:bg-zinc-900 dark:text-white p-3 flex gap-2 items-center">
+    <div className="ease z-20 duration-200 fixed bottom-5 shadow-lg rounded-xl right-1/2 translate-x-1/2 bg-white dark:bg-zinc-900 dark:text-white p-3 flex gap-2 items-center">
       {children}
     </div>
   );

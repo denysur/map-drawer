@@ -1,5 +1,3 @@
-import html2canvas from "html2canvas-pro";
-
 import IconButton from "../../../Common/IconButton";
 import MarkerSettings from "../MarkerSettings";
 import DrawingSettings from "../DrawingSettings";
@@ -19,13 +17,15 @@ import { useMarkers } from "../../../../hooks/state/useMarkers";
 import { useDrawings } from "../../../../hooks/state/useDrawings";
 import { useArrows } from "../../../../hooks/state/useArrows";
 import { useHistory } from "../../../../hooks/state/useHistory";
+import { useScreenshot } from "../../../../hooks/state/useScreenshot";
 
-import { MarkerIcon } from "../../../../types";
+import { DefaultMarkerIcon, MarkerIcon } from "../../../../types";
 
 const Tools = () => {
   const [activeTool, setActiveTool] = useActiveTool();
+  const { screenshot } = useScreenshot();
   const [
-    { selectedMarker, isAddNewMarkerMode },
+    { selectedMarker, isAddNewMarkerMode, iconOnCreating },
     {
       unselectMarker,
       updateMarkerSize,
@@ -34,13 +34,14 @@ const Tools = () => {
       updateMarkerRotation,
       removeMarker,
       flushMarkersState,
+      updateIconOnCreating,
     },
   ] = useMarkers();
   const [
     { selectedDraw, isAddNewDrawingMode },
     {
       removeDraw,
-      updateDrawWeigh,
+      updateDrawWeight,
       updateDrawColor,
       unselectDrawing,
       flushDrawsState,
@@ -53,7 +54,7 @@ const Tools = () => {
       updateArrowSize,
       updateArrowColor,
       unselectArrowing,
-      updateArrowWight,
+      updateArrowWeight,
       flushArrowsState,
     },
   ] = useArrows();
@@ -67,19 +68,7 @@ const Tools = () => {
   const onFreehandArrowToolCloseHandler = () => unselectArrowing();
 
   const onScreenshotToolOpenHandler = async () => {
-    const domRef = document.querySelector(".mapboxgl-wrapper") as HTMLElement;
-    if (domRef) {
-      const canvas = await html2canvas(domRef, {
-        allowTaint: false,
-        useCORS: true,
-      });
-      const dataUrl = canvas.toDataURL("image/png");
-
-      const link = document.createElement("a");
-      link.href = dataUrl;
-      link.download = "screenshot.png";
-      link.click();
-    }
+    screenshot();
   };
 
   const onMarkerSizeChange = (data: { id: string; scale: number }) => {
@@ -96,7 +85,7 @@ const Tools = () => {
 
   const onMarkerIconChange = (data: {
     id: string;
-    icon: MarkerIcon | null;
+    icon: MarkerIcon | DefaultMarkerIcon | null;
   }) => {
     updateMarkerIcon(data);
   };
@@ -104,12 +93,15 @@ const Tools = () => {
   const onMarkerDelete = (id: string) => {
     removeMarker(id);
   };
+  const onIconCreatingChange = (icon?: string) => {
+    updateIconOnCreating(icon);
+  };
 
   const onDrawDelete = (id: string) => {
     removeDraw(id);
   };
   const onDrawWeightChange = (data: { id: string; weight: number }) => {
-    updateDrawWeigh(data);
+    updateDrawWeight(data);
   };
 
   const onDrawColorChange = (data: { id: string; color: string }) => {
@@ -123,8 +115,8 @@ const Tools = () => {
     updateArrowSize(data);
   };
 
-  const onArrowWightChange = (data: { id: string; weight: number }) => {
-    updateArrowWight(data);
+  const onArrowWeightChange = (data: { id: string; weight: number }) => {
+    updateArrowWeight(data);
   };
 
   const onArrowColorChange = (data: { id: string; color: string }) => {
@@ -151,6 +143,8 @@ const Tools = () => {
       <MarkerSettings
         isAddNewMarkerMode={isAddNewMarkerMode}
         selectedMarker={selectedMarker}
+        iconOnCreating={iconOnCreating?.name}
+        onIconCreatingChange={onIconCreatingChange}
         onClose={onMarkerToolCloseHandler}
         onMarkerSizeChange={onMarkerSizeChange}
         onMarkerRotationChange={onMarkerRotationChange}
@@ -181,7 +175,7 @@ const Tools = () => {
         onClose={onFreehandArrowToolCloseHandler}
         onArrowDelete={onArrowDelete}
         onArrowSizeChange={onArrowSizeChange}
-        onArrowWightChange={onArrowWightChange}
+        onArrowWeightChange={onArrowWeightChange}
         onArrowColorChange={onArrowColorChange}
       />
     );
@@ -217,13 +211,13 @@ const Tools = () => {
         <IconButton
           iconComponent={Undo}
           disabled={!canUndo}
-          className="!text-orange-700 bg-orange-100 [&:not(:disabled)]:hover:bg-orange-200 dark:!text-orange-100 dark:bg-orange-800 [&:not(:disabled)]:dark:hover:bg-orange-700 dark:focus:ring-orange-400"
+          className="!text-orange-700 bg-orange-100 [&:not(:disabled)]:hover:bg-orange-200 dark:!text-orange-100 dark:bg-orange-900 [&:not(:disabled)]:dark:hover:!bg-orange-800 dark:focus:ring-orange-400"
           onClick={onUndoButtonClickHandler}
         />
         <IconButton
           iconComponent={Redo}
           disabled={!canRedo}
-          className="!text-orange-700 bg-orange-100 [&:not(:disabled)]:hover:bg-orange-200 dark:!text-orange-100 dark:bg-orange-800 [&:not(:disabled)]:dark:hover:bg-orange-700 dark:focus:ring-orange-400"
+          className="!text-orange-700 bg-orange-100 [&:not(:disabled)]:hover:bg-orange-200 dark:!text-orange-100 dark:bg-orange-900 [&:not(:disabled)]:dark:hover:!bg-orange-800 dark:focus:ring-orange-400"
           onClick={onRedoButtonClickHandler}
         />
         <IconButton

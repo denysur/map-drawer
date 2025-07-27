@@ -49,7 +49,7 @@ const Modal: FC<ModalProps> = ({
 
   return createPortal(
     <div
-      className={`z-20 fixed inset-0  h-dvh flex items-center justify-center md:p-4 ${
+      className={`z-30 fixed inset-0  h-dvh flex items-center justify-center md:p-4 ${
         !isVisible ? "animate-fadeOut" : "animate-fadeIn"
       }`}
       id="modal"
@@ -61,12 +61,12 @@ const Modal: FC<ModalProps> = ({
 
       <div
         className={clsx(
-          "overflow-hidden z-10 ease duration-200 dark:bg-zinc-900 dark:text-white flex flex-col bg-white max-h-full w-full max-w-3xl shadow-lg relative h-full md:rounded-xl md:h-auto",
+          "overflow-hidden z-20 ease duration-200 dark:bg-zinc-900 dark:text-white flex flex-col bg-white max-h-full w-full max-w-3xl shadow-lg relative h-full md:rounded-xl md:h-auto",
           className
         )}
       >
         <button
-          className={`absolute z-10 p-2 rounded-lg ease duration-200 text-zinc-500 hover:bg-black/[.1] hover:text-black dark:hover:bg-white/[.05] dark:hover:text-white ${title ? "top-[10px] right-[10px]" : "top-1 right-1"}`}
+          className={`absolute z-20 p-2 rounded-lg ease duration-200 text-zinc-500 hover:bg-black/[.1] hover:text-black dark:hover:bg-white/[.05] dark:hover:text-white ${title ? "top-[10px] right-[10px]" : "top-1 right-1"}`}
           onClick={handleClose}
         >
           <Close />
