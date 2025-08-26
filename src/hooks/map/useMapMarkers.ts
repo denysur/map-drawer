@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import { MapMouseEvent, MapTouchEvent, useMap } from "react-map-gl";
 import { useMarkers } from "../state/useMarkers";
 import { radiansToDegrees } from "@turf/turf";
+import { useHistory } from "../state/useHistory";
 
 type UseMapMarkersProps = { isMarkerMode: boolean };
 
@@ -13,6 +14,7 @@ export const useMapMarkers = ({ isMarkerMode }: UseMapMarkersProps) => {
   const [coordinates, setCoordinates] = useState<[number, number][]>([]);
 
   const [{ markers }, { addMarker, updateMarkerRotation }] = useMarkers();
+  const { history, replaceHistoryCommit } = useHistory();
 
   const onMouseDownHandler = useCallback(
     (event: MapMouseEvent | MapTouchEvent) => {
@@ -47,6 +49,12 @@ export const useMapMarkers = ({ isMarkerMode }: UseMapMarkersProps) => {
   );
 
   const onMouseUpHandler = useCallback(() => {
+    const commit = history[history.length - 1];
+    if (!isMarker || !selectedMarkerId || !commit) return;
+    replaceHistoryCommit({
+      ...commit,
+      newState: markers.find((m) => m.id === selectedMarkerId),
+    });
     setCoordinates([]);
     setSelectedMarkerId(null);
     setIsMarker(false);

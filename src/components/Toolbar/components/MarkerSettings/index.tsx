@@ -6,7 +6,7 @@ import Button from "../../../Common/Button";
 import Modal from "../../../Common/Modal";
 import IconButton from "../../../Common/IconButton";
 import IconsModal from "../../../IconsModal";
-import { Edit, Close } from "../../../Icons";
+import { Edit, Close, Redo, Undo } from "../../../Icons";
 import DefaultIcon from "../../../Icons/Markers/DefaultIcon";
 
 import { getTextColor } from "../../../../utils/common";
@@ -20,6 +20,7 @@ import {
 } from "../../../../constants";
 
 import { DefaultMarkerIcon, Marker, MarkerIcon } from "../../../../types";
+import { useHistory } from "../../../../hooks/state/useHistory";
 
 const DEFAULT_MARKERS = [
   { id: "rocket", name: "Ракета" },
@@ -56,6 +57,8 @@ const MarkerSettings: FC<MarkerSettingsProps> = ({
   onMarkerDelete,
   onIconCreatingChange,
 }) => {
+  const { undo, redo, canUndo, canRedo } = useHistory();
+
   const [isColorPickerVisible, setIsColorPickerVisible] = useState(false);
   const [isIconsModalOpen, setIsIconsModalOpen] = useState(false);
   const defaultColor = useItemDefaultColor();
@@ -119,33 +122,60 @@ const MarkerSettings: FC<MarkerSettingsProps> = ({
     }
   };
 
+  const onUndoButtonClickHandler = () => {
+    undo();
+  };
+
+  const onRedoButtonClickHandler = () => {
+    redo();
+  };
+
   if (isAddNewMarkerMode) {
     return (
       <div className="flex gap-4 items-center">
-        <div className="flex gap-2 items-center mx-auto">
-          {DEFAULT_MARKERS.map((marker) => (
+        <div className="flex gap-2 gap-y-4 items-center max-md:flex-col mx-auto">
+          <div className="flex gap-2 items-center mx-auto">
+            {DEFAULT_MARKERS.map((marker) => (
+              <IconButton
+                color={
+                  marker.id === iconOnCreating ? "primary" : "primaryLight"
+                }
+                className={
+                  marker.id === iconOnCreating
+                    ? "scale-110 dark:bg-blue-200!"
+                    : ""
+                }
+                iconComponent={() => (
+                  <DefaultIcon
+                    name={marker.id}
+                    style={{
+                      transform: `rotate(45deg) scale(1.2)${marker.id === "shahed" ? "translate(-1px, -3px)" : ""}`,
+                    }}
+                  />
+                )}
+                onClick={() => {
+                  onIconCreatingChange(
+                    marker.id === iconOnCreating ? undefined : marker.id
+                  );
+                }}
+              />
+            ))}
+          </div>
+          <div className="w-0.5 bg-gray-200 dark:bg-zinc-700 h-[36px] rounded ease duration-200 max-md:hidden" />
+          <div className="flex gap-2">
             <IconButton
-              color={marker.id === iconOnCreating ? "primary" : "primaryLight"}
-              className={
-                marker.id === iconOnCreating
-                  ? "scale-110 dark:bg-blue-200!"
-                  : ""
-              }
-              iconComponent={() => (
-                <DefaultIcon
-                  name={marker.id}
-                  style={{
-                    transform: `rotate(45deg) scale(1.2)${marker.id === "shahed" ? "translate(-1px, -3px)" : ""}`,
-                  }}
-                />
-              )}
-              onClick={() => {
-                onIconCreatingChange(
-                  marker.id === iconOnCreating ? undefined : marker.id
-                );
-              }}
+              iconComponent={Undo}
+              disabled={!canUndo}
+              className="!text-orange-700 bg-orange-100 [&:not(:disabled)]:hover:bg-orange-200 dark:!text-orange-100 dark:bg-orange-900 [&:not(:disabled)]:dark:hover:!bg-orange-800 dark:focus:ring-orange-400"
+              onClick={onUndoButtonClickHandler}
             />
-          ))}
+            <IconButton
+              iconComponent={Redo}
+              disabled={!canRedo}
+              className="!text-orange-700 bg-orange-100 [&:not(:disabled)]:hover:bg-orange-200 dark:!text-orange-100 dark:bg-orange-900 [&:not(:disabled)]:dark:hover:!bg-orange-800 dark:focus:ring-orange-400"
+              onClick={onRedoButtonClickHandler}
+            />
+          </div>
         </div>
         <Close onClick={onClose} className="cursor-pointer min-w-6" />
       </div>

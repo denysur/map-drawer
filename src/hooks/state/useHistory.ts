@@ -253,6 +253,10 @@ export const useHistory = () => {
     handleArrowStateChange,
   ]);
 
+  const replaceHistoryCommit = useCallback((newCommit: HistoryCommit) => {
+    dispatch({ type: "historySlice/replaceLastCommit", payload: newCommit });
+  }, []);
+
   const flushHistoryState = useCallback(() => {
     dispatch(clearHistoryState());
   }, []);
@@ -268,7 +272,16 @@ export const useHistory = () => {
       undo,
       redo,
       flushHistoryState,
+      replaceHistoryCommit,
     }),
-    [history, timestamp, addHistoryCommit, setHistoryTimestamp, undo, redo]
+    [
+      history,
+      timestamp,
+      replaceHistoryCommit,
+      addHistoryCommit,
+      setHistoryTimestamp,
+      undo,
+      redo,
+    ]
   );
 };

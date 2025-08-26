@@ -35,6 +35,10 @@ export const historySlice = createSlice({
         state.timestamp = nextCommit.timestamp;
       }
     },
+    replaceLastCommit: (state, action: PayloadAction<HistoryCommit>) => {
+      if (state.history.length === 0) return;
+      state.history[state.history.length - 1] = action.payload;
+    },
     setTimestamp: (state, action: PayloadAction<number>) => {
       state.timestamp = action.payload;
     },
