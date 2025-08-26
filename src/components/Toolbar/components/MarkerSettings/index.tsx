@@ -25,6 +25,7 @@ const DEFAULT_MARKERS = [
   { id: "rocket", name: "Ракета" },
   { id: "shahed", name: "Шахед" },
   { id: "cruise-missile", name: "Крилата ракета" },
+  { id: "surveillance", name: "Розвід-дрон" },
 ];
 
 type MarkerSettingsProps = {
