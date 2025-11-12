@@ -10,6 +10,8 @@ export const EARTH_RADIUS = 6378137;
 // "#970000"
 export const DEFAULT_COLOR = "#ba0000";
 export const DEFAULT_COLOR_DARK_MODE = "#e40000";
+export const FRIENDLY_COLOR = "#375e32";
+export const FRIENDLY_COLOR_DARK_MODE = "#389a2d";
 export const DEFAULT_MARKER_SIZE = 24;
 export const DEFAULT_SCALE = 1;
 export const MINIMUM_SCALE = 0.3;

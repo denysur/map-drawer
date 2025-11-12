@@ -2,7 +2,7 @@ import { FC, ChangeEvent, useState } from "react";
 import { HexColorPicker } from "react-colorful";
 import { useClickAway } from "@uidotdev/usehooks";
 
-import Button from "../../../Common/Button";
+import Button, { ButtonColors } from "../../../Common/Button";
 import Modal from "../../../Common/Modal";
 import IconButton from "../../../Common/IconButton";
 import IconsModal from "../../../IconsModal";
@@ -21,10 +21,21 @@ import {
 
 import { DefaultMarkerIcon, Marker, MarkerIcon } from "../../../../types";
 
-const DEFAULT_MARKERS = [
+const DEFAULT_MARKERS: {
+  id: string;
+  name: string;
+  color?: ButtonColors;
+  selectedColor?: ButtonColors;
+}[] = [
   { id: "rocket", name: "Ракета" },
   { id: "shahed", name: "Шахед" },
   { id: "cruise-missile", name: "Крилата ракета" },
+  {
+    id: "friendly-drone",
+    name: "Дружній дрон",
+    color: "secondary",
+    selectedColor: "secondaryLight",
+  },
 ];
 
 type MarkerSettingsProps = {
@@ -124,7 +135,11 @@ const MarkerSettings: FC<MarkerSettingsProps> = ({
         <div className="flex gap-2 items-center mx-auto">
           {DEFAULT_MARKERS.map((marker) => (
             <IconButton
-              color={marker.id === iconOnCreating ? "primary" : "primaryLight"}
+              color={
+                marker.id === iconOnCreating
+                  ? marker.color || "primary"
+                  : marker.selectedColor || "primaryLight"
+              }
               className={
                 marker.id === iconOnCreating
                   ? "scale-110 dark:bg-blue-200!"

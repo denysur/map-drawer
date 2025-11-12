@@ -27,6 +27,7 @@ export const useMarkers = () => {
   const [activeTool, setActiveTool] = useActiveTool();
   const { addHistoryCommit } = useHistory();
   const defaultColor = useItemDefaultColor();
+  const friendlyColor = useItemDefaultColor(true);
 
   const selectedMarkerId = useSelector(
     (state: RootState) => state.marker.selectedMarkerId
@@ -72,7 +73,10 @@ export const useMarkers = () => {
       dispatch(
         addMarkerAction({
           ...marker,
-          color: defaultColor,
+          color:
+            iconOnCreating?.name === "friendly-drone"
+              ? friendlyColor
+              : defaultColor,
           scale: DEFAULT_SCALE,
           rotation: 0,
           icon: iconOnCreating,
@@ -88,7 +92,10 @@ export const useMarkers = () => {
           id,
           latitude: marker.latitude,
           longitude: marker.longitude,
-          color: defaultColor,
+          color:
+            iconOnCreating?.name === "friendly-drone"
+              ? friendlyColor
+              : defaultColor,
           scale: DEFAULT_SCALE,
           rotation: 0,
           icon: iconOnCreating,

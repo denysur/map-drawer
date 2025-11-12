@@ -1,8 +1,10 @@
 import { FC, SVGProps } from "react";
+
 import MapMarker from "./MapMarker";
 import RocketMarker from "./RocketMarker";
 import ShahedMarker from "./ShahedMarker";
 import CruiseMissileMarker from "./CruiseMissileMarker";
+import FriendlyDroneMarker from "./FriendlyDroneMarker";
 
 type DefaultIconProps = {
   name?: string;
@@ -18,6 +20,9 @@ const DefaultIcon: FC<DefaultIconProps> = ({ name, withArrow, ...props }) => {
   }
   if (name === "cruise-missile") {
     return <CruiseMissileMarker {...props} withArrow={withArrow} />;
+  }
+  if (name === "friendly-drone") {
+    return <FriendlyDroneMarker {...props} withArrow={withArrow} />;
   }
   return <MapMarker {...props} style={{ ...props.style, transform: "none" }} />;
 };
