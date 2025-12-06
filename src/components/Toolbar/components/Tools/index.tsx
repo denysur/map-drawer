@@ -143,7 +143,7 @@ const Tools = () => {
       <MarkerSettings
         isAddNewMarkerMode={isAddNewMarkerMode}
         selectedMarker={selectedMarker}
-        iconOnCreating={iconOnCreating?.name}
+        iconOnCreating={iconOnCreating?.type}
         onIconCreatingChange={onIconCreatingChange}
         onClose={onMarkerToolCloseHandler}
         onMarkerSizeChange={onMarkerSizeChange}
