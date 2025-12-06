@@ -21,12 +21,7 @@ import { useItemDefaultColor } from "../useItemDefaultColor";
 import { DEFAULT_SCALE } from "../../constants";
 
 import { RootState } from "../../app/store";
-import {
-  DefaultMarkerIcon,
-  Marker,
-  MarkerIcon,
-  MarkerIconTypes,
-} from "../../types";
+import { DefaultMarkerIcon, Marker, MarkerIcon } from "../../types";
 
 export const useMarkers = () => {
   const [activeTool, setActiveTool] = useActiveTool();
