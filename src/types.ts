@@ -65,5 +65,24 @@ export type ValidationError = {
   validationError: string;
   invalidFields: string[];
 };
-export type MarkerIcon = { name: string; url: string; type: "image" };
-export type DefaultMarkerIcon = { type: "default"; name: string };
+
+export enum MarkerIconTypes {
+  image = "image",
+  default = "default",
+  rocket = "rocket",
+  shahed = "shahed",
+  cruiseMissile = "cruise-missile",
+  surveillance = "surveillance",
+  friendlyDrone = "friendly-drone",
+}
+
+export type MarkerIcon = {
+  name: string;
+  url: string;
+  type: MarkerIconTypes.image;
+};
+
+export type DefaultMarkerIcon = {
+  type: MarkerIconTypes;
+  name: string;
+};

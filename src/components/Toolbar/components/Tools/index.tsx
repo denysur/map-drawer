@@ -93,7 +93,7 @@ const Tools = () => {
   const onMarkerDelete = (id: string) => {
     removeMarker(id);
   };
-  const onIconCreatingChange = (icon?: string) => {
+  const onIconCreatingChange = (icon?: DefaultMarkerIcon) => {
     updateIconOnCreating(icon);
   };
 
@@ -143,7 +143,7 @@ const Tools = () => {
       <MarkerSettings
         isAddNewMarkerMode={isAddNewMarkerMode}
         selectedMarker={selectedMarker}
-        iconOnCreating={iconOnCreating?.name}
+        iconOnCreating={iconOnCreating?.type}
         onIconCreatingChange={onIconCreatingChange}
         onClose={onMarkerToolCloseHandler}
         onMarkerSizeChange={onMarkerSizeChange}

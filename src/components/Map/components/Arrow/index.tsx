@@ -14,26 +14,28 @@ type ArrowProps = {
 
 // Function to create arrowhead
 const createArrow = (vertices: [number, number][], scale: number) => {
-  const bearing = turf.bearing(
-    turf.point(vertices[0]),
-    turf.point(vertices[1])
-  );
-  const length =
-    (turf.distance(vertices[0], vertices[1], { units: "miles" }) / 4) * scale;
+  const start = turf.point(vertices[0]);
+  const end = turf.point(vertices[1]);
 
-  // Two points for the arrowhead wings
-  const leftWing = turf.destination(
-    turf.point(vertices[1]),
-    length,
-    bearing + 180 + ARROWHEAD_ANGLE
-  ).geometry.coordinates;
-  const rightWing = turf.destination(
-    turf.point(vertices[1]),
-    length,
-    bearing + 180 - ARROWHEAD_ANGLE
+  const bearing = turf.rhumbBearing(start, end);
+  const distance = turf.rhumbDistance(start, end, { units: "kilometers" });
+
+  const headLengthKm = Math.min((distance / 4) * scale, 70);
+
+  const leftWing = turf.rhumbDestination(
+    end,
+    headLengthKm,
+    bearing + 180 + ARROWHEAD_ANGLE,
+    { units: "kilometers" }
   ).geometry.coordinates;
 
-  // Combine line and arrowhead into GeoJSON
+  const rightWing = turf.rhumbDestination(
+    end,
+    headLengthKm,
+    bearing + 180 - ARROWHEAD_ANGLE,
+    { units: "kilometers" }
+  ).geometry.coordinates;
+
   return {
     type: "FeatureCollection",
     features: [

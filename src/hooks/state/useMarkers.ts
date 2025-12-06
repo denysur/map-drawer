@@ -139,8 +139,8 @@ export const useMarkers = () => {
     dispatch(clearMarkersState());
   }, []);
 
-  const updateIconOnCreating = useCallback((icon?: string) => {
-    dispatch(setIconOnCreating(icon ? { type: "default", name: icon } : null));
+  const updateIconOnCreating = useCallback((icon?: DefaultMarkerIcon) => {
+    dispatch(setIconOnCreating(icon || null));
   }, []);
 
   return useMemo(

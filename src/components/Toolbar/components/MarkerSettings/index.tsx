@@ -2,7 +2,7 @@ import { FC, ChangeEvent, useState } from "react";
 import { HexColorPicker } from "react-colorful";
 import { useClickAway } from "@uidotdev/usehooks";
 
-import Button from "../../../Common/Button";
+import Button, { ButtonColors } from "../../../Common/Button";
 import Modal from "../../../Common/Modal";
 import IconButton from "../../../Common/IconButton";
 import IconsModal from "../../../IconsModal";
@@ -19,14 +19,42 @@ import {
   MINIMUM_SCALE,
 } from "../../../../constants";
 
-import { DefaultMarkerIcon, Marker, MarkerIcon } from "../../../../types";
+import {
+  DefaultMarkerIcon,
+  MarkerIconTypes,
+  Marker,
+  MarkerIcon,
+} from "../../../../types";
 import { useHistory } from "../../../../hooks/state/useHistory";
 
-const DEFAULT_MARKERS = [
-  { id: "rocket", name: "Ракета" },
-  { id: "shahed", name: "Шахед" },
-  { id: "cruise-missile", name: "Крилата ракета" },
-  { id: "surveillance", name: "Розвід-дрон" },
+const DEFAULT_MARKERS: {
+  id: MarkerIconTypes;
+  name: string;
+  color?: ButtonColors;
+  selectedColor?: ButtonColors;
+}[] = [
+  {
+    id: MarkerIconTypes.rocket,
+    name: "Ракета",
+  },
+  {
+    id: MarkerIconTypes.shahed,
+    name: "Шахед",
+  },
+  {
+    id: MarkerIconTypes.cruiseMissile,
+    name: "Крилата ракета",
+  },
+  {
+    id: MarkerIconTypes.surveillance,
+    name: "Розвід-дрон",
+  },
+  {
+    id: MarkerIconTypes.friendlyDrone,
+    name: "Дружній дрон",
+    color: "secondary",
+    selectedColor: "secondaryLight",
+  },
 ];
 
 type MarkerSettingsProps = {
@@ -42,7 +70,7 @@ type MarkerSettingsProps = {
     icon: MarkerIcon | DefaultMarkerIcon | null;
   }) => void;
   onMarkerDelete: (id: string) => void;
-  onIconCreatingChange: (icon?: string) => void;
+  onIconCreatingChange: (icon?: DefaultMarkerIcon) => void;
 };
 
 const MarkerSettings: FC<MarkerSettingsProps> = ({
@@ -137,8 +165,11 @@ const MarkerSettings: FC<MarkerSettingsProps> = ({
           <div className="flex gap-2 items-center mx-auto">
             {DEFAULT_MARKERS.map((marker) => (
               <IconButton
+                key={marker.id}
                 color={
-                  marker.id === iconOnCreating ? "primary" : "primaryLight"
+                  marker.id === iconOnCreating
+                    ? marker.color || "primary"
+                    : marker.selectedColor || "primaryLight"
                 }
                 className={
                   marker.id === iconOnCreating
@@ -147,15 +178,17 @@ const MarkerSettings: FC<MarkerSettingsProps> = ({
                 }
                 iconComponent={() => (
                   <DefaultIcon
-                    name={marker.id}
+                    type={marker.id}
                     style={{
-                      transform: `rotate(45deg) scale(1.2)${marker.id === "shahed" ? "translate(-1px, -3px)" : ""}`,
+                      transform: `rotate(45deg) scale(1.2)${marker.id === MarkerIconTypes.shahed ? "translate(-1px, -3px)" : ""}`,
                     }}
                   />
                 )}
                 onClick={() => {
                   onIconCreatingChange(
-                    marker.id === iconOnCreating ? undefined : marker.id
+                    marker.id === iconOnCreating
+                      ? undefined
+                      : { type: marker.id, name: marker.name }
                   );
                 }}
               />
