@@ -7,7 +7,7 @@ import MarkerItem from "./components/MarkerItem";
 
 import { useMarkerImages } from "../../hooks/useMarkerImages";
 
-import { MarkerIcon } from "../../types";
+import { MarkerIcon, MarkerIconTypes } from "../../types";
 
 type IconsModalProps = { onSelect?: (icon: MarkerIcon | null) => void };
 
@@ -28,7 +28,9 @@ const IconsModal: FC<IconsModalProps> = ({ onSelect }) => {
 
   const onMarkerIconClickHandler = (icon: MarkerIcon) => {
     setSelected(
-      icon.name != selected?.name ? { ...icon, type: "image" } : null
+      icon.name != selected?.name
+        ? { ...icon, type: MarkerIconTypes.image }
+        : null
     );
   };
 

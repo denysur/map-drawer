@@ -10,7 +10,7 @@ import {
 import { storage } from "../utils/firebase";
 
 import { FIREBASE_MARKER_IMAGES_PATH } from "../constants";
-import { MarkerIcon } from "../types";
+import { MarkerIcon, MarkerIconTypes } from "../types";
 
 export const useMarkerImages = () => {
   const [images, setImages] = useState<MarkerIcon[]>([]);
@@ -65,12 +65,19 @@ export const useMarkerImages = () => {
         if (imageIndex !== -1) {
           // Update existing image
           const updatedImages = [...prevImages];
-          updatedImages[imageIndex] = { name: file.name, url, type: "image" };
+          updatedImages[imageIndex] = {
+            name: file.name,
+            url,
+            type: MarkerIconTypes.image,
+          };
           return updatedImages;
         }
 
         // Add new image
-        return [...prevImages, { name: file.name, url, type: "image" }];
+        return [
+          ...prevImages,
+          { name: file.name, url, type: MarkerIconTypes.image },
+        ];
       });
     } catch (error) {
       console.error("Error uploading image:", error);

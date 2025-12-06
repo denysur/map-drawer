@@ -9,7 +9,14 @@ import { useItemDefaultColor } from "../../../../hooks/useItemDefaultColor";
 
 import { DEFAULT_MARKER_SIZE } from "../../../../constants";
 
-import { Marker as MarkerType } from "../../../../types";
+import {
+  MarkerIconTypes,
+  MarkerIcon,
+  Marker as MarkerType,
+} from "../../../../types";
+
+const isImageType = (icon: MarkerType["icon"]): icon is MarkerIcon =>
+  icon?.type === MarkerIconTypes.image;
 
 type MarkerProps = {
   marker: MarkerType;
@@ -45,11 +52,17 @@ const Marker: FC<MarkerProps> = memo((props) => {
 
   const markerSize = DEFAULT_MARKER_SIZE * marker.scale;
 
-  const getMarkerAdditionalScaleByName = (value: number, name?: string) => {
-    if (name === "rocket") {
+  const getMarkerAdditionalScaleByName = (
+    value: number,
+    type?: MarkerIconTypes
+  ) => {
+    if (type === MarkerIconTypes.rocket) {
       return value * 1.5;
     }
-    if (name === "surveillance") {
+    if (type === MarkerIconTypes.surveillance) {
+      return value * 1.2;
+    }
+    if (type === MarkerIconTypes.friendlyDrone) {
       return value * 1.2;
     }
     return value;
@@ -77,7 +90,7 @@ const Marker: FC<MarkerProps> = memo((props) => {
           isAddNewMarkerMode && "pointer-events-none"
         )}
       >
-        {icon && icon.type === "image" ? (
+        {icon && isImageType(icon) ? (
           <div
             className="flex items-end justify-center"
             style={{
@@ -91,11 +104,11 @@ const Marker: FC<MarkerProps> = memo((props) => {
           </div>
         ) : (
           <DefaultIcon
-            name={icon?.name || "default"}
-            width={getMarkerAdditionalScaleByName(markerSize, icon?.name)}
+            type={icon?.type || MarkerIconTypes.default}
+            width={getMarkerAdditionalScaleByName(markerSize, icon?.type)}
             height={getMarkerAdditionalScaleByName(
               markerSize * 1.25,
-              icon?.name
+              icon?.type
             )}
             fill={marker.color || defaultColor}
             withArrow

@@ -6,26 +6,27 @@ import ShahedMarker from "./ShahedMarker";
 import CruiseMissileMarker from "./CruiseMissileMarker";
 import FriendlyDroneMarker from "./FriendlyDroneMarker";
 import SurveillanceDroneMarker from "./SurveillanceDroneMarker";
+import { MarkerIconTypes } from "../../../types";
 
 type DefaultIconProps = {
-  name?: string;
+  type?: MarkerIconTypes;
   withArrow?: boolean;
 } & SVGProps<SVGSVGElement>;
 
-const DefaultIcon: FC<DefaultIconProps> = ({ name, withArrow, ...props }) => {
-  if (name === "rocket") {
+const DefaultIcon: FC<DefaultIconProps> = ({ type, withArrow, ...props }) => {
+  if (type === MarkerIconTypes.rocket) {
     return <RocketMarker {...props} withArrow={withArrow} />;
   }
-  if (name === "shahed") {
+  if (type === MarkerIconTypes.shahed) {
     return <ShahedMarker {...props} withArrow={withArrow} />;
   }
-  if (name === "cruise-missile") {
+  if (type === MarkerIconTypes.cruiseMissile) {
     return <CruiseMissileMarker {...props} withArrow={withArrow} />;
   }
-  if (name === "friendly-drone") {
+  if (type === MarkerIconTypes.friendlyDrone) {
     return <FriendlyDroneMarker {...props} withArrow={withArrow} />;
   }
-  if (name === "surveillance") {
+  if (type === MarkerIconTypes.surveillance) {
     return <SurveillanceDroneMarker {...props} withArrow={withArrow} />;
   }
   return <MapMarker {...props} style={{ ...props.style, transform: "none" }} />;

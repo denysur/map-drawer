@@ -93,7 +93,7 @@ const Tools = () => {
   const onMarkerDelete = (id: string) => {
     removeMarker(id);
   };
-  const onIconCreatingChange = (icon?: string) => {
+  const onIconCreatingChange = (icon?: DefaultMarkerIcon) => {
     updateIconOnCreating(icon);
   };
 

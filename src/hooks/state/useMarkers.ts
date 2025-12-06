@@ -21,7 +21,12 @@ import { useItemDefaultColor } from "../useItemDefaultColor";
 import { DEFAULT_SCALE } from "../../constants";
 
 import { RootState } from "../../app/store";
-import { DefaultMarkerIcon, Marker, MarkerIcon } from "../../types";
+import {
+  DefaultMarkerIcon,
+  Marker,
+  MarkerIcon,
+  MarkerIconTypes,
+} from "../../types";
 
 export const useMarkers = () => {
   const [activeTool, setActiveTool] = useActiveTool();
@@ -74,7 +79,7 @@ export const useMarkers = () => {
         addMarkerAction({
           ...marker,
           color:
-            iconOnCreating?.name === "friendly-drone"
+            iconOnCreating?.type === MarkerIconTypes.friendlyDrone
               ? friendlyColor
               : defaultColor,
           scale: DEFAULT_SCALE,
@@ -93,7 +98,7 @@ export const useMarkers = () => {
           latitude: marker.latitude,
           longitude: marker.longitude,
           color:
-            iconOnCreating?.name === "friendly-drone"
+            iconOnCreating?.type === MarkerIconTypes.friendlyDrone
               ? friendlyColor
               : defaultColor,
           scale: DEFAULT_SCALE,
@@ -146,8 +151,8 @@ export const useMarkers = () => {
     dispatch(clearMarkersState());
   }, []);
 
-  const updateIconOnCreating = useCallback((icon?: string) => {
-    dispatch(setIconOnCreating(icon ? { type: "default", name: icon } : null));
+  const updateIconOnCreating = useCallback((icon?: DefaultMarkerIcon) => {
+    dispatch(setIconOnCreating(icon || null));
   }, []);
 
   return useMemo(
