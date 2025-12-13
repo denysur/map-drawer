@@ -20,7 +20,7 @@ const createArrow = (vertices: [number, number][], scale: number) => {
   const bearing = turf.rhumbBearing(start, end);
   const distance = turf.rhumbDistance(start, end, { units: "kilometers" });
 
-  const headLengthKm = Math.min((distance / 4) * scale, 70);
+  const headLengthKm = Math.min((distance / 4) * scale, 200 * scale);
 
   const leftWing = turf.rhumbDestination(
     end,
